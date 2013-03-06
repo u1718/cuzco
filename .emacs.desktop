@@ -1,0 +1,40 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Tue Mar  5 20:35:15 2013
+;; Desktop file format version 206
+;; Emacs version 23.3.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist '((114 file . "/home/teu/.emacs.d/starter-kit-registers.el") (98 file . "/home/teu/.emacs.d/starter-kit-bindings.el") (105 file . "/home/teu/.emacs.d/init.el")))
+(setq file-name-history '("~/src/py/dj/cuzco/" "/home/teu/src/py/dj/tut/mysite/cllctr/models.py" "~/src/py/dj/cuzco/wlether/models.py" "/home/teu/src/py/dj/cuzco/cuzco/settings.py" "~/.ido.last" "~/src/py/dj/tut/mysite/settings.py" "~/src/py/dj/tut/mysite/ul/cu" "~/src/py/dj/tut/mysite/cllctr/views.py" "~/src/py/dj/tut/mysite/cllctr/models.py" "~/src/py/dj/tut/mysite/cllctr/admin.py" "~/src/py/dj/tut/mysite/urls.py" "~/src/py/dj/tut/mysite/__init__.py" "~/src/py/dj/tut/mysite/manage.py" "~/html/dj_templs/tut/mysite/cllctr/index.html" "~/html/dj_templs/tut/mysite/cllctr/results.html" "~/src/py/dj/tut/mysite/cllctr/urls.py" "~/html/dj_templs/tut/mysite/cllctr/detail.html" "~/src/py/mavr/wsgi/wpp.py" "~/src/py/mavr/tw/pa/cutws.tac" "~/src/py/mavr/tw/pa/a2.py" "~/src/py/mavr/tw/pa/ws1.py" "~/src/py/mavr/tw/pa/__init__.py" "~/src/py/mavr/tw/pa/a1.py" "~/src/py/per/c1_tut_intro.py"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/teu/src/py/dj/cuzco/wlether/models.py"
+  "models.py"
+  'python-mode
+  '(autopair-mode yas/minor-mode auto-complete-mode ropemacs-mode flymake-mode)
+  526
+  '(58 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/teu/src/py/dj/cuzco/cuzco/settings.py"
+  "settings.py"
+  'python-mode
+  '(autopair-mode yas/minor-mode auto-complete-mode ropemacs-mode flymake-mode)
+  4521
+  '(1159 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix)))
+
