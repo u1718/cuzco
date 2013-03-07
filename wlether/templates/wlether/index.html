@@ -1,0 +1,10 @@
+{% if latest_scan_list %}
+    <ul>
+    {% for scan in latest_scan_list %}
+        {# <li><a href="/wlether/{{ scan.id }}/">{{ scan.scan_time }}</a></li> #}
+        <li><a href="{% url 'wlether:detail' scan.id %}">{{ scan.scan_time }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No scans are available.</p>
+{% endif %}

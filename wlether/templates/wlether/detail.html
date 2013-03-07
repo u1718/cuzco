@@ -1,0 +1,6 @@
+<h1>{{ scan.scan_time }}</h1>
+<ul>
+{% for apoint in scan.apoint_set.all %}
+    <li>{{ apoint.bssid }}</li>
+{% endfor %}
+</ul>
