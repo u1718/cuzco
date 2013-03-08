@@ -1,0 +1,16 @@
+<h1>{{ apoint }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<form action="{% url 'wlether:collect' scan_id apoint.id %}" method="post">
+{% csrf_token %}
+  <input type="text" name="bssid" id="bssid" value="{{ apoint.bssid }}" />
+  <label for="bssid">BSSID</label><br />
+  <input type="text" name="frequency" id="frequency" value="{{ apoint.frequency }}" />
+  <label for="frequency">Frequency</label><br />
+  <input type="text" name="signal_level" id="signal_level" value="{{ apoint.signal_level }}" />
+  <label for="signal_level">Signal Level</label><br />
+  <input type="text" name="flags" id="flags" value="{{ apoint.flags }}" />
+  <label for="flags">Flags</label><br />
+  <input type="text" name="ssid" id="ssid" value="{{ apoint.ssid }}" />
+  <label for="ssid">SSID</label><br />
+  <input type="submit" value="Collect" />
+</form>

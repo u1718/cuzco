@@ -1,6 +1,10 @@
-<h1>{{ scan.scan_time }}</h1>
+<h1>{{ scan }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 <ul>
 {% for apoint in scan.apoint_set.all %}
-    <li>{{ apoint.bssid }}</li>
+  <li><a href="{% url 'wlether:details' scan.id apoint.id %}">{{ apoint.ssid }}</a></li>
 {% endfor %}
 </ul>
+
