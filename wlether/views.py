@@ -63,30 +63,46 @@ def details(request, scan_id, apoint_id):
 def results(request, scan_id, apoint_id):
     return HttpResponse("You're looking at the results of poll %s" % scan_id)
 
+import json
 @basic_http_auth
 def collect(request, scan_id, apoint_id):
     if scan_id == '0':
-        s = Scan() 
-        s.chassis = request.POST['chassis']
-        s.adapter = request.POST['adapter']
-        s.tool = request.POST['tool']
-        #s.time = request.POST['time']
-        s.scan_time = datetime.strptime(request.POST['time'], '%Y-%m-%d %H:%M:%S')
-        #s.time = datetime.now()
-        s.save()
-        ap = s.apoint_set.create()
-        scan_id = s.id
-        apoint_id = ap.id
+        scan_json = request.body
+        scan_dict = json.loads(scan_json)
+        scan = Scan()
+        update_scan(scan, scan_dict)
     else:
         ap = get_object_or_404(APoint, pk=apoint_id)
+        apd = {
+            'bssid': request.POST('bssid'),
+            'frequency': request.POST('frequency'),
+            'signal_level': request.POST('signal_level'),
+            'flags': request.POST('flags'),
+            'ssid': request.POST('ssid')
+            }
+        update_apoint(ap, apd)
 
-    ap.bssid = request.POST['bssid']
-    ap.frequency = request.POST['frequency']
-    ap.signal_level = request.POST['signal_level']
-    ap.flags = request.POST['flags']
-    ap.ssid = request.POST['ssid']
-    ap.save()
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
     return HttpResponseRedirect(reverse('wlether:results', args=(scan_id, apoint_id,)))
+
+def update_apoint(apoint, apoint_dict):
+    apoint.bssid = apoint_dict['bssid']
+    apoint.frequency = apoint_dict['frequency']
+    apoint.signal_level = apoint_dict['signal_level']
+    apoint.flags = apoint_dict['flags']
+    apoint.ssid = apoint_dict['ssid']
+    apoint.save()
+    
+def update_scan(scan, scan_dict):
+    scan.chassis = scan_dict['chassis']
+    scan.adapter = scan_dict['adapter']
+    scan.tool = scan_dict['tool']
+    scan.time = scan_dict['time']
+    scan.scan_time = datetime.strptime(scan_dict['time'], '%Y-%m-%d %H:%M:%S')
+    scan.save()
+    
+    [update_apoint(scan.apoint_set.create(), ap)
+     for ap in scan_dict['aps']]
+
