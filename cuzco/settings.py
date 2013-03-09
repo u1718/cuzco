@@ -20,6 +20,11 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+# Parse database configuration from $DATABASE_URL              # heroku
+import dj_database_url                                         # heroku
+DATABASES['default'] = dj_database_url.config()                 # heroku
+# Honor the 'X-Forwarded-Proto' header for request.is_secure() # heroku
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # heroku
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
