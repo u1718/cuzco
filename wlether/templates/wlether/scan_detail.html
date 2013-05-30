@@ -1,0 +1,40 @@
+{% extends "wlether/base.html" %}
+
+{% block header %}
+{{ scan_date }}
+{% endblock header %}
+{% block footer %}
+{{ scan_date }}
+{% endblock footer %}
+{% block sidebar %}
+{% autoescape off %}
+{{ calendar }}
+{% endautoescape %}
+{% endblock sidebar %}
+
+{% block content %}
+    <h2>Scan {{ scan }}</h2>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <ol>
+      {% for apoint in page_obj %}
+      <li><a href="{% url 'wlether:apoint_detail' scan.id apoint.id %}">"{{ apoint.ssid }}"</a></li>
+      {% endfor %}
+    </ol>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+    <a href="{% url 'wlether:index' %}">Back</a>
+{% endblock content %}

@@ -1,0 +1,5 @@
+<ul>
+    {% for scan in latest %}
+        <li>{{ scan.scan_time }}: {{ scan }}</li>
+    {% endfor %}
+</ul>

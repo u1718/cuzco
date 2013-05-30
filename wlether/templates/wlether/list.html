@@ -1,0 +1,61 @@
+{% extends "wlether/base.html" %}
+
+{% block content %}
+{% if scans %}
+<ul>
+  {% for scan in scans %}
+  <li><a href="{% url 'wlether:detail' scan.id %}">{{ scan.scan_time }} / {{ scan.apoint_set.all.count }} / {{scan.mm}}</a></li>
+  {% endfor %}
+</ul>
+<div id="paginator">
+  <span class="step-links">
+    {% if scans.has_previous %}
+    <a href="?page={{ scans.1 }}">first</a>
+    <a href="?page={{ scans.previous_page_number }}">previous</a>
+    {% endif %}
+    
+    <span class="current">
+      Page {{ scans.number }} of {{ scans.paginator.num_pages }}.
+    </span>
+
+    {% if scans.has_next %}
+    <a href="?page={{ scans.next_page_number }}">next</a>
+    <a href="?page={{ scans.paginator.num_pages }}">last</a>
+    {% endif %}
+  </span>
+</div>
+{% else %}
+<p></p>>No scans are available.</p>
+{% endif %}
+
+{% endblock content %}
+
+{% block sidebar %}
+{% autoescape off %}
+{{ calendar }}
+{% endautoescape %}
+{% endblock sidebar %}
+
+{% block sidebar1 %}
+{% load clndr %}
+{% get_calendar for 04 2013 as calendar %}
+<table>
+    <tr>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>        
+    </tr>
+    {% for week in calendar %}
+    <tr>
+        {% for day in week %}
+        <td>{{ day.day }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock sidebar1 %}

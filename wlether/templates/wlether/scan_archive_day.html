@@ -1,0 +1,59 @@
+{% extends "wlether/base.html" %}
+
+{% block header %}
+{{ scan_date }}
+{% endblock header %}
+{% block footer %}
+{{ scan_date }}
+{% endblock footer %}
+
+{% block content %}
+
+{% if page_obj %}
+<ul>
+  {% for scan in page_obj %}
+  <li>{{ scan.scan_time|date:"F j, Y" }}: <a href="{% url 'wlether:detail' scan.id %}">{{ scan.scan_time }} / {{ scan.apoint_set.all.count }} / {{ scan.mm }}</a></li>
+  {% endfor %}
+</ul>
+<div id="paginator">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+    
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+    {% endif %}
+  </span>
+</div>
+<p>
+  {% if previous_day %}
+  Previous Day: <a href="{% url 'wlether:archive_day' previous_day.year previous_day.month previous_day.day %}">{{ previous_day }}</a>
+  {% endif %}
+  {% if previous_day and next_day %}--{% endif %}
+  {% if next_day %}
+  Next Day: <a href="{% url 'wlether:archive_day' next_day.year next_day.month next_day.day %}">{{ next_day }}</a>
+  {% endif %}
+</p>
+{% else %}
+<p>No scans are available.</p>
+{% endif %}
+<div>
+  <img class="img" src="{% url 'wlether:aps_pie' scan_date.year scan_date.month scan_date.day %}"> ImG </img>
+  <img class="img" src="{% url 'wlether:gr' scan_date.year scan_date.month scan_date.day %}"> ImG </img>
+  <img class="img" src="{% url 'wlether:gr_aps_sl' scan_date.year scan_date.month scan_date.day %}"> ImG </img>
+  {# <img src={% url 'wlether:test_matplotlib' %} /> #}
+</div>
+{% endblock content %}
+
+{% block sidebar %}
+{% autoescape off %}
+{{ calendar }}
+{% endautoescape %}
+{% endblock sidebar %}
