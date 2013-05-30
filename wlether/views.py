@@ -125,7 +125,7 @@ def gr_aps_sl(request, scan_year, scan_month, scan_day):
     scs=Scan.objects.filter(scan_time__year = scan_year).filter(scan_time__month = scan_month).filter(scan_time__day = scan_day)
 
     colorlist=[
-        'blue','green','red','cyan','magenta','yellow','white','aquamarine','azure','beige','bisque','brown','burlywood','chartreuse','chocolate','coral','cornsilk','firebrick','gainsboro','gold','goldenrod','gray','grey','honeydew','ivory','khaki','lavender','lime','linen','maroon','moccasin','navy','olive','orange','orchid','peru','pink','plum','purple','salmon','seashell','sienna','snow','tan','thistle','tomato','turquoise','violet','wheat']
+        'blue','green','red','cyan','magenta','yellow','beige','bisque','brown','burlywood','chartreuse','chocolate','coral','cornsilk','firebrick','gainsboro','gold','goldenrod','gray','grey','honeydew','ivory','khaki','lavender','lime','linen','maroon','moccasin','navy','olive','orange','orchid','peru','pink','plum','purple','salmon','seashell','sienna','snow','tan','thistle','tomato','turquoise','violet','wheat','white','aquamarine','azure']
     fig = Figure(figsize=(46,16))
     ax=fig.add_subplot(111)
     ta=timezone.datetime(int(scan_year), int(scan_month), int(scan_day))
@@ -141,7 +141,7 @@ def gr_aps_sl(request, scan_year, scan_month, scan_day):
 
     i = 0
     for k in dapssl:
-        ax.plot(x, dapssl[k], '.', color=colorlist[i])
+        ax.plot(x, dapssl[k], 'o', color=colorlist[i])
         i += 1
 
     ax.legend(dapssl.keys())
