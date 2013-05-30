@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.urlresolvers import reverse
+
 
 # Create your models here.
 
@@ -9,8 +11,18 @@ class Scan(models.Model):
     scan_time = models.DateTimeField('time scaned')
 
     def __unicode__(self):
-        return unicode(self.scan_time)
+        return unicode("%s %s %s %s" % (self.scan_time, self.chassis, self.adapter, self.tool))
 
+    def mm(self):
+        aps = self.apoint_set.all()
+        if len(aps) == 0:
+            aps_sl = [0]
+        else:
+            aps_sl = map(lambda e: num(e.signal_level), aps)
+        return "%d / %d" % (max(aps_sl), min(aps_sl))
+        
+    def get_absolute_url(self):
+        return reverse('scan-detail', kwargs={'pk': self.pk})
 
 class APoint (models.Model):
     scan = models.ForeignKey(Scan)
@@ -29,3 +41,10 @@ class APoint (models.Model):
 
     def __unicode__(self):
         return self.ssid
+
+def num(s):
+    try:
+        return int(s)
+    except:
+        return 0
+

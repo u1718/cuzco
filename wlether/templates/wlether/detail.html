@@ -4,7 +4,8 @@
 
 <ul>
 {% for apoint in scan.apoint_set.all %}
-  <li><a href="{% url 'wlether:details' scan.id apoint.id %}">{{ apoint.ssid }}</a></li>
+  <li><a href="{% url 'wlether:details' scan.id apoint.id %}">"{{ apoint.ssid }}"</a></li>
 {% endfor %}
 </ul>
 
+<a href="{% url 'wlether:index' %}">Back</a>
