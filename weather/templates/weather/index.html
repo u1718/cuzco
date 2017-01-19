@@ -1,0 +1,10 @@
+{% if cities %}
+    <p>{{ request.user }}</p>
+    <ul>
+    {% for city in cities %}
+    <li><a href="{% url 'weather:detail' city.id %}">{{ city.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No cities are available.</p>
+{% endif %}

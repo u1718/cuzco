@@ -1,0 +1,6 @@
+<h1>{{ city.name }}</h1>
+<ul>
+{% for owm in city.owm_set.all %}
+    <li>{{ owm.req_date }}</li>
+{% endfor %}
+</ul>

@@ -1,0 +1,6 @@
+<h1>{{ city.name }}</h1>
+<ul>
+{% for owm in city.owm_set.all %}
+    <li><a href="{% url 'weather:owm_forecast_view' owm.id %}">{{ owm.req_date }}</a></li>
+{% endfor %}
+</ul>
