@@ -1,0 +1,7 @@
+<h1>{{ city.name }}</h1>
+<h1>{{ owm.req_date }}</h1>
+<ul>
+{% for fc in owm.owmforecast_set.all %}
+    <li>{{ fc.forecast_text }}</li>
+{% endfor %}
+</ul>
