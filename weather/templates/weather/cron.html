@@ -1,0 +1,12 @@
+  <li>{{ c.name }}</li>
+  {% if ok == '' %}
+  <p>{{ root }}</p>
+  <p>{{ city }}</p>
+  <ul>
+    {% for l in list %}
+    <li>{{ l }}</li>
+    {% endfor %}
+  </ul>
+  {% elif fail == '' %}
+  {{ error }}
+  {% endif %}
