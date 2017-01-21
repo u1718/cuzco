@@ -6,7 +6,7 @@
   <p>{{ city }}</p>
   <table>
     {% for l in list %}
-    <tr><td>{{ l.dt_txt }}</td><td>{{ l.main.temp }}</td><td>{{ l.main.pressure }}</td><td>{{ l.main.humidity }}</td></tr>
+    <tr><td>{{ l.dt_txt }}</td><td>{{ l.main.temp }}</td><td>{{ l.main.pressure }}</td><td>{{ l.main.humidity }}</td><td>{{ l.wind.speed }}</td><td>{{ l.wind.deg }}</td></tr>
     {% endfor %}
   </table>
   {% elif fail == '' %}
