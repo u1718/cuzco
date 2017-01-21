@@ -34,48 +34,53 @@ def cron(request):
     username = request.GET['username']
     password = request.GET['password']
     user = authenticate(username=username, password=password)
+
+    context = dict()
+    
     if user is not None:
         login(request, user)
-        
-        context = dict()
         
         c = City.objects.filter(turn=True).first()
         if c is None:
             City.objects.all().update(turn=True)
-            c = City.objects.filter(turn=True).first()
+            c = City.objects.first()
 
         c.turn = False
         c.save()
             
-        resp = requests.get(c.ds_owm)
+        context.update({'c': {'name': c.name, 'ds_owm': c.ds_owm}})
+        
+        #ex: url_= 'http://api.openweathermap.org/data/2.5/forecast/city?id=498698&APPID=775670b8133c08911511535c6b1dfbdf'
+        #ex: url = 'http://api.openweathermap.org/data/2.5/forecast/city'
+        #ex: params = {
+        #ex:     'id':r'498698',
+        #ex:     'appid':r'775670b8133c08911511535c6b1dfbdf'
+        #ex: }
+        #ex: resp = requests.get(url_)
+        #ex: resp = requests.get(url, params = params)
+            
+        if False:
+            resp = requests.get(c.ds_owm)
 
-        # #http://api.openweathermap.org/data/2.5/forecast/city?id=498698&APPID=775670b8133c08911511535c6b1dfbdf
-        # url = 'http://api.openweathermap.org/data/2.5/forecast/city'
-        # params = {
-        #     'id':r'498698',
-        #     'appid':r'775670b8133c08911511535c6b1dfbdf'
-        # }
+        else:
+            with open('./owm.data.{}'.format(c.name)) as f:
+                r = f.read()
 
-        # resp = requests.get(url, params = params)
+            class Resp:
+                def __init__(self, t):
+                    self.text = t
 
-        # with open('./owm.data') as f:
-        #     w = f.read()
-
-        # class Resp:
-        #     def __init__(self, t):
-        #         self.text = t
-
-        # resp = Resp(w)
+            resp = Resp(r)
 
         if resp is not None:
 
             pj = json.loads(resp.text)
 
             if pj['cod'] == '0':
-                context = {
+                context.update({
                     'fail': '',
                     'error': pj['message']
-                }
+                })
                 owm = OWM()
 
                 owm.message = pj['message']
@@ -86,12 +91,12 @@ def cron(request):
                 owm.save()
 
             else:
-                context = {
+                context.update({
                     'ok': '',
                     'root': pj.keys(),
                     'city': pj['city'],
                     'list': pj['list'],
-                }
+                })
 
                 owm = OWM()
 
@@ -120,10 +125,10 @@ def cron(request):
                     owm_forecast.save()
 
         else:
-            context = {
+            context.update({
                 'fail': '',
                 'error': 'req fail'
-            }
+            })
 
             owm = OWM()
 
@@ -137,10 +142,10 @@ def cron(request):
         logout(request)
         
     else:
-        context = {
+        context.update({
             'fail': '',
             'error': 'auth fail'
-        }
+        })
         
     return render(request, 'weather/cron.html', context)
 

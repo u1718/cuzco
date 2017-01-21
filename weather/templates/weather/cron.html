@@ -1,12 +1,14 @@
-  <li>{{ c.name }}</li>
+  <h1>{{ c.name }}</h1>
+  <h3>{{ c.ds_owm }}</h3>
+
   {% if ok == '' %}
   <p>{{ root }}</p>
   <p>{{ city }}</p>
-  <ul>
+  <table>
     {% for l in list %}
-    <li>{{ l }}</li>
+    <tr><td>{{ l.dt_txt }}</td><td>{{ l.main.temp }}</td><td>{{ l.main.pressure }}</td><td>{{ l.main.humidity }}</td></tr>
     {% endfor %}
-  </ul>
+  </table>
   {% elif fail == '' %}
   {{ error }}
   {% endif %}
