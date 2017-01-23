@@ -59,7 +59,7 @@ def cron(request):
         #ex: resp = requests.get(url_)
         #ex: resp = requests.get(url, params = params)
             
-        if not DEBUG:
+        if not True:
             resp = requests.get(c.ds_owm)
 
         else:

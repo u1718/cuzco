@@ -25,7 +25,7 @@ SECRET_KEY = '_!*8jj+=r3yrqblm#xh4gj1wjzsxiic+hcdx21e_)irz%tdxc1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cuzco.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'cuzco.pythonanywhere.com']
 
 
 # Application definition
