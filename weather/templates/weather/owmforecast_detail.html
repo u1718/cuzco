@@ -1,3 +1,10 @@
+{% extends 'weather/base.html' %}
+
+{% block title %}
+<h2>{{ request.user }}</h2>
+{% endblock %}
+
+{% block content %}
 <h1>{{ city.name }}</h1>
 <h1>{{ owm.req_date }}</h1>
 <ul>
@@ -5,3 +12,4 @@
     <li>{{ fc.forecast_text }}</li>
 {% endfor %}
 </ul>
+{% endblock %}

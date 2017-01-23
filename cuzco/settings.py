@@ -25,7 +25,7 @@ SECRET_KEY = '_!*8jj+=r3yrqblm#xh4gj1wjzsxiic+hcdx21e_)irz%tdxc1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cuzco.pythonanywhere.com']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +87,17 @@ DATABASES = {
             'NAME': 'mytestdatabase',
         },
     },
+    'pa': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
+        'NAME': 'cuzco$CUZCO',
+        'USER': 'cuzco',
+        'PASSWORD': 'fdsazxcv',
+        'HOST': 'cuzco.mysql.pythonanywhere-services.com'
+    },
+        
 }
 
 
