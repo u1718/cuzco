@@ -1,8 +1,10 @@
-{% load static %}
+{% extends 'weather/base.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'weather/style.css' %}" />
+{% block title %}
+<h2>{{ request.user }}</h2>
+{% endblock %}
 
-<p>{{ request.user }}</p>
+{% block content %}
 {% if city_list %}
     <ul>
     {% for city in city_list %}
@@ -12,3 +14,8 @@
 {% else %}
     <p>No cities are available.</p>
 {% endif %}
+{% endblock %}
+
+{% block footer %}
+<h2>{{ request.user }}</h2>
+{% endblock %}

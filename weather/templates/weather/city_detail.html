@@ -1,6 +1,18 @@
+{% extends 'weather/base.html' %}
+
+{% block title %}
+<h2>{{ request.user }}</h2>
+{% endblock %}
+
+{% block content %}
 <h1>{{ city.name }}</h1>
 <ul>
 {% for owm in city.owm_set.all %}
     <li><a href="{% url 'weather:owm_forecast_view' owm.id %}">{{ owm }}</a></li>
 {% endfor %}
 </ul>
+{% endblock %}
+
+{% block footer %}
+<h2>{{ request.user }}</h2>
+{% endblock %}
