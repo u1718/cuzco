@@ -22,11 +22,11 @@ class CityView(LoginRequiredMixin, generic.ListView):
         """Return requested cities."""
         return City.objects.order_by('name')
 
-class OWMView(generic.DetailView):
+class OWMView(LoginRequiredMixin, generic.DetailView):
     model = City
     #template_name = 'weather/city_detail.html'
 
-class OWMForecastView(generic.DetailView):
+class OWMForecastView(LoginRequiredMixin, generic.DetailView):
     model = OWM
     #template_name = 'weather/owm_detail.html'
 
@@ -127,12 +127,12 @@ def cron(request):
         else:
             context.update({
                 'fail': '',
-                'error': 'req fail'
+                'error': c.name + ' req fail'
             })
 
             owm = OWM()
 
-            owm.message = 'No Response'
+            owm.message = c.ds_owm + ': no response'
 
             owm.city = c
             owm.req_date = timezone.now()
