@@ -1,16 +1,17 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
+from django.views.generic.dates import TodayArchiveView, DayArchiveView
 
 import requests
 import json
 
 from .models import City, OWM, OWMForecast
+from .sbcalendar import SideBarCalendar
 
 class CityView(LoginRequiredMixin, generic.ListView):
     #login_url = ''
@@ -149,6 +150,33 @@ def cron(request):
         
     return render(request, 'weather/cron.html', context)
 
+class OWMTodayArchiveView(TodayArchiveView):
+    queryset = OWM.objects.all()
+    date_field = "req_date"
+    allow_future = True
+    make_object_list = True
+    allow_empty = True
+    paginate_by = 20
+    
+    def get_context_data(self, **kwargs):
+        req_date = timezone.now()
+        kwargs['req_date'] = timezone.now()
+        kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
+
+        return super(OWMTodayArchiveView, self).get_context_data(**kwargs)
 
 
+class OWMDayArchiveView(DayArchiveView):
+    queryset = OWM.objects.all()
+    date_field = "req_date"
+    allow_future = True
+    make_object_list = True
+    allow_empty = True
+    paginate_by = 20
+    
+    def get_context_data(self, **kwargs):
+        req_date = timezone.datetime(int(self.get_year()), int(self.get_month()), int(self.get_day()))
+        kwargs['req_date'] = req_date
+        kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
 
+        return super(OWMDayArchiveView, self).get_context_data(**kwargs)
