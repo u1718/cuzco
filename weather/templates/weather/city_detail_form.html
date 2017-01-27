@@ -1,0 +1,123 @@
+{% extends 'weather/base.html' %}
+
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% block content %}
+<div class="page-header">
+  <h3>{{ city.name }}</h3>
+</div>
+
+{% comment %}
+<form action="/url/to/submit/" method="post" class="form">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">
+    {% bootstrap_icon "star" %} Submit
+  </button>
+  {% endbuttons %}
+</form>
+
+
+<form role="form" class="form-horizontal" method="post">
+  {% csrf_token %}
+  {% bootstrap_form form layout="horizontal" %}
+  {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
+</form>
+
+<form action="{% url 'weather:city_update' city.id %}" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "star" %} Add
+    </button>
+    {% endbuttons %}
+</form>
+{% endcomment %}
+
+<form  class="form-horizontal" action="{% url 'weather:city_update' city.id %}" method="post">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">
+    {% bootstrap_icon "star" %} Submit
+  </button>
+  {% endbuttons %}
+
+{% comment %}
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="city_name">City name:</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="city_name" value="{{ city.name }}">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="ds_owm">Data source(OWM):</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="ds_owm" value="{{ city.ds_owm }}">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <button type="submit" class="btn btn-default">Update</button>
+    </div>
+  </div>
+{% endcomment %}
+</form>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Req Date</th>
+          <th>Req Info</th>
+          <th>Iden</th>
+          <th>Name</th>
+          <th>Coord</th>
+        </tr>
+      </thead>
+      <tbody>
+	{% for owm in city.owm_set.all %}
+	<tr>
+	  <td><a href="{% url 'weather:owm_forecast_view' owm.id %}">{{ owm.req_date }}</a></td>
+	  <td>{{ owm.cod }}, {{ owm.message }}, {{ owm.cnt }}</td>
+	  <td>{{ owm.iden }}</td>
+	  <td>{{ owm.name }}</td>
+	  <td>{{ owm.coord_lon }}, {{ owm.coord_lat }}</td>
+	</tr>
+	{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ request.user }}
+{% endblock %}
+
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+{% endfor %}
+<input type="submit" value="Vote" />
+</form>
+

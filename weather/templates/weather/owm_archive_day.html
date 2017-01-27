@@ -4,9 +4,9 @@
 <div class="page-header">
   <h2>{{ day }}</h2>
 </div>
-{% if page_obj %}
 <div class="row">
   <div class="col-md-10">
+    {% if page_obj %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -29,6 +29,9 @@
 	{% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <p>No reqs are available.</p>
+    {% endif %}
   </div>
   <div class="col-md-2">
     {% autoescape off %}
@@ -60,9 +63,6 @@
     {{ next_day }}</a>
   {% endif %}
 </p>
-{% else %}
-<p>No reqs are available.</p>
-{% endif %}
 
 {% endblock %}
 

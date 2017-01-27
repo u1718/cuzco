@@ -1,15 +1,12 @@
 {% extends 'weather/base.html' %}
 
-{% block title %}
-<h2>{{ request.user }}</h2>
-{% endblock %}
-
 {% block content %}
 {% if city_list %}
     <ul>
     {% for city in city_list %}
     <li>
       <a href="{% url 'weather:owm_view' city.id %}">{{ city.name }}</a>
+      <a href="{% url 'weather:city_form' city.id %}">edit</a>
     </li>
     {% endfor %}
     </ul>
@@ -19,5 +16,5 @@
 {% endblock %}
 
 {% block footer %}
-<h2>{{ request.user }}</h2>
+{{ request.user }}
 {% endblock %}

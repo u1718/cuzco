@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -12,6 +13,7 @@ import json
 
 from .models import City, OWM, OWMForecast
 from .sbcalendar import SideBarCalendar
+from .forms import CityModelForm
 
 class CityView(LoginRequiredMixin, generic.ListView):
     #login_url = ''
@@ -26,10 +28,30 @@ class CityView(LoginRequiredMixin, generic.ListView):
 class OWMView(LoginRequiredMixin, generic.DetailView):
     model = City
     #template_name = 'weather/city_detail.html'
+        
+class CityForm(LoginRequiredMixin, generic.DetailView):
+    model = City
+    template_name = 'weather/city_detail_form.html'
+    
+    def get_context_data(self, **kwargs):
+        kwargs['form'] = CityModelForm()
+
+        return super(CityForm, self).get_context_data(**kwargs)
+    
+def city_update(request, city_id):
+    city = get_object_or_404(City, pk=city_id)
+    city.name = request.POST['name']
+    city.ds_owm = request.POST['ds_owm']
+    city.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('weather:owm_view', args=(city.id,)))
 
 class OWMForecastView(LoginRequiredMixin, generic.DetailView):
     model = OWM
     #template_name = 'weather/owm_detail.html'
+
 
 def cron(request):
     username = request.GET['username']
@@ -151,8 +173,8 @@ def cron(request):
     return render(request, 'weather/cron.html', context)
 
 class OWMTodayArchiveView(TodayArchiveView):
-    queryset = OWM.objects.all()
-    date_field = "req_date"
+    #queryset = OWM.objects.all()
+    #date_field = "req_date"
     allow_future = True
     make_object_list = True
     allow_empty = True
