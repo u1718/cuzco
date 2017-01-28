@@ -1,5 +1,5 @@
 {% if cities %}
-    <p>{{ request.user }}</p>
+    <p>{{ request.user.username }}</p>
     <ul>
     {% for city in cities %}
     <li><a href="{% url 'weather:detail' city.id %}">{{ city.name }}</a></li>

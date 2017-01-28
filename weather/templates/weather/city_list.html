@@ -1,12 +1,12 @@
 {% extends 'weather/base.html' %}
+{% load bootstrap3 %}
 
 {% block content %}
 {% if city_list %}
     <ul>
     {% for city in city_list %}
     <li>
-      <a href="{% url 'weather:owm_view' city.id %}">{{ city.name }}</a>
-      <a href="{% url 'weather:city_form' city.id %}">edit</a>
+      <a href="{% url 'weather:city_view' city.id %}">{{ city.name }}</a>
     </li>
     {% endfor %}
     </ul>
@@ -16,5 +16,5 @@
 {% endblock %}
 
 {% block footer %}
-{{ request.user }}
+{{ request.user.username }}
 {% endblock %}

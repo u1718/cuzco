@@ -16,11 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
     url(r'^weather/', include('weather.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
+    url('^accounts/', include('django.contrib.auth.urls', namespace='auth')),
     #url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^accounts/login/$', auth_views.login, {'template_name': 'admin/login.html'}),
+    #url(r'^accounts/login/$', auth_views.login, {'redirect_authenticated_user': True}),#, 'template_name': 'admin/login.html'}),
     ]

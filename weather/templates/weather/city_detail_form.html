@@ -16,41 +16,12 @@
   <h3>{{ city.name }}</h3>
 </div>
 
-{% comment %}
-<form action="/url/to/submit/" method="post" class="form">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  {% buttons %}
-  <button type="submit" class="btn btn-primary">
-    {% bootstrap_icon "star" %} Submit
-  </button>
-  {% endbuttons %}
-</form>
-
-
-<form role="form" class="form-horizontal" method="post">
-  {% csrf_token %}
-  {% bootstrap_form form layout="horizontal" %}
-  {% buttons submit='OK' reset='Cancel' layout='horizontal' %}{% endbuttons %}
-</form>
-
-<form action="{% url 'weather:city_update' city.id %}" method="post" class="form">
-    {% csrf_token %}
-    {% bootstrap_form form layout='inline' %}
-    {% buttons %}
-    <button type="submit" class="btn btn-primary">
-      {% bootstrap_icon "star" %} Add
-    </button>
-    {% endbuttons %}
-</form>
-{% endcomment %}
-
 <form  class="form-horizontal" action="{% url 'weather:city_update' city.id %}" method="post">
   {% csrf_token %}
   {% bootstrap_form form %}
   {% buttons %}
   <button type="submit" class="btn btn-primary">
-    {% bootstrap_icon "star" %} Submit
+    Update
   </button>
   {% endbuttons %}
 
@@ -106,7 +77,7 @@
 {% endblock %}
 
 {% block footer %}
-{{ request.user }}
+{{ request.user.username }}
 {% endblock %}
 
 
