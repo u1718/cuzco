@@ -41,26 +41,33 @@ class CityView(LoginRequiredMixin, generic.ListView):
         # Add in a QuerySet of all the books
         context['city'] = self.city
         return context
-        
-class CityForm(LoginRequiredMixin, generic.DetailView):
-    model = City
-    template_name = 'weather/city_detail_form.html'
-    
-    def get_context_data(self, **kwargs):
-        kwargs['form'] = CityModelForm()
-
-        return super(CityForm, self).get_context_data(**kwargs)
     
 @login_required    
 def city_update(request, city_id):
     city = get_object_or_404(City, pk=city_id)
-    city.name = request.POST['name']
-    city.ds_owm = request.POST['ds_owm']
-    city.save()
-    # Always return an HttpResponseRedirect after successfully dealing
-    # with POST data. This prevents data from being posted twice if a
-    # user hits the Back button.
-    return HttpResponseRedirect(reverse('weather:owm_view', args=(city.id,)))
+    
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CityModelForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            city.name = form.cleaned_data['name'] #request.POST['name']
+            city.ds_owm = form.cleaned_data['ds_owm'] #request.POST['ds_owm']
+            city.save()
+            # redirect to a new URL:
+            #return HttpResponseRedirect('weather:city_detail')
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.
+            return HttpResponseRedirect(reverse('weather:city_view', args=(city.id,)))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CityModelForm(initial={'name': city.name, 'ds_owm': city.ds_owm})
+
+    return render(request, 'weather/city_detail_form.html', {'form': form, 'city': city})
 
 class OWMView(LoginRequiredMixin, generic.ListView):
     template_name = 'weather/owm_detail.html'

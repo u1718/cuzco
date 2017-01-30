@@ -1,5 +1,4 @@
 {% extends 'weather/base.html' %}
-
 {% load bootstrap3 %}
 
 {# Load CSS and JavaScript #}
@@ -47,48 +46,8 @@
   </div>
 {% endcomment %}
 </form>
-
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Req Date</th>
-          <th>Req Info</th>
-          <th>Iden</th>
-          <th>Name</th>
-          <th>Coord</th>
-        </tr>
-      </thead>
-      <tbody>
-	{% for owm in city.owm_set.all %}
-	<tr>
-	  <td><a href="{% url 'weather:owm_forecast_view' owm.id %}">{{ owm.req_date }}</a></td>
-	  <td>{{ owm.cod }}, {{ owm.message }}, {{ owm.cnt }}</td>
-	  <td>{{ owm.iden }}</td>
-	  <td>{{ owm.name }}</td>
-	  <td>{{ owm.coord_lon }}, {{ owm.coord_lat }}</td>
-	</tr>
-	{% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
 {% endblock %}
 
 {% block footer %}
 {{ request.user.username }}
 {% endblock %}
-
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<form action="{% url 'polls:vote' question.id %}" method="post">
-{% csrf_token %}
-{% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
-{% endfor %}
-<input type="submit" value="Vote" />
-</form>
-

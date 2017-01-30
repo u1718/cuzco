@@ -9,15 +9,13 @@ urlpatterns = [
     # ex: /weather/
     url(r'^$', views.CitiesView.as_view(), name='cities'),
 
-    # ex: /weather/frm/2/
-    url(r'^frm/(?P<pk>[0-9]+)/$', views.CityForm.as_view(), name='city_form'),
-    # ex: /weather/edt/2/
-    url(r'^upd/(?P<city_id>[0-9]+)/$', views.city_update, name='city_update'),
     # ex: /weather/2/
     url(r'^(?P<pk>[0-9]+)/$', views.CityView.as_view(), name='city_view'),
+    # ex: /weather/upd/2/
+    url(r'^upd/(?P<city_id>[0-9]+)/$', views.city_update, name='city_update'),
     
-    # ex: /weather/fcs/6/
-    url(r'^fcs/(?P<pk>[0-9]+)/$', views.OWMView.as_view(), name='owm_view'),
+    # ex: /weather/fc/6/
+    url(r'^fc/(?P<pk>[0-9]+)/$', views.OWMView.as_view(), name='owm_view'),
 
     # ex: /weather/cron/
     url(r'^cron/$', views.cron, name='cron'),

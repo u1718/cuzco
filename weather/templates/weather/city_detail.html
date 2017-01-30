@@ -1,11 +1,22 @@
 {% extends 'weather/base.html' %}
 {% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 {% block content %}
+
 <div class="page-header">
   <h3>{{ city.name }}
-  <a href="{% url 'weather:city_form' city.id %}">{% bootstrap_icon "edit" %}</a></h3>
+  <a href="{% url 'weather:city_update' city.id %}">{% bootstrap_icon "edit" %}</a></h3>
 </div>
+
 <div class="row">
   <div class="col-md-12">
     {% if page_obj %}
