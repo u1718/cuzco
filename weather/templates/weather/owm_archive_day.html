@@ -20,7 +20,7 @@
       <tbody>
 	{% for owm in object_list %}
 	<tr>
-	  <td><a href="{% url 'weather:owm_forecast_view' owm.id %}">{{ owm.req_date }}</a></td>
+	  <td><a href="{% url 'weather:owm_view' owm.id %}">{{ owm.req_date }}</a></td>
 	  <td>{{ owm.cod }}, {{ owm.message }}, {{ owm.cnt }}</td>
 	  <td>{{ owm.iden }}</td>
 	  <td>{{ owm.name }}</td>
