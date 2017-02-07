@@ -8,6 +8,8 @@ from django.views import generic
 from django.utils import timezone
 from django.views.generic.dates import TodayArchiveView, DayArchiveView
 
+import datetime
+
 import requests
 import json
 
@@ -15,17 +17,49 @@ from .models import City, OWM, OWMForecast
 from .sbcalendar import SideBarCalendar
 from .forms import CityModelForm
 
+import ephem
+
+def calc_ss(d, m, y, h, lat, lon):
+    o = ephem.Observer()
+    o.lat, o.long, o.date = lat, lon, datetime.datetime(y, m, d, h)
+    sun = ephem.Sun(o)
+    
+    sr = ephem.Date(o.next_rising(sun, start=o.date))
+    st = ephem.Date(o.next_setting(sun, start=o.date))
+    if sr > st:
+        sr = ephem.Date(o.previous_rising(sun, start=o.date))
+        
+    return sr, st
+
 class CitiesView(LoginRequiredMixin, generic.ListView):
     #login_url = ''
     #redirect_field_name = ''
-    #template_name = 'weather/city_list.html'
-    #context_object_name = 'city_list' == object_list
+    template_name = 'weather/city_list.html'
+    context_object_name = 'city_list' #== object_list
     paginate_by = 20
 
     def get_queryset(self):
         """Return requested cities."""
-        return City.objects.order_by('name')
+        city_list = list()
+        for c in City.objects.order_by('name'):
+            o = c.owm_set.latest('req_date')
 
+            sr, st = calc_ss(
+                d=o.req_date.day, m=o.req_date.month, y=o.req_date.year, h=o.req_date.hour,
+                lat=o.coord_lat, lon=o.coord_lon)
+            
+            f = o.owmforecast_set.first()
+            if f:
+                f = json.loads(f.forecast_text.replace("'",'"'))
+                f['main']['temp'] = "{0:.1f}".format(float(f['main']['temp']) - 273.15)
+
+            else:
+                f = {}
+                    
+            city_list.append({'city': c, 'owm': o, 'sunrise':sr, 'sunset': st, 'forecast': f})
+
+        return city_list
+            
 class CityView(LoginRequiredMixin, generic.ListView):
     template_name = 'weather/city_detail.html'
     context_object_name = 'owm_list'
