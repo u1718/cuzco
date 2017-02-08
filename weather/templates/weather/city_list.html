@@ -3,40 +3,41 @@
 
 {% block content %}
 {% if city_list %}
-    <ul>
-    {% for c in city_list %}
-    <li>
-      <a href="{% url 'weather:city_view' c.city.id %}">{{ c.city.name }}</a>
-      <h3>
-	Weather in
-      </h3>
-      <h3>
-	{{ c.owm.name }}, {{ c.owm.country }}
-      </h3>
-      <h3>
-	{{ c.forecast.main.temp }} °C
-      </h3>
-      <h4>
-	{{ c.forecast.weather.0.description }}
-      </h4>
-      <p>
-	get at {{ c.owm.req_date }}
-      </p>
+<ul>
+  {% for c in city_list %}
+  <li>
+    <a href="{% url 'weather:city_view' c.city.id %}">{{ c.city.name }}</a>
+      
+    <div class="row">
+      <div class="col-md-4">
+	<h3>
+	  Weather in
+	  {{ c.owm.name }}, {{ c.owm.country }}
+	</h3>
+	<h3>
+	  {{ c.forecasts.0.main.temp }} °C
+	</h3>
+	<h4>
+	  {{ c.forecasts.0.weather.0.description }}
+	</h4>
+	<p>
+	  get at {{ c.owm.req_date }} (Forecast for {{ c.forecasts.0.dt_txt }})
+	</p>
       
 	<table class="table table-striped table-bordered">
 	  <tr>
 	    <td>Wind</td><td>
-	      {{ c.forecast.wind.speed }} m/s<br>
-	    ( {{ c.forecast.wind.deg }} )</td></tr>
+	      {{ c.forecasts.0.wind.speed }} m/s<br />
+	      {{ c.forecasts.0.wind.deg }}</td></tr>
 	  <tr>
 	    <td>Cloudiness</td><td>
-	      {{ c.forecast.clouds.all }} %</td></tr>
+	      {{ c.forecasts.0.clouds.all }} %</td></tr>
 	  <tr>
 	    <td>Pressure</td><td>
-	      {{ c.forecast.main.grnd_level }} hpa</td></tr>
+	      {{ c.forecasts.0.main.grnd_level }} hpa</td></tr>
 	  <tr>
 	    <td>Humidity</td><td>
-	      {{ c.forecast.main.humidity }} %</td></tr>
+	      {{ c.forecasts.0.main.humidity }} %</td></tr>
 	  <tr>
 	    <td>Sunrise</td><td>
 	      {{ c.sunrise }}</td></tr>
@@ -47,12 +48,26 @@
 	    <td>Geo coords</td><td>
 	      [{{ c.owm.coord_lat }}, {{ c.owm.coord_lon }}]</td></tr>
 	</table>
-      </p>
-    </li>
-    {% endfor %}
-    </ul>
+      </div>
+      <div class="col-md-8">
+	<table class="table table-striped table-bordered small">
+	  <tr>
+	    {% for f in c.forecasts %}
+	    <td>
+	      {{ f.dt|time:"H:i" }}<br />
+	      {{ f.main.temp }} °C<br />
+	      {{ f.wind.speed }} m/s<br />
+	      {{ f.main.pressure }}
+	    </td>
+	    {% endfor %}
+	  </tr>
+	</table>
+      </div>
+  </li>
+  {% endfor %}
+</ul>
 {% else %}
-    <p>No cities are available.</p>
+<p>No cities are available.</p>
 {% endif %}
 {% endblock %}
 

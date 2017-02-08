@@ -28,6 +28,9 @@ def calc_ss(d, m, y, h, lat, lon):
     st = ephem.Date(o.next_setting(sun, start=o.date))
     if sr > st:
         sr = ephem.Date(o.previous_rising(sun, start=o.date))
+    elif o.date > st:
+        sr = ephem.Date(o.previous_rising(sun, start=o.date))
+        st = ephem.Date(o.previous_setting(sun, start=o.date))
         
     return sr, st
 
@@ -48,15 +51,14 @@ class CitiesView(LoginRequiredMixin, generic.ListView):
                 d=o.req_date.day, m=o.req_date.month, y=o.req_date.year, h=o.req_date.hour,
                 lat=o.coord_lat, lon=o.coord_lon)
             
-            f = o.owmforecast_set.first()
-            if f:
-                f = json.loads(f.forecast_text.replace("'",'"'))
-                f['main']['temp'] = "{0:.1f}".format(float(f['main']['temp']) - 273.15)
-
-            else:
-                f = {}
+            fs = []
+            for f in o.owmforecast_set.order_by('id'):
+                fd = json.loads(f.forecast_text.replace("'",'"'))
+                fd['main']['temp'] = "{0:.1f}".format(float(fd['main']['temp']) - 273.15)
+                fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
+                fs.append(fd)
                     
-            city_list.append({'city': c, 'owm': o, 'sunrise':sr, 'sunset': st, 'forecast': f})
+            city_list.append({'city': c, 'owm': o, 'sunrise':sr, 'sunset': st, 'forecasts': fs[:9]})
 
         return city_list
             
@@ -149,7 +151,7 @@ def cron(request):
         #ex: resp = requests.get(url_)
         #ex: resp = requests.get(url, params = params)
             
-        if not True:
+        if not False:
             resp = requests.get(c.ds_owm)
 
         else:
