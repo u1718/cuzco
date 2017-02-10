@@ -19,9 +19,12 @@ urlpatterns = [
 
     # ex: /weather/cron/99/
     url(r'^cron/$', views.cron, name='cron'),
-    
+
     # ex: /weather/gr/
     url(r'^gr/(?P<owm_id>[0-9]+)/$', views.gr, name='gr'),
+    
+    # ex: /weather/gr1/
+    url(r'^gr1/$', views.gr1, name='gr1'),
     
     # ex: /weather/archive/
     url(r'^archive/$',

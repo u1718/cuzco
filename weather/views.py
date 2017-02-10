@@ -26,6 +26,18 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 
+from bokeh.plotting import figure
+from bokeh.resources import CDN
+from bokeh.embed import file_html
+
+def gr1(request):
+    plot = figure()
+    plot.circle([1,2], [3,4])
+
+    html = file_html(plot, CDN, "my plot")
+    return HttpResponse(html)
+
+
 def gr(request, owm_id):
     o = OWM.objects.get(id=owm_id)
     fs = []
@@ -34,13 +46,17 @@ def gr(request, owm_id):
         fd = json.loads(f.forecast_text.replace("'",'"'))
         fs.append(float(fd['main']['temp']) - 273.15)
         dt.append(datetime.datetime.utcfromtimestamp(int(fd['dt'])).strftime("%I:%M"))
+
     fig = Figure()
     ax = fig.add_subplot(111)
+
     data_df = pd.DataFrame(fs, index=dt, columns=['temperature °C'])
     data_df.plot(ax=ax)
+
     canvas = FigureCanvas(fig)
     response = HttpResponse( content_type = 'image/png')
     canvas.print_png(response)
+
     return response
 
 def calc_ss(d, m, y, h, lat, lon):
