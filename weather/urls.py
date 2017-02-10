@@ -17,8 +17,11 @@ urlpatterns = [
     # ex: /weather/fc/6/
     url(r'^fc/(?P<pk>[0-9]+)/$', views.OWMView.as_view(), name='owm_view'),
 
-    # ex: /weather/cron/
+    # ex: /weather/cron/99/
     url(r'^cron/$', views.cron, name='cron'),
+    
+    # ex: /weather/gr/
+    url(r'^gr/(?P<owm_id>[0-9]+)/$', views.gr, name='gr'),
     
     # ex: /weather/archive/
     url(r'^archive/$',

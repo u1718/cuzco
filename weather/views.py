@@ -19,6 +19,30 @@ from .forms import CityModelForm
 
 import ephem
 
+import pandas as pd
+import numpy as np
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+from matplotlib.dates import DateFormatter
+
+def gr(request, owm_id):
+    o = OWM.objects.get(id=owm_id)
+    fs = []
+    dt = []
+    for f in o.owmforecast_set.order_by('id')[:9]:
+        fd = json.loads(f.forecast_text.replace("'",'"'))
+        fs.append(float(fd['main']['temp']) - 273.15)
+        dt.append(datetime.datetime.utcfromtimestamp(int(fd['dt'])).strftime("%I:%M"))
+    fig = Figure()
+    ax = fig.add_subplot(111)
+    data_df = pd.DataFrame(fs, index=dt, columns=['temperature °C'])
+    data_df.plot(ax=ax)
+    canvas = FigureCanvas(fig)
+    response = HttpResponse( content_type = 'image/png')
+    canvas.print_png(response)
+    return response
+
 def calc_ss(d, m, y, h, lat, lon):
     o = ephem.Observer()
     o.lat, o.long, o.date = lat, lon, datetime.datetime(y, m, d, h)
