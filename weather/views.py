@@ -28,7 +28,7 @@ from matplotlib.dates import DateFormatter
 
 from bokeh.plotting import figure
 from bokeh.resources import CDN
-from bokeh.embed import file_html
+from bokeh.embed import file_html, components
 
 def gr1(request):
     plot = figure()
@@ -92,13 +92,34 @@ class CitiesView(LoginRequiredMixin, generic.ListView):
                 lat=o.coord_lat, lon=o.coord_lon)
             
             fs = []
+            # select the tools we want
+            tempd = []
+            timed = []
+            #yr1 = Range1d(start=-30, end=30)
             for f in o.owmforecast_set.order_by('id'):
                 fd = json.loads(f.forecast_text.replace("'",'"'))
                 fd['main']['temp'] = "{0:.1f}".format(float(fd['main']['temp']) - 273.15)
+                tempd.append(fd['main']['temp'])
                 fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
+                timed.append(fd['dt']) #.strftime("%I:%M"))
                 fs.append(fd)
-                    
-            city_list.append({'city': c, 'owm': o, 'sunrise':sr, 'sunset': st, 'forecasts': fs[:9]})
+
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=385, 
+                tools="",
+                title=o.name,
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.line(timed, tempd, legend="Temperature, °C", line_width=2)
+            script, div = components(p)
+            
+            city_list.append({'city': c, 'owm': o,
+                              'sunrise':sr, 'sunset': st,
+                              'forecasts': fs[:9],
+                              'script': script, 'div': div})
 
         return city_list
             

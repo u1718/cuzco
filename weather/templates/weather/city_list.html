@@ -21,14 +21,14 @@
 	  {{ c.forecasts.0.weather.0.description }}
 	</h4>
 	<p>
-	  get at {{ c.owm.req_date }}<br />
+	  get at {{ c.owm.req_date }}<br>
 	  (Forecast for {{ c.forecasts.0.dt_txt }})
 	</p>
       
 	<table class="table table-striped table-bordered">
 	  <tr>
 	    <td>Wind</td><td>
-	      {{ c.forecasts.0.wind.speed }} m/s<br />
+	      {{ c.forecasts.0.wind.speed }} m/s<br>
 	      {{ c.forecasts.0.wind.deg }}</td></tr>
 	  <tr>
 	    <td>Cloudiness</td><td>
@@ -50,15 +50,19 @@
 	      [{{ c.owm.coord_lat }}, {{ c.owm.coord_lon }}]</td></tr>
 	</table>
       </div>
+	{{ c.script|safe }}
       <div class="col-md-8">
-	<img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%">
+	<div class="bok">
+	  {{ c.div|safe }}
+	</div>
+	{# <img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%"> #}
 	<table class="table table-striped table-bordered small">
 	  <tr>
 	    {% for f in c.forecasts %}
 	    <td>
-	      {{ f.dt|time:"H:i" }}<br />
-	      {{ f.main.temp }} °C<br />
-	      {{ f.wind.speed }} m/s<br />
+	      {{ f.dt|time:"H:i" }}<br>
+	      {{ f.main.temp }} °C<br>
+	      {{ f.wind.speed }} m/s<br>
 	      {{ f.main.pressure }}
 	    </td>
 	    {% endfor %}
