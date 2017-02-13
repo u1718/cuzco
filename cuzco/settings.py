@@ -140,3 +140,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/weather/'
+LOGOUT_REDIRECT_URL = '/weather/'

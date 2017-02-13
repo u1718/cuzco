@@ -8,7 +8,8 @@ class City(models.Model):
     name = models.CharField(max_length=100)
     ds_owm = models.URLField()
     turn = models.BooleanField(default=True)
-
+    user_name = models.CharField(max_length=100)
+    
     def __str__(self):
         return '{} {}'.format(self.name, self.turn)
 

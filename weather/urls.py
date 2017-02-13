@@ -8,6 +8,8 @@ app_name = 'weather'
 urlpatterns = [
     # ex: /weather/
     url(r'^$', views.CitiesView.as_view(), name='cities'),
+    # ex: /weather/uname
+    url(r'^u(?P<username>\w+)/$', views.CitiesView.as_view(), name='cities'),
 
     # ex: /weather/2/
     url(r'^(?P<pk>[0-9]+)/$', views.CityView.as_view(), name='city_view'),

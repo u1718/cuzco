@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block title %}
+<h2>Login</h2>
+{% endblock %}
 
 {% block content %}
 
@@ -15,6 +20,7 @@
     {% endif %}
 {% endif %}
 
+{% comment "" %}
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table>
@@ -31,8 +37,28 @@
 <input type="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
+{% endcomment %}
+<form action="{% url 'auth:login' %}" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "user" %} Login
+    </button>
+    {% endbuttons %}
+</form>
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
 {% endblock %}
+
+<form action="{% url 'auth:login' %}" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+    {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "user" %} Login
+    </button>
+    {% endbuttons %}
+</form>

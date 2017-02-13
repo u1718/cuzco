@@ -74,7 +74,7 @@ def calc_ss(d, m, y, h, lat, lon):
         
     return sr, st
 
-class CitiesView(LoginRequiredMixin, generic.ListView):
+class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     #login_url = ''
     #redirect_field_name = ''
     template_name = 'weather/city_list.html'
@@ -84,7 +84,13 @@ class CitiesView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         """Return requested cities."""
         city_list = list()
-        for c in City.objects.order_by('name'):
+        if 'username' in self.kwargs:
+            username = self.request.user.username
+            cities_by_name = City.objects.filter(user_name=username).order_by('name')
+        else:
+            cities_by_name = City.objects.order_by('name')
+            
+        for c in cities_by_name:
             o = c.owm_set.latest('req_date')
 
             sr, st = calc_ss(
@@ -106,9 +112,9 @@ class CitiesView(LoginRequiredMixin, generic.ListView):
 
             # create a new plot with a title and axis labels
             p = figure(
-                width=600, height=385, 
+                width=600, height=350, 
                 tools="",
-                title=o.name,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
@@ -123,14 +129,14 @@ class CitiesView(LoginRequiredMixin, generic.ListView):
 
         return city_list
             
-class CityView(LoginRequiredMixin, generic.ListView):
+class CityView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     template_name = 'weather/city_detail.html'
     context_object_name = 'owm_list'
     paginate_by = 20
     
     def get_queryset(self):
         self.city = get_object_or_404(City, id=self.kwargs['pk'])
-        return self.city.owm_set.all()
+        return self.city.owm_set.order_by('-id')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -152,6 +158,8 @@ def city_update(request, city_id):
             # process the data in form.cleaned_data as required
             city.name = form.cleaned_data['name'] #request.POST['name']
             city.ds_owm = form.cleaned_data['ds_owm'] #request.POST['ds_owm']
+            user_name = request.user.username
+            city.user_name = user_name
             city.save()
             # redirect to a new URL:
             #return HttpResponseRedirect('weather:city_detail')
@@ -166,7 +174,7 @@ def city_update(request, city_id):
 
     return render(request, 'weather/city_detail_form.html', {'form': form, 'city': city})
 
-class OWMView(LoginRequiredMixin, generic.ListView):
+class OWMView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     template_name = 'weather/owm_detail.html'
     context_object_name = 'owmforecast_list'
     
@@ -302,7 +310,7 @@ def cron(request):
         
     return render(request, 'weather/cron.html', context)
 
-class OWMTodayArchiveView(LoginRequiredMixin, TodayArchiveView):
+class OWMTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArchiveView):
     #queryset = OWM.objects.all()
     #date_field = "req_date"
     allow_future = True
@@ -312,13 +320,14 @@ class OWMTodayArchiveView(LoginRequiredMixin, TodayArchiveView):
     
     def get_context_data(self, **kwargs):
         req_date = timezone.now()
+
         kwargs['req_date'] = timezone.now()
         kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
 
         return super(OWMTodayArchiveView, self).get_context_data(**kwargs)
 
 
-class OWMDayArchiveView(LoginRequiredMixin, DayArchiveView):
+class OWMDayArchiveView(DayArchiveView): #(LoginRequiredMixin, DayArchiveView):
     queryset = OWM.objects.all()
     date_field = "req_date"
     allow_future = True

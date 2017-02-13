@@ -20,10 +20,9 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
+    url(r'^$', TemplateView.as_view(template_name='main.html'), name='main'),
     url(r'^weather/', include('weather.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
-    url('^accounts/', include('django.contrib.auth.urls', namespace='auth')),
-    #url(r'^accounts/', include('django.contrib.auth.urls')),
-    #url(r'^accounts/login/$', auth_views.login, {'redirect_authenticated_user': True}),#, 'template_name': 'admin/login.html'}),
     ]
