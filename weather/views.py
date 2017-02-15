@@ -30,6 +30,114 @@ from bokeh.plotting import figure
 from bokeh.resources import CDN
 from bokeh.embed import file_html, components
 
+from bokeh.models import ColumnDataSource, DataRange1d, Select
+from bokeh.layouts import row, column
+
+class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
+    #login_url = ''
+    #redirect_field_name = ''
+    template_name = 'weather/city_list.html'
+    context_object_name = 'city_list' #== object_list
+    paginate_by = 20
+
+    def get_queryset(self):
+        """Return requested cities."""
+        city_list = list()
+        if 'username' in self.kwargs:
+            username = self.request.user.username
+            cities_by_name = City.objects.filter(user_name=username).order_by('name')
+        else:
+            cities_by_name = City.objects.order_by('name')
+            
+        for c in cities_by_name:
+            o = c.owm_set.latest('req_date')
+
+            sr, st = calc_ss(
+                d=o.req_date.day, m=o.req_date.month, y=o.req_date.year, h=o.req_date.hour,
+                lat=o.coord_lat, lon=o.coord_lon)
+            
+            fs = []
+            # select the tools we want
+            tempd = []
+            windd = []
+            presd = []
+            humid = []
+            timed = []
+            #yr1 = Range1d(start=-30, end=30)
+            for f in o.owmforecast_set.order_by('id'):
+                fd = json.loads(f.forecast_text.replace("'",'"'))
+                fd['main']['temp'] = "{0:.1f}".format(float(fd['main']['temp']) - 273.15)
+                tempd.append(fd['main']['temp'])
+                fd['main']['pressure'] = "{0:.2f}".format(float(fd['main']['pressure']))
+                presd.append(fd['main']['pressure'])
+                fd['main']['humidity'] = "{0:.0f}".format(float(fd['main']['humidity']))
+                humid.append(fd['main']['humidity'])
+                fd['wind']['speed'] = "{0:.1f}".format(float(fd['wind']['speed']))
+                windd.append(fd['wind']['speed'])
+                fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
+                timed.append(fd['dt']) #.strftime("%I:%M"))
+                fs.append(fd)
+
+            script, div = {}, {}
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=350, 
+                tools="",
+                toolbar_location=None,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.line(timed, tempd, legend="Temperature, °C", line_width=2)
+            script['temp'], div['temp'] = components(p)
+            
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=350, 
+                tools="",
+                toolbar_location=None,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.line(timed, humid, legend="Humidity, %", line_width=2)
+            script['humi'], div['humi'] = components(p)
+
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=350, 
+                tools="",
+                toolbar_location=None,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.line(timed, windd, legend="Wind, m/s", line_width=2)
+            script['wind'], div['wind'] = components(p)
+            
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=350, 
+                tools="",
+                toolbar_location=None,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.line(timed, presd, legend="Pressure, hpa", line_width=2)
+            script['pres'], div['pres'] = components(p)
+            
+            city_list.append({'city': c, 'owm': o,
+                              'sunrise':sr, 'sunset': st,
+                              'forecasts': fs[:9],
+                              'script': script, 'div': div})
+        import pdb; pdb.set_trace()
+        return city_list
+
 def gr1(request):
     plot = figure()
     plot.circle([1,2], [3,4])
@@ -73,61 +181,6 @@ def calc_ss(d, m, y, h, lat, lon):
         st = ephem.Date(o.previous_setting(sun, start=o.date))
         
     return sr, st
-
-class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
-    #login_url = ''
-    #redirect_field_name = ''
-    template_name = 'weather/city_list.html'
-    context_object_name = 'city_list' #== object_list
-    paginate_by = 20
-
-    def get_queryset(self):
-        """Return requested cities."""
-        city_list = list()
-        if 'username' in self.kwargs:
-            username = self.request.user.username
-            cities_by_name = City.objects.filter(user_name=username).order_by('name')
-        else:
-            cities_by_name = City.objects.order_by('name')
-            
-        for c in cities_by_name:
-            o = c.owm_set.latest('req_date')
-
-            sr, st = calc_ss(
-                d=o.req_date.day, m=o.req_date.month, y=o.req_date.year, h=o.req_date.hour,
-                lat=o.coord_lat, lon=o.coord_lon)
-            
-            fs = []
-            # select the tools we want
-            tempd = []
-            timed = []
-            #yr1 = Range1d(start=-30, end=30)
-            for f in o.owmforecast_set.order_by('id'):
-                fd = json.loads(f.forecast_text.replace("'",'"'))
-                fd['main']['temp'] = "{0:.1f}".format(float(fd['main']['temp']) - 273.15)
-                tempd.append(fd['main']['temp'])
-                fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
-                timed.append(fd['dt']) #.strftime("%I:%M"))
-                fs.append(fd)
-
-            # create a new plot with a title and axis labels
-            p = figure(
-                width=600, height=350, 
-                tools="",
-                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
-                x_axis_type="datetime",
-                x_axis_label='', y_axis_label=''
-                )
-            # add a line renderer with legend and line thickness
-            p.line(timed, tempd, legend="Temperature, °C", line_width=2)
-            script, div = components(p)
-            
-            city_list.append({'city': c, 'owm': o,
-                              'sunrise':sr, 'sunset': st,
-                              'forecasts': fs[:9],
-                              'script': script, 'div': div})
-
-        return city_list
             
 class CityView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     template_name = 'weather/city_detail.html'
