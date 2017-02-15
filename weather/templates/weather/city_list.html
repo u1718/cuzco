@@ -50,12 +50,42 @@
 	      [{{ c.owm.coord_lat }}, {{ c.owm.coord_lon }}]</td></tr>
 	</table>
       </div>
-	{{ c.script|safe }}
       <div class="col-md-8">
-	<div class="bok">
-	  {{ c.div|safe }}
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#temp{{ c.city.id }}">Temperature</a></li>
+	  <li><a data-toggle="tab" href="#wind{{ c.city.id }}">Wind</a></li>
+	  <li><a data-toggle="tab" href="#pres{{ c.city.id }}">Pressure</a></li>
+	  <li><a data-toggle="tab" href="#humi{{ c.city.id }}">Humidity</a></li>
+	</ul>
+
+	<div class="tab-content">
+	  <div id="temp{{ c.city.id }}" class="tab-pane fade in active">
+	    <div class="bok">
+	      {{ c.script.temp|safe }}
+	      {{ c.div.temp|safe }}
+	    </div>
+	    {# <img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%"> #}
+	  </div>
+	  <div id="wind{{ c.city.id }}" class="tab-pane fade">
+	    <div class="bok">
+	      {{ c.script.wind|safe }}
+	      {{ c.div.wind|safe }}
+	    </div>
+	  </div>
+	  <div id="pres{{ c.city.id }}" class="tab-pane fade">
+	    <div class="bok">
+	      {{ c.script.pres|safe }}
+	      {{ c.div.pres|safe }}
+	    </div>
+	  </div>
+	  <div id="humi{{ c.city.id }}" class="tab-pane fade">
+	    <div class="bok">
+	      {{ c.script.humi|safe }}
+	      {{ c.div.humi|safe }}
+	    </div>
+	  </div>
 	</div>
-	{# <img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%"> #}
+	
 	<table class="table table-striped table-bordered small">
 	  <tr>
 	    {% for f in c.forecasts %}
@@ -69,6 +99,7 @@
 	  </tr>
 	</table>
       </div>
+    </div>
   </li>
   {% endfor %}
 </ul>

@@ -1,28 +1,38 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'weather/style.css' %}" />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'weather/style.css' %}" />
+    
+    <link
+       href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.css"
+       rel="stylesheet" type="text/css">
+    <link
+       href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.4.min.css"
+       rel="stylesheet" type="text/css">
 
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.css"
-    rel="stylesheet" type="text/css">
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.4.min.css"
-    rel="stylesheet" type="text/css">
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.js"></script>
+    <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.4.min.js"></script>
 
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.4.min.js"></script>
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.4.min.js"></script>
-<script type="text/javascript"> Bokeh.set_log_level("info"); </script>
+    <script type="text/javascript"> Bokeh.set_log_level("info"); </script>
 
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+  </head>
 
-{% block bootstrap3_content %}
-<div class="container">
-    <nav  class="navbar navbar-default">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'main' %}">Cuzco</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
+  <body>
+    {% block bootstrap3_content %}
+    <div class="container">
+      <nav  class="navbar navbar-default">
+	<div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'main' %}">Cuzco</a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="{% url 'weather:cities' %}">Weatherama</a></li>
           </ul>
@@ -40,19 +50,19 @@
             <li><a href="{% url 'auth:login' %}">Login</a></li>
             {% endif %}
           </ul>
-        </div>
-    </nav>
+	</div>
+      </nav>
 
-    {% bootstrap_messages %}
+      {% bootstrap_messages %}
     
-    {% block content %}(no content){% endblock %}
+      {% block content %}(no content){% endblock %}
 
-    <footer>
-      <p>&copy; 2016 Company, Inc.
-	<mark>{% block footer %}_{% endblock %}</mark>
-      </p>
-    </footer>
-
-
-</div>
-{% endblock %}
+      <footer>
+	<p>&copy; 2016 Company, Inc.
+	  <mark>{% block footer %}_{% endblock %}</mark>
+	</p>
+      </footer>
+    </div>
+    {% endblock %}
+  </body>
+</html>
