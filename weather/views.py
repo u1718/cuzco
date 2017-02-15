@@ -30,7 +30,7 @@ from bokeh.plotting import figure
 from bokeh.resources import CDN
 from bokeh.embed import file_html, components
 
-from bokeh.models import ColumnDataSource, DataRange1d, Select
+from bokeh.models import ColumnDataSource, DataRange1d, Select, Range1d, LinearAxis
 from bokeh.layouts import row, column
 
 class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
@@ -62,6 +62,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
             windd = []
             presd = []
             humid = []
+            precd = []
             timed = []
             #yr1 = Range1d(start=-30, end=30)
             for f in o.owmforecast_set.order_by('id'):
@@ -74,6 +75,15 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 humid.append(fd['main']['humidity'])
                 fd['wind']['speed'] = "{0:.1f}".format(float(fd['wind']['speed']))
                 windd.append(fd['wind']['speed'])
+                if 'snow' in fd and '3h' in fd['snow']:
+                    fd['snow']['3h'] = "{0:.3f}".format(float(fd['snow']['3h']))
+                    precd.append(fd['snow']['3h'])
+                elif 'rain' in fd and '3h' in fd['rain']:
+                    fd['rain']['3h'] = "{0:.3f}".format(float(fd['rain']['3h']))
+                    precd.append(fd['snow']['3h'])
+                else:
+                    precd.append(0)
+
                 fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
                 timed.append(fd['dt']) #.strftime("%I:%M"))
                 fs.append(fd)
@@ -89,6 +99,9 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_label='', y_axis_label=''
                 )
             # add a line renderer with legend and line thickness
+            p.extra_y_ranges = {"prec": Range1d(start=0, end=.7)}
+            p.add_layout(LinearAxis(y_range_name="prec"), 'right')
+            p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
             p.line(timed, tempd, legend="Temperature, °C", line_width=2)
             script['temp'], div['temp'] = components(p)
             
@@ -130,6 +143,19 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
             # add a line renderer with legend and line thickness
             p.line(timed, presd, legend="Pressure, hpa", line_width=2)
             script['pres'], div['pres'] = components(p)
+            
+            # create a new plot with a title and axis labels
+            p = figure(
+                width=600, height=350, 
+                tools="",
+                toolbar_location=None,
+                title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+                )
+            # add a line renderer with legend and line thickness
+            p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
+            script['prec'], div['prec'] = components(p)
             
             city_list.append({'city': c, 'owm': o,
                               'sunrise':sr, 'sunset': st,

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load bootstrap3 %}
 
 {% block content %}
 {% if city_list %}
@@ -56,6 +55,7 @@
 	  <li><a data-toggle="tab" href="#wind{{ c.city.id }}">Wind</a></li>
 	  <li><a data-toggle="tab" href="#pres{{ c.city.id }}">Pressure</a></li>
 	  <li><a data-toggle="tab" href="#humi{{ c.city.id }}">Humidity</a></li>
+	  <li><a data-toggle="tab" href="#prec{{ c.city.id }}">Precipitation</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -82,6 +82,12 @@
 	    <div class="bok">
 	      {{ c.script.humi|safe }}
 	      {{ c.div.humi|safe }}
+	    </div>
+	  </div>
+	  <div id="prec{{ c.city.id }}" class="tab-pane fade">
+	    <div class="bok">
+	      {{ c.script.prec|safe }}
+	      {{ c.div.prec|safe }}
 	    </div>
 	  </div>
 	</div>
