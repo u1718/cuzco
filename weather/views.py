@@ -135,7 +135,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                               'sunrise':sr, 'sunset': st,
                               'forecasts': fs[:9],
                               'script': script, 'div': div})
-        import pdb; pdb.set_trace()
+
         return city_list
 
 def gr1(request):
