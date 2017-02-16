@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -43,13 +43,16 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         """Return requested cities."""
         city_list = list()
-        if 'username' in self.kwargs:
+        if 'username' in self.kwargs and \
+           self.kwargs['username'] == self.request.user.username:
+
             username = self.request.user.username
-            cities_by_name = City.objects.filter(user_name=username).order_by('name')
+            cities = \
+              get_list_or_404(City, user_name=username)#.order_by('name')
         else:
-            cities_by_name = City.objects.order_by('name')
-            
-        for c in cities_by_name:
+            cities = get_list_or_404(City)#.order_by('name')
+
+        for c in sorted(cities, key=lambda x: x.name):
             o = c.owm_set.latest('req_date')
 
             sr, st = calc_ss(
@@ -57,39 +60,45 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 lat=o.coord_lat, lon=o.coord_lon)
             
             fs = []
-            # select the tools we want
             tempd = []
+            tempnd = []
+            tempxd = []
             windd = []
             presd = []
+            pressd = []
+            presgd = []
             humid = []
             precd = []
             timed = []
-            #yr1 = Range1d(start=-30, end=30)
             for f in o.owmforecast_set.order_by('id'):
                 fd = json.loads(f.forecast_text.replace("'",'"'))
-                fd['main']['temp'] = "{0:.1f}".format(float(fd['main']['temp']) - 273.15)
-                tempd.append(fd['main']['temp'])
-                fd['main']['pressure'] = "{0:.2f}".format(float(fd['main']['pressure']))
-                presd.append(fd['main']['pressure'])
-                fd['main']['humidity'] = "{0:.0f}".format(float(fd['main']['humidity']))
-                humid.append(fd['main']['humidity'])
-                fd['wind']['speed'] = "{0:.1f}".format(float(fd['wind']['speed']))
-                windd.append(fd['wind']['speed'])
+
+                tempd.append(float(fd['main']['temp']) - 273.15)
+                fd['main']['temp'] = "{0:.1f}".format(tempd[-1])
+                tempnd.append(float(fd['main']['temp_min']) - 273.15)
+                fd['main']['temp_min'] = "{0:.1f}".format(tempnd[-1])
+                tempxd.append(float(fd['main']['temp_max']) - 273.15)
+                fd['main']['temp_max'] = "{0:.1f}".format(tempxd[-1])
+
+                presd.append(float(fd['main']['pressure']))
+                pressd.append(float(fd['main']['sea_level']))
+                presgd.append(float(fd['main']['grnd_level']))
+                humid.append(float(fd['main']['humidity']))
+                windd.append(float(fd['wind']['speed']))
+                
                 if 'snow' in fd and '3h' in fd['snow']:
-                    fd['snow']['3h'] = "{0:.3f}".format(float(fd['snow']['3h']))
-                    precd.append(fd['snow']['3h'])
+                    precd.append(float(fd['snow']['3h']))
                 elif 'rain' in fd and '3h' in fd['rain']:
-                    fd['rain']['3h'] = "{0:.3f}".format(float(fd['rain']['3h']))
-                    precd.append(fd['snow']['3h'])
+                    precd.append(float(fd['rain']['3h']))
                 else:
                     precd.append(0)
 
                 fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
-                timed.append(fd['dt']) #.strftime("%I:%M"))
+                timed.append(fd['dt'])
+                
                 fs.append(fd)
 
             script, div = {}, {}
-            # create a new plot with a title and axis labels
             p = figure(
                 width=600, height=350, 
                 tools="",
@@ -98,14 +107,16 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            # add a line renderer with legend and line thickness
-            p.extra_y_ranges = {"prec": Range1d(start=0, end=.7)}
+            p.extra_y_ranges = {"prec": Range1d(start=0, end=max(precd))}
             p.add_layout(LinearAxis(y_range_name="prec"), 'right')
+            x=np.append(timed, timed[::-1])
+            y=np.append(tempnd, tempxd[::-1])
+            p.patch(x, y, color='#7570B3', fill_alpha=0.2)
             p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
-            p.line(timed, tempd, legend="Temperature, °C", line_width=2)
+            p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+
             script['temp'], div['temp'] = components(p)
             
-            # create a new plot with a title and axis labels
             p = figure(
                 width=600, height=350, 
                 tools="",
@@ -114,11 +125,9 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            # add a line renderer with legend and line thickness
             p.line(timed, humid, legend="Humidity, %", line_width=2)
             script['humi'], div['humi'] = components(p)
 
-            # create a new plot with a title and axis labels
             p = figure(
                 width=600, height=350, 
                 tools="",
@@ -127,11 +136,9 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            # add a line renderer with legend and line thickness
             p.line(timed, windd, legend="Wind, m/s", line_width=2)
             script['wind'], div['wind'] = components(p)
             
-            # create a new plot with a title and axis labels
             p = figure(
                 width=600, height=350, 
                 tools="",
@@ -140,11 +147,22 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            # add a line renderer with legend and line thickness
-            p.line(timed, presd, legend="Pressure, hpa", line_width=2)
+            ls = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d #ffad33 #ffa31a #ff9900'.split()
+            us = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 #85adad #75a3a3 #669999'.split()
+            us = us[::-1]
+            x = np.append(timed, timed[::-1])
+            prs = 850
+            for color in us + ls:
+                y = [prs]*len(timed) + [prs+13.33]*len(timed)
+                prs+=13.33
+                p.patch(x, y, color=color, fill_alpha=0.2)
+
+            p.line(timed, presd, legend="Pressure, hpa", line_width=4)
+            #p.line(timed, pressd, legend="Pressure(sea level), hpa", line_width=3, color='grey')
+            #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=2, color='green')
+
             script['pres'], div['pres'] = components(p)
             
-            # create a new plot with a title and axis labels
             p = figure(
                 width=600, height=350, 
                 tools="",
@@ -153,7 +171,6 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            # add a line renderer with legend and line thickness
             p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
             script['prec'], div['prec'] = components(p)
             
@@ -163,14 +180,6 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                               'script': script, 'div': div})
 
         return city_list
-
-def gr1(request):
-    plot = figure()
-    plot.circle([1,2], [3,4])
-
-    html = file_html(plot, CDN, "my plot")
-    return HttpResponse(html)
-
 
 def gr(request, owm_id):
     o = OWM.objects.get(id=owm_id)

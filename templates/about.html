@@ -3,6 +3,11 @@
 
 
 {% block content %}
-<p>About</p>
-
+<p>
+  {{ STATIC_ROOT }}<br>
+  {{ STATIC_URL }}<br>
+  {{ STATICFILES_DIRS }}<br>
+  {{ STATICFILES_STORAGE }}<br>
+  {{ STATICFILES_FINDERS }}<br>
+</p>
 {% endblock %}

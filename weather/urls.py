@@ -25,9 +25,6 @@ urlpatterns = [
     # ex: /weather/gr/
     url(r'^gr/(?P<owm_id>[0-9]+)/$', views.gr, name='gr'),
     
-    # ex: /weather/gr1/
-    url(r'^gr1/$', views.gr1, name='gr1'),
-    
     # ex: /weather/archive/
     url(r'^archive/$',
         views.OWMTodayArchiveView.as_view(model=OWM, date_field="req_date"),

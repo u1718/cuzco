@@ -1,0 +1,14 @@
+.month {
+    text-align: right;
+    border-collapse: separate;
+    border-spacing: 5px 0px;
+}
+.mon, .tue, .wen, .thu, .fri, .sat, .sun {
+    text-align: right;
+}
+.today {
+    background: grey
+}
+.bok {
+    height: 40%;
+}
