@@ -125,6 +125,16 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
+            ls = '#fff5e6 #ffebcc #ffe0b3 #ffd699'.split() #ffcc80 #ffc266 #ffb84d #ffad33 #ffa31a #ff9900'.split()
+            us = '#f0f5f5 #e0ebeb #d1e0e0'.split() #c2d6d6 #b3cccc #a3c2c2 #94b8b8 #85adad #75a3a3 #669999 #5c8a8a'.split()
+            us = us[::-1]
+            x = np.append(timed, timed[::-1])
+            prs = 0
+            for color in us + ['#ffffff']*3 + ls:
+                y = [prs]*len(timed) + [prs+10]*len(timed)
+                #import pdb; pdb.set_trace()
+                prs+=10
+                p.patch(x, y, color=color, fill_alpha=0)
             p.line(timed, humid, legend="Humidity, %", line_width=2)
             script['humi'], div['humi'] = components(p)
 
@@ -147,14 +157,15 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            ls = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d #ffad33 #ffa31a #ff9900'.split()
-            us = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 #85adad #75a3a3 #669999'.split()
+            ls = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266'.split() ##ffb84d #ffad33 #ffa31a #ff9900'.split()
+            us = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 #85adad #75a3a3 #669999 #5c8a8a'.split()
             us = us[::-1]
             x = np.append(timed, timed[::-1])
-            prs = 850
-            for color in us + ls:
-                y = [prs]*len(timed) + [prs+13.33]*len(timed)
-                prs+=13.33
+            prs = 853.266
+            for color in us + ['#ffffff'] + ls:
+                y = [prs]*len(timed) + [prs+13.332]*len(timed)
+                #import pdb; pdb.set_trace()
+                prs+=13.332
                 p.patch(x, y, color=color, fill_alpha=0.2)
 
             p.line(timed, presd, legend="Pressure, hpa", line_width=4)
