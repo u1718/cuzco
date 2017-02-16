@@ -107,7 +107,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            p.extra_y_ranges = {"prec": Range1d(start=0, end=max(precd))}
+            p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
             p.add_layout(LinearAxis(y_range_name="prec"), 'right')
             x=np.append(timed, timed[::-1])
             y=np.append(tempnd, tempxd[::-1])
