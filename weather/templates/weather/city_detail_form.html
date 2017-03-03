@@ -1,4 +1,4 @@
-{% extends 'weather/base.html' %}
+{% extends 'base.html' %}
 {% load bootstrap3 %}
 
 {# Load CSS and JavaScript #}
@@ -36,6 +36,13 @@
     <label class="control-label col-sm-3" for="ds_owm">Data source(OWM):</label>
     <div class="col-sm-9">
       <input type="text" class="form-control" id="ds_owm" value="{{ city.ds_owm }}">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="ds_owm">Data source(Yahoo):</label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="ds_yahoo" value="{{ city.ds_yahoo }}">
     </div>
   </div>
   

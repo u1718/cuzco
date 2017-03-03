@@ -13,7 +13,7 @@ import datetime
 import requests
 import json
 
-from .models import City, OWM, OWMForecast
+from .models import City, OWM, OWMForecast, Yahoo, YahooForecast
 from .sbcalendar import SideBarCalendar
 from .forms import CityModelForm
 
@@ -47,12 +47,12 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
            self.kwargs['username'] == self.request.user.username:
 
             username = self.request.user.username
-            cities = \
-              get_list_or_404(City, user_name=username)#.order_by('name')
+            cities = get_list_or_404(City, user_name=username)
         else:
-            cities = get_list_or_404(City)#.order_by('name')
+            cities = get_list_or_404(City)
 
         for c in sorted(cities, key=lambda x: x.name):
+            
             o = c.owm_set.latest('req_date')
 
             sr, st = calc_ss(
@@ -214,12 +214,75 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
             p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
             script['prec'], div['prec'] = components(p)
             
-            city_list.append({'city': c, 'owm': o,
-                              'sunrise':sr, 'sunset': st,
-                              'forecasts': fs[:9],
-                              'script': script, 'div': div})
+            yad = get_yah(c)
+            city_list.append({'city': c,
+                              'owm': {'owm': o,
+                                      'sunrise':sr, 'sunset': st,
+                                      'forecasts': fs[:9],
+                                      'script': script, 'div': div},
+                              'yahoo': {'yahoo': yad['o'], 'yah':yad['oo'],
+                                        'forecasts': yad['fs'][:9],
+                                        'script': yad['script'], 'div': yad['div']}})
 
         return city_list
+
+def get_yah(c):
+    o = c.yahoo_set.latest('req_date')
+    yql = json.loads(o.yql_resp_text.replace("'",'"'))
+    oo = {}
+    oo['temp'] = float(yql['query']['results']['channel']['item']['condition']['temp'])
+    oo['temp'] = "{0:.1f}".format((oo['temp'] - 32) * 5 / 9)
+    oo['text'] = yql['query']['results']['channel']['item']['condition']['text']
+    oo['date'] = yql['query']['results']['channel']['item']['condition']['date']
+    oo['winddir'] = yql['query']['results']['channel']['wind']['direction']
+    oo['windspeed'] = float(yql['query']['results']['channel']['wind']['speed'])
+    oo['windspeed'] = "{0:.2f}".format(oo['windspeed'] * 0.44704)
+    oo['pressure'] = yql['query']['results']['channel']['atmosphere']['pressure']
+    oo['humidity'] = yql['query']['results']['channel']['atmosphere']['humidity']
+    oo['sunrise'] = yql['query']['results']['channel']['astronomy']['sunrise']
+    oo['sunset'] = yql['query']['results']['channel']['astronomy']['sunset']
+
+    fs = []
+    tempd = []
+    tempnd = []
+    tempxd = []
+    windd = []
+    presd = []
+    pressd = []
+    presgd = []
+    humid = []
+    precd = []
+    timed = []
+    for f in o.yahooforecast_set.order_by('id'):
+        fd = json.loads(f.forecast_text.replace("'",'"'))
+
+        tempnd.append((float(fd['low']) - 32) * 5 / 9)
+        fd['min'] = "{0:.1f}".format(tempnd[-1])
+        tempxd.append((float(fd['high']) - 32) * 5 / 9)
+        fd['max'] = "{0:.1f}".format(tempxd[-1])
+
+        fd['date'] = datetime.datetime.strptime(fd['date'], '%d %b %Y')
+        timed.append(fd['date'])
+
+        fs.append(fd)
+
+    script, div = {}, {}
+    p = figure(
+        width=600, height=350, 
+        tools="",
+        toolbar_location=None,
+        title='Weather and forecasts in {}, {}'.format(o.name, o.country),
+        x_axis_type="datetime",
+        x_axis_label='', y_axis_label=''
+        )
+    p.y_range = Range1d(start = min(tempnd) - 10, end = max(tempxd) + 10)
+    x=np.append(timed, timed[::-1])
+    y=np.append(tempnd, tempxd[::-1])
+    p.patch(x, y, color='#7570B3', fill_alpha=0.2)
+
+    script['temp'], div['temp'] = components(p)
+
+    return {'o':o, 'oo':oo, 'fs':fs, 'script':script, 'div':div}
 
 def gr(request, owm_id):
     o = OWM.objects.get(id=owm_id)
@@ -286,6 +349,7 @@ def city_update(request, city_id):
             # process the data in form.cleaned_data as required
             city.name = form.cleaned_data['name'] #request.POST['name']
             city.ds_owm = form.cleaned_data['ds_owm'] #request.POST['ds_owm']
+            city.ds_yahoo = form.cleaned_data['ds_yahoo'] #request.POST['ds_yahoo']
             user_name = request.user.username
             city.user_name = user_name
             city.save()
@@ -298,7 +362,7 @@ def city_update(request, city_id):
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        form = CityModelForm(initial={'name': city.name, 'ds_owm': city.ds_owm})
+        form = CityModelForm(initial={'name': city.name, 'ds_owm': city.ds_owm, 'ds_yahoo': city.ds_yahoo})
 
     return render(request, 'weather/city_detail_form.html', {'form': form, 'city': city})
 
@@ -317,8 +381,72 @@ class OWMView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
         context['owm'] = self.owm
         return context
         
+def get_yahoo(request, context, c):
+    if not False:
+        resp = requests.get(c.ds_yahoo)
 
+    else:
+        with open('./owm.data.{}'.format(c.name)) as f:
+            r = f.read()
 
+        class Resp:
+            def __init__(self, t):
+                self.text = t
+
+        resp = Resp(r)
+
+    if resp is not None:
+
+        pj = json.loads(resp.text)
+
+        context.update(
+            {'yahoo': {
+                'ok': '',
+                'root': pj.keys(),
+                'city': pj['query']['results']['channel'],
+                'list': pj['query']['results']['channel']['item']['forecast'],
+            }})
+
+        yah = Yahoo()
+
+        yah.name = pj['query']['results']['channel']['location']['city']
+        yah.coord_lat = pj['query']['results']['channel']['item']['lat']
+        yah.coord_lon = pj['query']['results']['channel']['item']['long']
+        yah.country = pj['query']['results']['channel']['location']['country']
+        yah.region = pj['query']['results']['channel']['location']['region']
+
+        yah.yql_resp_text = resp.text
+
+        yah.city = c
+        yah.req_date = timezone.now()
+
+        yah.save()
+
+        for fcs in pj['query']['results']['channel']['item']['forecast']:
+            yah_forecast = YahooForecast()
+
+            yah_forecast.yahoo = yah
+            yah_forecast.forecast_text = fcs
+            yah_forecast.save()
+
+    else:
+        context.update(
+            {'yahoo': {
+                'fail': '',
+                'error': c.name + ' req fail'
+                }})
+
+        yah = Yahoo()
+
+        yah.yql_resp_text = c.ds_yahoo + ': no response'
+
+        yah.city = c
+        yah.req_date = timezone.now()
+
+        yah.save()
+
+    return
+    
 def cron(request):
     username = request.GET['username']
     password = request.GET['password']
@@ -337,8 +465,9 @@ def cron(request):
         c.turn = False
         c.save()
             
-        context.update({'c': {'name': c.name, 'ds_owm': c.ds_owm}})
-        
+        context.update({'c': {'name': c.name, 'ds_yahoo': c.ds_yahoo, 'ds_owm': c.ds_owm}})
+
+        #ex: owm:
         #ex: url_= 'http://api.openweathermap.org/data/2.5/forecast/city?id=498698&APPID=775670b8133c08911511535c6b1dfbdf'
         #ex: url = 'http://api.openweathermap.org/data/2.5/forecast/city'
         #ex: params = {
@@ -347,7 +476,9 @@ def cron(request):
         #ex: }
         #ex: resp = requests.get(url_)
         #ex: resp = requests.get(url, params = params)
-            
+        #em: yahoo:
+        #ex: url = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22saransk%2Cru%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys'
+        
         if not False:
             resp = requests.get(c.ds_owm)
 
@@ -366,10 +497,11 @@ def cron(request):
             pj = json.loads(resp.text)
 
             if pj['cod'] == '0':
-                context.update({
-                    'fail': '',
-                    'error': pj['message']
-                })
+                context.update(
+                    {'owm': {
+                        'fail': '',
+                        'error': pj['message']
+                    }})
                 owm = OWM()
 
                 owm.message = pj['message']
@@ -380,12 +512,13 @@ def cron(request):
                 owm.save()
 
             else:
-                context.update({
-                    'ok': '',
-                    'root': pj.keys(),
-                    'city': pj['city'],
-                    'list': pj['list'],
-                })
+                context.update(
+                    {'owm': {
+                        'ok': '',
+                        'root': pj.keys(),
+                        'city': pj['city'],
+                        'list': pj['list'],
+                    }})
 
                 owm = OWM()
 
@@ -414,10 +547,11 @@ def cron(request):
                     owm_forecast.save()
 
         else:
-            context.update({
-                'fail': '',
-                'error': c.name + ' req fail'
-            })
+            context.update(
+                {'owm': {
+                    'fail': '',
+                    'error': c.name + ' req fail'
+                }})
 
             owm = OWM()
 
@@ -428,6 +562,7 @@ def cron(request):
 
             owm.save()
 
+        get_yahoo(request, context, c)
         logout(request)
         
     else:
