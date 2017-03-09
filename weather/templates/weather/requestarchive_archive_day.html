@@ -1,30 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-header">
-  <h2>{{ day }}</h2>
-</div>
 <div class="row">
   <div class="col-md-10">
     {% if page_obj %}
     <table class="table table-striped">
+      {% comment %}
       <thead>
         <tr>
           <th>Req Date</th>
           <th>Req Info</th>
-          <th>Iden</th>
           <th>Name</th>
-          <th>Coord</th>
+          <th>Data Source</th>
         </tr>
       </thead>
+      {% endcomment %}
       <tbody>
-	{% for owm in object_list %}
+	{% for ds in object_list %}
 	<tr>
-	  <td><a href="{% url 'weather:owm_view' owm.id %}">{{ owm.req_date }}</a></td>
-	  <td>{{ owm.cod }}, {{ owm.message }}, {{ owm.cnt }}</td>
-	  <td>{{ owm.iden }}</td>
-	  <td>{{ owm.name }}</td>
-	  <td>{{ owm.coord_lat }}, {{ owm.coord_lon }}</td>
+	  {% if ds.tn == 'owm' %}
+	  <td><a href="{% url 'weather:owm_view' ds.id %}">{{ ds.req_date }}</a></td>
+	  {% elif ds.tn == 'yahoo' %}
+	  <td><a href="{% url 'weather:yahoo_view' ds.id %}">{{ ds.req_date }}</a></td>
+	  {% endif %}
+	  <td>{{ ds.cod }}, {{ ds.message }}, {{ ds.cnt }}</td>
+	  <td>{{ ds.name }}</td>
+	  <td>{{ ds.tn }}</td>
 	</tr>
 	{% endfor %}
       </tbody>

@@ -7,13 +7,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.views import generic
 from django.utils import timezone
 from django.views.generic.dates import TodayArchiveView, DayArchiveView
+from django.db import connection
 
 import datetime
-
+from itertools import chain
 import requests
 import json
 
-from .models import City, OWM, OWMForecast, Yahoo, YahooForecast
+from .models import City, OWM, OWMForecast, Yahoo, YahooForecast, RequestArchive
 from .sbcalendar import SideBarCalendar
 from .forms import CityModelForm
 
@@ -380,6 +381,21 @@ class OWMView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
         # Add in a QuerySet of all the books
         context['owm'] = self.owm
         return context
+
+class YahooView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
+    template_name = 'weather/yahoo_detail.html'
+    context_object_name = 'yahooforecast_list'
+    
+    def get_queryset(self):
+        self.yahoo = get_object_or_404(Yahoo, id=self.kwargs['pk'])
+        return self.yahoo.yahooforecast_set.all()
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(YahooView, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['yahoo'] = self.yahoo
+        return context
         
 def get_yahoo(request, context, c):
     if not False:
@@ -573,8 +589,8 @@ def cron(request):
         
     return render(request, 'weather/cron.html', context)
 
-class OWMTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArchiveView):
-    #queryset = OWM.objects.all()
+class RequestTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArchiveView):
+    #queryset = RequestArchive.objects.all()
     #date_field = "req_date"
     allow_future = True
     make_object_list = True
@@ -587,11 +603,10 @@ class OWMTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArchiveV
         kwargs['req_date'] = timezone.now()
         kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
 
-        return super(OWMTodayArchiveView, self).get_context_data(**kwargs)
+        return super(RequestTodayArchiveView, self).get_context_data(**kwargs)
 
-
-class OWMDayArchiveView(DayArchiveView): #(LoginRequiredMixin, DayArchiveView):
-    queryset = OWM.objects.all()
+class RequestDayArchiveView(DayArchiveView): #(LoginRequiredMixin, DayArchiveView):
+    queryset = RequestArchive.objects.all()
     date_field = "req_date"
     allow_future = True
     make_object_list = True
@@ -603,4 +618,4 @@ class OWMDayArchiveView(DayArchiveView): #(LoginRequiredMixin, DayArchiveView):
         kwargs['req_date'] = req_date
         kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
 
-        return super(OWMDayArchiveView, self).get_context_data(**kwargs)
+        return super(RequestDayArchiveView, self).get_context_data(**kwargs)

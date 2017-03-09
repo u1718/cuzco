@@ -64,3 +64,18 @@ class YahooForecast(models.Model):
     def __str__(self):
         return self.forecast_text
 
+
+class RequestArchive(models.Model):
+    id = models.BigIntegerField(primary_key=True)
+    #city = models.ForeignKey(City, on_delete=modeles.DO_NOTHING)
+    req_date = models.DateTimeField('request date')
+    name = models.CharField(max_length=100)
+    tn = models.CharField(max_length=100)
+    cod = models.CharField(max_length=100)
+    message = models.CharField(max_length=100)
+    cnt = models.CharField(max_length=100)
+    
+    class Meta:
+        managed = False
+        db_table = 'weather_req_arc'
+

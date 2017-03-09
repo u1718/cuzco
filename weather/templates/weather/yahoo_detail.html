@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ yahoo.city_id }}</h1>
+<h1>{{ yahoo.req_date }}</h1>
+<ul>
+{% for fc in yahooforecast_list %}
+    <li>{{ fc.forecast_text }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+{% block footer %}
+{{ request.user.username }}
+{% endblock %}
