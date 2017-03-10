@@ -19,9 +19,9 @@ class SideBarCalendar(HTMLCalendar):
         nextlink =  'Next: <a href="%s">%s</a>' % \
                     (reverse(self.viewname, args=(nextmonth.year, nextmonth.month, 1)),
                      nextmonth.strftime('%h %Y'))
-        return '<div class="row"><div class="col-md-3"></div>'\
+        return '<div class="row"><div class="col-md-2"></div>'\
                                 '<div class="col-md-4"><br><br>%s<br>%s</div>' \
-                                '<div class="col-md-5">%s<br></div></div>' % \
+                                '<div class="col-md-6">%s<br></div></div>' % \
           (prevlink, nextlink, \
            super(SideBarCalendar, self).formatmonth(self.syear, self.smonth, withyear=True))
 

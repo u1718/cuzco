@@ -665,12 +665,14 @@ def get_cdc(rdav, req_date):
                 humid.append(float(fd['main']['humidity']))
                 windd.append(float(fd['wind']['speed']))
 
+                tprc = 0
                 if 'snow' in fd and '3h' in fd['snow']:
-                    precd.append(float(fd['snow']['3h']))
-                elif 'rain' in fd and '3h' in fd['rain']:
-                    precd.append(float(fd['rain']['3h']))
-                else:
-                    precd.append(0)
+                    tprc += float(fd['snow']['3h'])
+
+                if 'rain' in fd and '3h' in fd['rain']:
+                    tprc += float(fd['rain']['3h'])
+
+                precd.append(tprc)
 
                 timed.append(datetime.datetime.fromtimestamp(int(fd['dt'])))
 
@@ -778,18 +780,18 @@ def get_cdc(rdav, req_date):
         #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=3, color='green')
         script['pres'], div['pres'] = components(p)
 
-        p = figure(
-            width=440, height=250, 
-            tools="",
-            toolbar_location=None,
-            title='Weather in {}'.format(c.name),
-            x_axis_type="datetime",
-            x_axis_label='', y_axis_label=''
-            )
-        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
-                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
-        p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
-        script['prec'], div['prec'] = components(p)
+        # p = figure(
+        #     width=440, height=250, 
+        #     tools="",
+        #     toolbar_location=None,
+        #     title='Weather in {}'.format(c.name),
+        #     x_axis_type="datetime",
+        #     x_axis_label='', y_axis_label=''
+        #     )
+        # p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+        #                     end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+        # p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
+        # script['prec'], div['prec'] = components(p)
 
         yad = get_yah_d(rdav, req_date, c)
             
@@ -926,21 +928,19 @@ def get_yah_d(rdav, req_date, c):
     return {'script':script, 'div':div}
 
 def parse_yql(yql):
-    oo = {}
-    oo['temp'] = float(yql['query']['results']['channel']['item']['condition']['temp'])
-    #oo['temp'] = "{0:.1f}".format((oo['temp'] - 32) * 5 / 9)
-    oo['temp'] = round((oo['temp'] - 32) * 5 / 9, 1)
-    oo['text'] = yql['query']['results']['channel']['item']['condition']['text']
-    oo['date'] = yql['query']['results']['channel']['item']['condition']['date']
+    conds = {}
+    conds['temp'] = float(yql['query']['results']['channel']['item']['condition']['temp'])
+    conds['temp'] = round((conds['temp'] - 32) * 5 / 9, 1)
+    conds['text'] = yql['query']['results']['channel']['item']['condition']['text']
+    conds['date'] = yql['query']['results']['channel']['item']['condition']['date']
     #'Wed, 01 Mar 2017 09:00 AM MSK'
-    #oo['date'] = datetime.datetime.strptime(oo['date'][:25], '%a, %d %b %Y %I:%M %p')# %Z')
-    oo['date'] = parser.parse(oo['date'])
-    oo['winddir'] = yql['query']['results']['channel']['wind']['direction']
-    oo['windspeed'] = round(float(yql['query']['results']['channel']['wind']['speed']) * 0.44704, 2)
-    #oo['windspeed'] = "{0:.2f}".format(oo['windspeed'])
-    oo['pressure'] = round(float(yql['query']['results']['channel']['atmosphere']['pressure']), 2)
-    oo['humidity'] = round(float(yql['query']['results']['channel']['atmosphere']['humidity']), 0)
-    oo['sunrise'] = yql['query']['results']['channel']['astronomy']['sunrise']
-    oo['sunset'] = yql['query']['results']['channel']['astronomy']['sunset']
+    #conds['date'] = datetime.datetime.strptime(conds['date'][:25], '%a, %d %b %Y %I:%M %p')# %Z')
+    conds['date'] = parser.parse(conds['date'])
+    conds['winddir'] = yql['query']['results']['channel']['wind']['direction']
+    conds['windspeed'] = round(float(yql['query']['results']['channel']['wind']['speed']) * 0.44704, 2)
+    conds['pressure'] = round(float(yql['query']['results']['channel']['atmosphere']['pressure']), 2)
+    conds['humidity'] = round(float(yql['query']['results']['channel']['atmosphere']['humidity']), 0)
+    conds['sunrise'] = yql['query']['results']['channel']['astronomy']['sunrise']
+    conds['sunset'] = yql['query']['results']['channel']['astronomy']['sunset']
 
-    return oo
+    return conds
