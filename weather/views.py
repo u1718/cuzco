@@ -822,7 +822,6 @@ def get_yah_d(rdav, req_date, c):
     p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
                         end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
     p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
-    import pdb; pdb.set_trace()
     script['temp'], div['temp'] = components(p)
 
     return {'script':script, 'div':div}
