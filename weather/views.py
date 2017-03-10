@@ -115,7 +115,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
             y=np.append(tempnd, tempxd[::-1])
             p.patch(x, y, color='#7570B3', fill_alpha=0.2)
             p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
-            p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+            p.line(timed, tempd, legend="Temperature, °C", line_width=3, color='blue')
 
             script['temp'], div['temp'] = components(p)
             
@@ -151,7 +151,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
             for color in us + ['#ffffff'] + ls:
                 p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
                 i += 1
-            p.line(timed, humid, legend="Humidity, %", line_width=2)
+            p.line(timed, humid, legend="Humidity, %", line_width=3)
             script['humi'], div['humi'] = components(p)
 
             p = figure(
@@ -162,7 +162,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 x_axis_type="datetime",
                 x_axis_label='', y_axis_label=''
                 )
-            p.line(timed, windd, legend="Wind, m/s", line_width=2)
+            p.line(timed, windd, legend="Wind, m/s", line_width=3)
             script['wind'], div['wind'] = components(p)
             
             p = figure(
@@ -199,9 +199,9 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
                 i += 1
                 
-            p.line(timed, presd, legend="Pressure, hpa", line_width=4)
+            p.line(timed, presd, legend="Pressure, hpa", line_width=3)
             #p.line(timed, pressd, legend="Pressure(sea level), hpa", line_width=3, color='grey')
-            #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=2, color='green')
+            #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=3, color='green')
 
             script['pres'], div['pres'] = components(p)
             
@@ -677,24 +677,26 @@ def get_cdc(rdav, req_date):
         script, div = {}, {}
         
         p = figure(
-            width=600, height=350, 
+            width=440, height=250, 
             tools="",
             toolbar_location=None,
             title='Weather in {}'.format(c.name),
             x_axis_type="datetime",
             x_axis_label='', y_axis_label=''
             )
+        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
         p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
         p.add_layout(LinearAxis(y_range_name="prec"), 'right')
         x=np.append(timed, timed[::-1])
         y=np.append(tempnd, tempxd[::-1])
         p.patch(x, y, color='#7570B3', fill_alpha=0.2)
         p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
-        p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+        p.line(timed, tempd, legend="Temperature, °C", line_width=3, color='blue')
         script['temp'], div['temp'] = components(p)
 
         p = figure(
-            width=600, height=350, 
+            width=440, height=250, 
             tools="",
             toolbar_location=None,
             title='Weather in {}'.format(c.name),
@@ -722,22 +724,26 @@ def get_cdc(rdav, req_date):
             p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
             i += 1
                 
-        p.line(timed, humid, legend="Humidity, %", line_width=2)
+        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+        p.line(timed, humid, legend="Humidity, %", line_width=3)
         script['humi'], div['humi'] = components(p)
 
         p = figure(
-            width=600, height=350, 
+            width=440, height=250, 
             tools="",
             toolbar_location=None,
             title='Weather in {}'.format(c.name),
             x_axis_type="datetime",
             x_axis_label='', y_axis_label=''
             )
+        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
         p.line(timed, windd, legend="Wind, m/s", line_width = 4)
         script['wind'], div['wind'] = components(p)
 
         p = figure(
-            width=600, height=350, 
+            width=440, height=250, 
             tools="",
             toolbar_location=None,
             title='Weather in {}'.format(c.name),
@@ -765,19 +771,23 @@ def get_cdc(rdav, req_date):
             p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
             i += 1
 
-        p.line(timed, presd, legend="Pressure, hpa", line_width=4)
+        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+        p.line(timed, presd, legend="Pressure, hpa", line_width=3)
         #p.line(timed, pressd, legend="Pressure(sea level), hpa", line_width=3, color='grey')
-        #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=2, color='green')
+        #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=3, color='green')
         script['pres'], div['pres'] = components(p)
 
         p = figure(
-            width=600, height=350, 
+            width=440, height=250, 
             tools="",
             toolbar_location=None,
             title='Weather in {}'.format(c.name),
             x_axis_type="datetime",
             x_axis_label='', y_axis_label=''
             )
+        p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                            end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
         p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
         script['prec'], div['prec'] = components(p)
 
@@ -807,12 +817,15 @@ def get_yah_d(rdav, req_date, c):
         oo = parse_yql(yql)
         
         tempd.append(oo['temp'])
+        windd.append(oo['windspeed'])
+        presd.append(oo['pressure'])
+        humid.append(oo['humidity'])
         timed.append(oo['date'])
 
     script, div = {}, {}
         
     p = figure(
-        width=400, height=250, 
+        width=440, height=250, 
         tools="",
         toolbar_location=None,
         title='Weather in {}'.format(c.name),
@@ -821,8 +834,94 @@ def get_yah_d(rdav, req_date, c):
         )
     p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
                         end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
-    p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+    p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
+    p.add_layout(LinearAxis(y_range_name="prec"), 'right')
+    p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
+    p.line(timed, tempd, legend="Temperature, °C", line_width=3, color='blue')
     script['temp'], div['temp'] = components(p)
+
+    p = figure(
+        width=440, height=250, 
+        tools="",
+        toolbar_location=None,
+        title='Weather in {}'.format(c.name),
+            x_axis_type="datetime",
+            x_axis_label='', y_axis_label=''
+        )
+    us = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
+         '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
+         '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
+    ls = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 ' +\
+         '#85adad #75a3a3 #669999 #5c8a8a #527a7a #476b6b #3d5c5c ' +\
+         '#334d4d #293d3d #1f2e2e #141f1f #0a0f0f'
+    us = us.split()
+    us = us[::-1]
+    ls = ls.split()
+    x = np.append(timed, timed[::-1])
+    unp = 70
+    lnp = 40
+    up = 100
+    lp = 0
+    y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
+        [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
+    i = 0
+    for color in us + ['#ffffff'] + ls:
+        p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
+        i += 1
+
+    p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                        end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+    p.line(timed, humid, legend="Humidity, %", line_width=3)
+    script['humi'], div['humi'] = components(p)
+
+    p = figure(
+        width=440, height=250, 
+        tools="",
+        toolbar_location=None,
+        title='Weather in {}'.format(c.name),
+        x_axis_type="datetime",
+        x_axis_label='', y_axis_label=''
+        )
+    p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                        end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+    p.line(timed, windd, legend="Wind, m/s", line_width = 4)
+    script['wind'], div['wind'] = components(p)
+
+    p = figure(
+        width=440, height=250, 
+        tools="",
+        toolbar_location=None,
+        title='Weather in {}'.format(c.name),
+        x_axis_type="datetime",
+        x_axis_label='', y_axis_label=''
+        )
+    us = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
+         '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
+         '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
+    ls = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 ' +\
+         '#85adad #75a3a3 #669999 #5c8a8a #527a7a #476b6b #3d5c5c ' +\
+         '#334d4d #293d3d #1f2e2e #141f1f #0a0f0f'
+    us = us.split()
+    us = us[::-1]
+    ls = ls.split()
+    x = np.append(timed, timed[::-1])
+    unp = 1013.25
+    lnp = 999.918
+    up = 1086.5773
+    lp = 854.59638
+    y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
+        [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
+    i = 0
+    for color in us + ['#ffffff'] + ls:
+        p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
+        i += 1
+
+    p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                        end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+    p.line(timed, presd, legend="Pressure, hpa", line_width=3)
+    #p.line(timed, pressd, legend="Pressure(sea level), hpa", line_width=3, color='grey')
+    #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=3, color='green')
+    script['pres'], div['pres'] = components(p)
 
     return {'script':script, 'div':div}
 
@@ -837,10 +936,10 @@ def parse_yql(yql):
     #oo['date'] = datetime.datetime.strptime(oo['date'][:25], '%a, %d %b %Y %I:%M %p')# %Z')
     oo['date'] = parser.parse(oo['date'])
     oo['winddir'] = yql['query']['results']['channel']['wind']['direction']
-    oo['windspeed'] = float(yql['query']['results']['channel']['wind']['speed'])
-    oo['windspeed'] = "{0:.2f}".format(oo['windspeed'] * 0.44704)
-    oo['pressure'] = yql['query']['results']['channel']['atmosphere']['pressure']
-    oo['humidity'] = yql['query']['results']['channel']['atmosphere']['humidity']
+    oo['windspeed'] = round(float(yql['query']['results']['channel']['wind']['speed']) * 0.44704, 2)
+    #oo['windspeed'] = "{0:.2f}".format(oo['windspeed'])
+    oo['pressure'] = round(float(yql['query']['results']['channel']['atmosphere']['pressure']), 2)
+    oo['humidity'] = round(float(yql['query']['results']['channel']['atmosphere']['humidity']), 0)
     oo['sunrise'] = yql['query']['results']['channel']['astronomy']['sunrise']
     oo['sunset'] = yql['query']['results']['channel']['astronomy']['sunset']
 

@@ -21,7 +21,7 @@ class SideBarCalendar(HTMLCalendar):
                      nextmonth.strftime('%h %Y'))
         return '<div class="row"><div class="col-md-3"></div>'\
                                 '<div class="col-md-4"><br><br>%s<br>%s</div>' \
-                                '<div class="col-md-5">%s</div></div>' % \
+                                '<div class="col-md-5">%s<br></div></div>' % \
           (prevlink, nextlink, \
            super(SideBarCalendar, self).formatmonth(self.syear, self.smonth, withyear=True))
 

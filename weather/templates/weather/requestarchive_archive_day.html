@@ -3,19 +3,93 @@
 {% block content %}
 <div class="row">
   <div class="col-md-6">
-
     {% if city_day_conds %}
     <ul>
       {% for c in city_day_conds %}
-		  {{ c.yahoo.script.temp|safe }}
-		  {{ c.yahoo.div.temp|safe }}
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No cities are available.</p>
-    {% endif %}
+      <ul class="nav nav-tabs">
+        <li><a data-toggle="tab" href="#owm{{ c.city.id }}">Open Weather Map</a></li>
+        <li class="active"><a data-toggle="tab" href="#yah{{ c.city.id }}">Yahoo</a></li>
+      </ul>
 
-  </div>
+      <div class="tab-content">
+        <div id="owm{{ c.city.id }}" class="tab-pane fade">
+	  <ul class="nav nav-tabs">
+	     <li class="active"><a data-toggle="tab" href="#owmtemp{{ c.city.id }}">Temperature</a></li>
+	     <li><a data-toggle="tab" href="#owmwind{{ c.city.id }}">Wind</a></li>
+	     <li><a data-toggle="tab" href="#owmpres{{ c.city.id }}">Pressure</a></li>
+	     <li><a data-toggle="tab" href="#owmhumi{{ c.city.id }}">Humidity</a></li>
+	  </ul>
+
+	  <div class="tab-content">
+	    <div id="owmtemp{{ c.city.id }}" class="tab-pane fade in active">
+	      <div class="bok">
+		{{ c.owm.script.temp|safe }}
+		{{ c.owm.div.temp|safe }}
+	      </div>
+	    </div>
+	    <div id="owmwind{{ c.city.id }}" class="tab-pane fade">
+	      <div class="bok">
+	        {{ c.owm.script.wind|safe }}
+		{{ c.owm.div.wind|safe }}
+	      </div>
+	    </div>
+	    <div id="owmpres{{ c.city.id }}" class="tab-pane fade">
+	      <div class="bok">
+		{{ c.owm.script.pres|safe }}
+		{{ c.owm.div.pres|safe }}
+	      </div>
+	    </div>
+	    <div id="owmhumi{{ c.city.id }}" class="tab-pane fade">
+	      <div class="bok">
+		{{ c.owm.script.humi|safe }}
+		{{ c.owm.div.humi|safe }}
+	      </div>
+	    </div>
+	  </div>
+       </div>
+       <div id="yah{{ c.city.id }}" class="tab-pane fade in active">
+	 <ul class="nav nav-tabs">
+	   <li class="active"><a data-toggle="tab" href="#yahtemp{{ c.city.id }}">Temperature</a></li>
+	   <li><a data-toggle="tab" href="#yahwind{{ c.city.id }}">Wind</a></li>
+	   <li><a data-toggle="tab" href="#yahpres{{ c.city.id }}">Pressure</a></li>
+	   <li><a data-toggle="tab" href="#yahhumi{{ c.city.id }}">Humidity</a></li>
+	 </ul>
+
+	 <div class="tab-content">
+	   <div id="yahtemp{{ c.city.id }}" class="tab-pane fade in active">
+	     <div class="bok">
+	       {{ c.yahoo.script.temp|safe }}
+	       {{ c.yahoo.div.temp|safe }}
+	     </div>
+	   </div>
+	   <div id="yahwind{{ c.city.id }}" class="tab-pane fade">
+	     <div class="bok">
+		 {{ c.yahoo.script.wind|safe }}
+		 {{ c.yahoo.div.wind|safe }}
+	     </div>
+	   </div>
+	   <div id="yahpres{{ c.city.id }}" class="tab-pane fade">
+	     <div class="bok">
+		 {{ c.yahoo.script.pres|safe }}
+		 {{ c.yahoo.div.pres|safe }}
+	     </div>
+	   </div>
+	   <div id="yahhumi{{ c.city.id }}" class="tab-pane fade">
+	     <div class="bok">
+		 {{ c.yahoo.script.humi|safe }}
+		 {{ c.yahoo.div.humi|safe }}
+	     </div>
+	   </div>
+	 </div>
+       </div>
+     </div>
+     {% endfor %}
+   </ul>
+   {% else %}
+     <p>No cities are available.</p>
+   {% endif %}
+</div>
+
   <div class="col-md-6">
     {% autoescape off %}
     {{ calendar }}
