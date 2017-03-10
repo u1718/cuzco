@@ -816,13 +816,14 @@ def get_yah_d(rdav, req_date, c):
 
         yql = json.loads(o.yql_resp_text.replace("'",'"'))
 
-        oo = parse_yql(yql)
+        conds = parse_yql(yql)
         
-        tempd.append(oo['temp'])
-        windd.append(oo['windspeed'])
-        presd.append(oo['pressure'])
-        humid.append(oo['humidity'])
-        timed.append(oo['date'])
+        tempd.append(conds['temp'])
+        windd.append(conds['windspeed'])
+        presd.append(conds['pressure'])
+        humid.append(conds['humidity'])
+        timed.append(conds['date'])
+        precd.append(0)
 
     script, div = {}, {}
         

@@ -8,12 +8,12 @@
     <a href="{% url 'weather:city_view' c.city.id %}">{{ c.city.name }}</a>
       
     <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#owm{{ c.city.id }}">Open Weather Map</a></li>
-      <li><a data-toggle="tab" href="#yah{{ c.city.id }}">Yahoo</a></li>
+      <li><a data-toggle="tab" href="#owm{{ c.city.id }}">Open Weather Map</a></li>
+      <li class="active"><a data-toggle="tab" href="#yah{{ c.city.id }}">Yahoo</a></li>
     </ul>
 
     <div class="tab-content">
-      <div id="owm{{ c.city.id }}" class="tab-pane fade in active">
+      <div id="owm{{ c.city.id }}" class="tab-pane fade">
 	<div class="row">
 	  <div class="col-md-4">
 	    <h4><strong>
@@ -116,7 +116,7 @@
 	</div>
       </div>
       
-      <div id="yah{{ c.city.id }}" class="tab-pane fade">
+      <div id="yah{{ c.city.id }}" class="tab-pane fade in active">
 	<div class="row">
 	  <div class="col-md-4">
 	    <h4><strong>
