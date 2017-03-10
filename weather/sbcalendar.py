@@ -19,8 +19,11 @@ class SideBarCalendar(HTMLCalendar):
         nextlink =  'Next: <a href="%s">%s</a>' % \
                     (reverse(self.viewname, args=(nextmonth.year, nextmonth.month, 1)),
                      nextmonth.strftime('%h %Y'))
-        return '%s<br>%s<br>%s' % (super(SideBarCalendar, self).formatmonth(self.syear, self.smonth, withyear=True),
-                                   prevlink, nextlink)
+        return '<div class="row"><div class="col-md-3"></div>'\
+                                '<div class="col-md-4"><br><br>%s<br>%s</div>' \
+                                '<div class="col-md-5">%s</div></div>' % \
+          (prevlink, nextlink, \
+           super(SideBarCalendar, self).formatmonth(self.syear, self.smonth, withyear=True))
 
     def formatday(self, day, weekday):
         if day == 0:
@@ -45,4 +48,4 @@ class SideBarCalendar(HTMLCalendar):
         cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
         day_abbr = ["mo", "tu", "we", "th", "fr", "sa", "su"]
         return '<th class="%s">%s</th>' % (cssclasses[day], day_abbr[day])
-    
+

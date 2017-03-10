@@ -52,7 +52,7 @@ class Yahoo(models.Model):
     yql_resp_text = models.CharField(max_length=3000)
 
     def __str__(self):
-        return '{}{:_>10}{:_>10}{:_>10}{:_>10}'.format(str(self.req_date), self.name)
+        return '{}{:_>10}'.format(str(self.req_date), self.name)
 
     def was_requested_recently(self):
         return self.req_date >= timezone.now() - datetime.timedelta(days=1)

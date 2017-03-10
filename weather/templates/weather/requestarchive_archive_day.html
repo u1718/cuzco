@@ -2,7 +2,25 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-10">
+  <div class="col-md-6">
+
+    {% if city_day_conds %}
+    <ul>
+      {% for c in city_day_conds %}
+		  {{ c.yahoo.script.temp|safe }}
+		  {{ c.yahoo.div.temp|safe }}
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No cities are available.</p>
+    {% endif %}
+
+  </div>
+  <div class="col-md-6">
+    {% autoescape off %}
+    {{ calendar }}
+    {% endautoescape %}
+
     {% if page_obj %}
     <table class="table table-striped">
       {% comment %}
@@ -19,9 +37,9 @@
 	{% for ds in object_list %}
 	<tr>
 	  {% if ds.tn == 'owm' %}
-	  <td><a href="{% url 'weather:owm_view' ds.id %}">{{ ds.req_date }}</a></td>
+	  <td><a href="{% url 'weather:owm_view' ds.id %}">{{ ds.req_date|date:"d/m/Y H:i" }}</a></td>
 	  {% elif ds.tn == 'yahoo' %}
-	  <td><a href="{% url 'weather:yahoo_view' ds.id %}">{{ ds.req_date }}</a></td>
+	  <td><a href="{% url 'weather:yahoo_view' ds.id %}">{{ ds.req_date|date:"d/m/Y H:i" }}</a></td>
 	  {% endif %}
 	  <td>{{ ds.cod }}, {{ ds.message }}, {{ ds.cnt }}</td>
 	  <td>{{ ds.name }}</td>
@@ -33,37 +51,32 @@
     {% else %}
     <p>No reqs are available.</p>
     {% endif %}
-  </div>
-  <div class="col-md-2">
-    {% autoescape off %}
-    {{ calendar }}
-    {% endautoescape %}
+    <p>
+      {% if page_obj.has_previous %}
+      <a href="?page=1">first</a>
+      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+      {% endif %}
+    </p>
+    <p>
+      {% if previous_day %}
+      Previous Day: <a href="{% url 'weather:archive_day' previous_day.year previous_day.month previous_day.day %}">
+	{{ previous_day }}</a>
+      {% endif %}
+      {% if previous_day and next_day %}--{% endif %}
+      {% if next_day %}
+      Next Day: <a href="{% url 'weather:archive_day' next_day.year next_day.month next_day.day %}">
+	{{ next_day }}</a>
+      {% endif %}
+    </p>
   </div>
 </div>
-<p>
-  {% if page_obj.has_previous %}
-  <a href="?page=1">first</a>
-  <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-  {% endif %}
-
-  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-
-  {% if page_obj.has_next %}
-  <a href="?page={{ page_obj.next_page_number }}">next</a>
-  <a href="?page={{ page_obj.paginator.num_pages }}">last</a>
-  {% endif %}
-</p>
-<p>
-  {% if previous_day %}
-  Previous Day: <a href="{% url 'weather:archive_day' previous_day.year previous_day.month previous_day.day %}">
-    {{ previous_day }}</a>
-  {% endif %}
-  {% if previous_day and next_day %}--{% endif %}
-  {% if next_day %}
-  Next Day: <a href="{% url 'weather:archive_day' next_day.year next_day.month next_day.day %}">
-    {{ next_day }}</a>
-  {% endif %}
-</p>
 
 {% endblock %}
 

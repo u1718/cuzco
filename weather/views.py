@@ -10,6 +10,7 @@ from django.views.generic.dates import TodayArchiveView, DayArchiveView
 from django.db import connection
 
 import datetime
+from dateutil import parser
 from itertools import chain
 import requests
 import json
@@ -599,9 +600,9 @@ class RequestTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArch
     
     def get_context_data(self, **kwargs):
         req_date = timezone.now()
-
         kwargs['req_date'] = timezone.now()
         kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
+        kwargs['city_day_conds'] = get_cdc(self, req_date)
 
         return super(RequestTodayArchiveView, self).get_context_data(**kwargs)
 
@@ -615,7 +616,233 @@ class RequestDayArchiveView(DayArchiveView): #(LoginRequiredMixin, DayArchiveVie
     
     def get_context_data(self, **kwargs):
         req_date = timezone.datetime(int(self.get_year()), int(self.get_month()), int(self.get_day()))
-        kwargs['req_date'] = req_date
         kwargs['calendar'] = SideBarCalendar('weather:archive_day', req_date).formatmonth()
-
+        kwargs['city_day_conds'] = get_cdc(self, req_date)
+        
         return super(RequestDayArchiveView, self).get_context_data(**kwargs)
+
+def get_cdc(rdav, req_date):
+    """Return cities day conditions."""
+    city_list = list()
+
+    if 'username' in rdav.kwargs and \
+       rdav.kwargs['username'] == rdav.request.user.username:
+
+        username = rdav.request.user.username
+        cities = get_list_or_404(City, user_name=username)
+    else:
+        cities = get_list_or_404(City)
+
+    for c in sorted(cities, key=lambda x: x.name):
+        tempd = []
+        tempnd = []
+        tempxd = []
+        windd = []
+        presd = []
+        pressd = []
+        presgd = []
+        humid = []
+        precd = []
+        timed = []
+        for o in c.owm_set.filter( \
+            req_date__year=req_date.year, \
+            req_date__month=req_date.month, \
+            req_date__day=req_date.day).order_by('req_date'):
+
+            f = o.owmforecast_set.first()
+            if f is None:
+                pass
+
+            else:
+                fd = json.loads(f.forecast_text.replace("'",'"'))
+
+                tempd.append(float(fd['main']['temp']) - 273.15)
+                tempnd.append(float(fd['main']['temp_min']) - 273.15)
+                tempxd.append(float(fd['main']['temp_max']) - 273.15)
+                presd.append(float(fd['main']['pressure']))
+                pressd.append(float(fd['main']['sea_level']))
+                presgd.append(float(fd['main']['grnd_level']))
+                humid.append(float(fd['main']['humidity']))
+                windd.append(float(fd['wind']['speed']))
+
+                if 'snow' in fd and '3h' in fd['snow']:
+                    precd.append(float(fd['snow']['3h']))
+                elif 'rain' in fd and '3h' in fd['rain']:
+                    precd.append(float(fd['rain']['3h']))
+                else:
+                    precd.append(0)
+
+                timed.append(datetime.datetime.fromtimestamp(int(fd['dt'])))
+
+        script, div = {}, {}
+        
+        p = figure(
+            width=600, height=350, 
+            tools="",
+            toolbar_location=None,
+            title='Weather in {}'.format(c.name),
+            x_axis_type="datetime",
+            x_axis_label='', y_axis_label=''
+            )
+        p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
+        p.add_layout(LinearAxis(y_range_name="prec"), 'right')
+        x=np.append(timed, timed[::-1])
+        y=np.append(tempnd, tempxd[::-1])
+        p.patch(x, y, color='#7570B3', fill_alpha=0.2)
+        p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm", color="grey", y_range_name="prec")
+        p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+        script['temp'], div['temp'] = components(p)
+
+        p = figure(
+            width=600, height=350, 
+            tools="",
+            toolbar_location=None,
+            title='Weather in {}'.format(c.name),
+                x_axis_type="datetime",
+                x_axis_label='', y_axis_label=''
+            )
+        us = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
+             '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
+             '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
+        ls = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 ' +\
+             '#85adad #75a3a3 #669999 #5c8a8a #527a7a #476b6b #3d5c5c ' +\
+             '#334d4d #293d3d #1f2e2e #141f1f #0a0f0f'
+        us = us.split()
+        us = us[::-1]
+        ls = ls.split()
+        x = np.append(timed, timed[::-1])
+        unp = 70
+        lnp = 40
+        up = 100
+        lp = 0
+        y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
+            [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
+        i = 0
+        for color in us + ['#ffffff'] + ls:
+            p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
+            i += 1
+                
+        p.line(timed, humid, legend="Humidity, %", line_width=2)
+        script['humi'], div['humi'] = components(p)
+
+        p = figure(
+            width=600, height=350, 
+            tools="",
+            toolbar_location=None,
+            title='Weather in {}'.format(c.name),
+            x_axis_type="datetime",
+            x_axis_label='', y_axis_label=''
+            )
+        p.line(timed, windd, legend="Wind, m/s", line_width = 4)
+        script['wind'], div['wind'] = components(p)
+
+        p = figure(
+            width=600, height=350, 
+            tools="",
+            toolbar_location=None,
+            title='Weather in {}'.format(c.name),
+            x_axis_type="datetime",
+            x_axis_label='', y_axis_label=''
+            )
+        us = '#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
+             '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
+             '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
+        ls = '#f0f5f5 #e0ebeb #d1e0e0 #c2d6d6 #b3cccc #a3c2c2 #94b8b8 ' +\
+             '#85adad #75a3a3 #669999 #5c8a8a #527a7a #476b6b #3d5c5c ' +\
+             '#334d4d #293d3d #1f2e2e #141f1f #0a0f0f'
+        us = us.split()
+        us = us[::-1]
+        ls = ls.split()
+        x = np.append(timed, timed[::-1])
+        unp = 1013.25
+        lnp = 999.918
+        up = 1086.5773
+        lp = 854.59638
+        y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
+            [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
+        i = 0
+        for color in us + ['#ffffff'] + ls:
+            p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
+            i += 1
+
+        p.line(timed, presd, legend="Pressure, hpa", line_width=4)
+        #p.line(timed, pressd, legend="Pressure(sea level), hpa", line_width=3, color='grey')
+        #p.line(timed, presgd, legend="Pressure(ground level), hpa", line_width=2, color='green')
+        script['pres'], div['pres'] = components(p)
+
+        p = figure(
+            width=600, height=350, 
+            tools="",
+            toolbar_location=None,
+            title='Weather in {}'.format(c.name),
+            x_axis_type="datetime",
+            x_axis_label='', y_axis_label=''
+            )
+        p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
+        script['prec'], div['prec'] = components(p)
+
+        yad = get_yah_d(rdav, req_date, c)
+            
+        city_list.append({'city': c,
+                          'owm': {'script': script, 'div': div},
+                          'yahoo': {'script': yad['script'], 'div': yad['div']}})
+
+    return city_list
+
+def get_yah_d(rdav, req_date, c):
+    tempd = []
+    windd = []
+    presd = []
+    humid = []
+    precd = []
+    timed = []
+    
+    for o in c.yahoo_set.filter( \
+            req_date__year=req_date.year, \
+            req_date__month=req_date.month, \
+            req_date__day=req_date.day).order_by('req_date'):
+
+        yql = json.loads(o.yql_resp_text.replace("'",'"'))
+
+        oo = parse_yql(yql)
+        
+        tempd.append(oo['temp'])
+        timed.append(oo['date'])
+
+    script, div = {}, {}
+        
+    p = figure(
+        width=400, height=250, 
+        tools="",
+        toolbar_location=None,
+        title='Weather in {}'.format(c.name),
+        x_axis_type="datetime",
+        x_axis_label='', y_axis_label=''
+        )
+    p.x_range = Range1d(start=datetime.datetime(req_date.year,req_date.month,req_date.day,0,0), \
+                        end=datetime.datetime(req_date.year,req_date.month,req_date.day,23,59))
+    p.line(timed, tempd, legend="Temperature, °C", line_width=2, color='blue')
+    import pdb; pdb.set_trace()
+    script['temp'], div['temp'] = components(p)
+
+    return {'script':script, 'div':div}
+
+def parse_yql(yql):
+    oo = {}
+    oo['temp'] = float(yql['query']['results']['channel']['item']['condition']['temp'])
+    #oo['temp'] = "{0:.1f}".format((oo['temp'] - 32) * 5 / 9)
+    oo['temp'] = round((oo['temp'] - 32) * 5 / 9, 1)
+    oo['text'] = yql['query']['results']['channel']['item']['condition']['text']
+    oo['date'] = yql['query']['results']['channel']['item']['condition']['date']
+    #'Wed, 01 Mar 2017 09:00 AM MSK'
+    #oo['date'] = datetime.datetime.strptime(oo['date'][:25], '%a, %d %b %Y %I:%M %p')# %Z')
+    oo['date'] = parser.parse(oo['date'])
+    oo['winddir'] = yql['query']['results']['channel']['wind']['direction']
+    oo['windspeed'] = float(yql['query']['results']['channel']['wind']['speed'])
+    oo['windspeed'] = "{0:.2f}".format(oo['windspeed'] * 0.44704)
+    oo['pressure'] = yql['query']['results']['channel']['atmosphere']['pressure']
+    oo['humidity'] = yql['query']['results']['channel']['atmosphere']['humidity']
+    oo['sunrise'] = yql['query']['results']['channel']['astronomy']['sunrise']
+    oo['sunset'] = yql['query']['results']['channel']['astronomy']['sunset']
+
+    return oo
