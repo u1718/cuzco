@@ -374,7 +374,30 @@ class OWMView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     
     def get_queryset(self):
         self.owm = get_object_or_404(OWM, id=self.kwargs['pk'])
-        return self.owm.owmforecast_set.all()
+        fcs = []
+        for f in self.owm.owmforecast_set.all():
+            fcs.append(json.loads(f.forecast_text.replace("'",'"')))
+            fcs[-1]['main']['temp'] = round(float(fcs[-1]['main']['temp']) - 273.15, 1)
+            fcs[-1]['main']['temp_min'] = round(float(fcs[-1]['main']['temp_min']) - 273.15, 1)
+            fcs[-1]['main']['temp_max'] = round(float(fcs[-1]['main']['temp_max']) - 273.15, 1)
+            fcs[-1]['main']['pressure'] = float(fcs[-1]['main']['pressure'])
+            fcs[-1]['main']['sea_level'] = float(fcs[-1]['main']['sea_level'])
+            fcs[-1]['main']['grnd_level'] = float(fcs[-1]['main']['grnd_level'])
+            fcs[-1]['main']['humidity'] = int(fcs[-1]['main']['humidity'])
+            fcs[-1]['wind']['speed'] = float(fcs[-1]['wind']['speed'])
+            
+            tprc = 0
+            if 'snow' in fcs[-1] and '3h' in fcs[-1]['snow']:
+               tprc += float(fcs[-1]['snow']['3h'])
+
+            if 'rain' in fcs[-1] and '3h' in fcs[-1]['rain']:
+                tprc += float(fcs[-1]['rain']['3h'])
+
+            fcs[-1]['prec'] = tprc
+
+            fcs[-1]['date'] = datetime.datetime.fromtimestamp(int(fcs[-1]['dt']))
+
+        return sorted(fcs, key=lambda x: x['date'])
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -389,7 +412,14 @@ class YahooView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
     
     def get_queryset(self):
         self.yahoo = get_object_or_404(Yahoo, id=self.kwargs['pk'])
-        return self.yahoo.yahooforecast_set.all()
+        fcs = []
+        for f in self.yahoo.yahooforecast_set.all():
+            fcs.append(json.loads(f.forecast_text.replace("'",'"')))
+            fcs[-1]['low'] = round((float(fcs[-1]['low']) - 32) * 5 / 9, 1)
+            fcs[-1]['high'] = round((float(fcs[-1]['high']) - 32) * 5 / 9, 1)
+            fcs[-1]['date'] = datetime.datetime.strptime(fcs[-1]['date'],"%d %b %Y")
+
+        return sorted(fcs, key=lambda x: x['date'])
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
