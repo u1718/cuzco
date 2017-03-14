@@ -8,8 +8,8 @@
   <table class="table table-striped table-bordered small">
     {% for f in owmforecast_list %}
     <tr>
-      <td><b>{{ f.date|date:"D" }}</b> {{ f.date|date:"m/d H:i" }}</td>
-      <td><img src="{{ icons }}/{{ f.weather.0.icon }}.png"></td>
+      <td><b>{{ f.date|date:"D" }}</b> {{ f.date|date:"m/d H:i" }}
+          <img src="{{ icons }}/{{ f.weather.0.icon }}.png"></td>
       <td>{{ f.main.temp_max }} / {{ f.main.temp_min }} °C</td>
       <td>{{ f.main.pressure }} hpa</td>
       <td>{{ f.main.humidity}}%</td>

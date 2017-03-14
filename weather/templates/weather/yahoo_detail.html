@@ -8,6 +8,7 @@
 	{% for f in yahooforecast_list %}
 	<tr>
 	  <td><b>{{ f.day }}</b> {{ f.date|date:"m/d" }}</td>
+	  <td><img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif"></td>
 	  <td>{{ f.high }} / {{ f.low }} °C</td>
 	  <td>{{ f.text }}</td>
 	  <td>{{ f.code }}</td>
