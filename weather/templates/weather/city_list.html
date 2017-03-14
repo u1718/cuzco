@@ -112,7 +112,8 @@
 		  {{ f.dt|time:"H:i" }}<br>
 		  {{ f.main.temp }} °C<br>
 		  {{ f.wind.speed }} m/s<br>
-		  {{ f.main.pressure }}
+		  {{ f.main.pressure }}<br>
+		  <img src="{{ icons }}/{{ f.weather.0.icon }}.png">
 		</td>
 		{% endfor %}
 	      </tr>
@@ -188,7 +189,8 @@
 		  {{ f.date|date:"m/d" }}<br>
 		  {{ f.day }}<br>
 		  {{ f.max }} °C<br>
-		  {{ f.min }} °C
+		  {{ f.min }} °C<br>
+		  <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif">
 		</td>
 		{% endfor %}
 	      </tr>
