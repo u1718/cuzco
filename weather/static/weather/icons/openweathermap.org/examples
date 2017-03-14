@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="Our partners and solutions" >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Partners and solutions" />                   
+        <title>Partners and solutions- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                        
+            <div class="container">
+<div class="row">
+<div class="col-sm-12">
+
+
+<div class="col-sm-8">
+
+<section id="google1">
+<h2 class="headline first-child text-color">Google Weather-Based Campaign Management with OpenWeatherMap API</h2>
+<p>Demand for certain products and services varies greatly depending on the weather. For example, users are much more likely to search for information on amusement parks on a hot, sunny day than if it's cold and raining. An amusement park company may want to increase their bids when the weather is nice, but doing so every day would require a lot of manual work. With AdWords scripts, however, it's possible to programmatically fetch weather information and adjust bids in a matter of minutes.</p>
+
+<p>This script uses Google Spreadsheets to store the list of campaigns and their associated locations. A call to the OpenWeatherMap API is made for each location and weather conditions are calculated using some basic rules. If a rule evaluates to true, then a corresponding location bid multiplier is applied to the location targeting for the campaign.</p>
+
+<p>More detailes with source code: <a href='https://developers.google.com/adwords/scripts/docs/solutions/weather-based-campaign-management'>https://developers.google.com/adwords/scripts/docs/solutions/weather-based-campaign-management</a></p>
+</section>
+
+<section id="google2">
+<h2 class="headline first-child text-color">Google Maps JavaScript API based on OpenWeatherMap API</h2>
+<p>Google has closed their Weather and Cloud solutions since 4th of June 2015 and recommended to use OpenWeatherMap with the Google Maps JavaScript API as an alternative solution.</p>
+
+<p>JavaScript on the GitHub:</p>
+<p><a href="https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/index.html">https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/index.html</a></p>
+
+<p>'Displaying weather data with the Google Maps API and OpenWeatherMap' manual:</p>
+<p><a href="https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/OpenWeatherMapLayer.pdf">https://github.com/google/maps-for-work-samples/blob/master/samples/maps/OpenWeatherMapLayer/OpenWeatherMapLayer.pdf</a></p>
+
+<!--p>Example:</p>
+<p><a href=http://owm.io/googlemapsapi target=_blank>http://owm.io/googlemapsapi</a></p-->
+
+</section>
+
+<section id="ubuntu">
+<h2 class="headline first-child text-color">Ubuntu</h2>
+
+<h4>Ubuntu phone</h4>
+<p>OpenWeatherMap provides API for Ubuntu phone core weather app.</p>
+<p><a href="https://wiki.ubuntu.com/Touch/CoreApps/Weather">https://wiki.ubuntu.com/Touch/CoreApps/Weather</a></p>
+
+<h4>Ubuntu My Weather Indicator</h4>
+<a href="https://launchpad.net/my-weather-indicator">https://launchpad.net/my-weather-indicator</a>
+
+<h4>Ubuntu Unity OpenWeatherMap Scope</h4>
+<p><a href="https://launchpad.net/unity-scope-openweathermap">https://launchpad.net/unity-scope-openweathermap</a></p>
+</section>
+
+
+<section id="android">
+<h2 class="headline first-child text-color">Android</h2>
+
+<h4>Android weather app: JSON, HTTP and Openweathermap</h4>
+
+<p>In this post I want to describe how to create a weather app for <strong>Android</strong> that gives current weather information. This app will use JSON, HTTP connection and AsyncTask to get this information.</p>
+<p><noindex><a href="http://www.survivingwithandroid.com/2016/01/4-free-weather-providers-api-to-develop.html" rel="nofollow">http://www.survivingwithandroid.com/2016/01/4-free-weather-providers-api-to-develop.html</a></noindex></p>
+<p><noindex><a href="http://www.survivingwithandroid.com/2013/05/build-weather-app-json-http-android.html" rel="nofollow">http://www.survivingwithandroid.com/2013/05/build-weather-app-json-http-android.html</a></noindex></p>
+<p><noindex><a href="http://survivingwithandroid.github.io/WeatherLib" rel="nofollow">http://survivingwithandroid.github.io/WeatherLib</a></noindex></p>
+
+
+<h4>Weather Notification</h4>
+<p>Simple application which displays the air temperature and other weather conditions in the Android notification bar. The air temperature is always visible like a system clock.</p>
+<p><a href="https://bitbucket.org/gelin/weather-notification">https://bitbucket.org/gelin/weather-notification</a></p>
+
+
+
+
+</section>
+
+
+<section id="leaflet">
+<h2 class="headline first-child text-color">Leaflet</h2>
+
+<h4>Leaflet plugin from ScanEx to show weather in main cities</h4>
+
+<p><a href="https://github.com/ScanEx/Leaflet-OpenWeatherMap">https://github.com/ScanEx/Leaflet-OpenWeatherMap</a></p>
+
+
+<h4>OpenWeatherMap for Leaflet based maps </h4>
+<p>A JavaScript library for including OpenWeatherMap's layers and OWM's current city/station data in leaflet based maps without hassle.</p>
+<p><a href="https://github.com/buche/leaflet-openweathermap">https://github.com/buche/leaflet-openweathermap</a></p>
+    
+    
+<h4>Leaflet providers </h4>
+<p>Leaflet-providers provides tile layers from different providers, including OpenStreetMap, OpenWeatherMap and others.</p>
+<p><a href="https://github.com/leaflet-extras/leaflet-providers/">https://github.com/leaflet-extras/leaflet-providers/</a></p>
+
+</section>
+
+
+<section id="java">
+<h2 class="headline first-child text-color">Java</h2>
+
+<h4>OpenWeatherMap JSON API client library in Java </h4>
+<p>Java library to retrieve weather information and forecasts from Open Weather Map</p>
+<a href="https://github.com/migtavares/owmClient">https://github.com/migtavares/owmClient</a>
+
+<h4>OWM JAPIs </h4>
+<p>OWM JAPIs lets you develop weather-aware applications for Java and Android platforms in minimum time using OWM JAPIs, an easy-to-use, detailed and documented weather APIs' wrapper library for retrieving weather data from OpenWeatherMap.org. You can easily retrieve and use weather data in your applications using this library.</p>
+<p>OWM JAPIs allows you to fetch weather data in only 3-5 lines of code (excluding any other/skeleton code, of course). You can develop applications and services for multiple platforms using this library, such as Windows, Mac OS X, Linux, and Android.</p></p>
+<p><a href="http://go.aksingh.net/owm-japis-src">http://go.aksingh.net/owm-japis-src</a></p>
+</section>
+
+
+<section id="go">
+<h2 class="headline first-child text-color">Go (golang)</h2>
+
+<h4>OpenWeatherMap Go API</h4>
+<p>Go (golang) library for use with openweathermap.org's API </p>
+<p><a href="http://briandowns.github.io/openweathermap/">http://briandowns.github.io/openweathermap/</a></p>
+</section>
+
+
+<section id="javascript">
+<h2 class="headline first-child text-color">JavaScript</h2>
+
+<h4>Weather.js</h4>
+<p>There really should be a conclusive Javascript weather library. Weather.js fetches data from openweathermap.org and makes querying all kinds of weather related information easy.</p>
+<p><a href="http://weatherjs.com/">http://weatherjs.com</a></p>
+
+<h4>JavaScript libraries for OpenStreetMap applications </h4>
+<a href="https://github.com/alno/osm-js-libs/">https://github.com/alno/osm-js-libs/</a>
+
+<h4>Weather Display</h4>
+<p><a href="https://github.com/nils-werner/owm-display">https://github.com/nils-werner/owm-display</a></p>
+
+</section>
+
+
+<section id="cms">
+<h2 class="headline first-child text-color">CMS</h2>
+<h4>Drupal OpenLayers Open Weather Map </h4>
+<p>Provides default OpenWeatherMap layers and a new layer type to display weather forecast and weather stations all around the globe.</p>
+<p><a href="http://drupal.org/project/olowm">http://drupal.org/project/olowm</a></p>
+
+<h4>WordPress Awesome Weather Widget</h4>
+<p>This plugin allows you to easily add super clean (and awesome) weather widgets to your site. The weather data is provided for free by http://openweathermap.org</p>
+<p><a href="http://wordpress.org/extend/plugins/awesome-weather/">http://wordpress.org/extend/plugins/awesome-weather/</a></p>
+
+<h4>WordPress HD Weather Widget by The Waypoint </h4>
+<p>This plugin uses HD 331dpi images, in beautiful responsive cirlces, to display weather for your location. Images included in this package now.
+The plugin parses data from the OWM api to display information. The HD background image changes, based on the 'condition' outside, better named here, the "Feels". We have provided one Feel in the initial v.1. Use the documentation to xref the api condition statements, against file names. The images get loaded via css, so they don't interfere with layered objects on the site.</p>
+<p><a href="http://wordpress.org/plugins/waypoint-hd-weather-widget/">http://wordpress.org/plugins/waypoint-hd-weather-widget/</a></p>
+
+<h4>WordPress WPCloudy Plugin</h4>
+<p>WP Cloudy is a powerful weather plugin for WordPress, based on OpenWeatherMap API, using Custom Post Types and shortcodes, and much more.</p>
+<p><a href="https://wordpress.org/plugins/wp-cloudy/">https://wordpress.org/plugins/wp-cloudy/</a></p>
+
+</section>
+
+
+
+
+
+<section id="raspberry">
+<h2 class="headline first-child text-color">Raspberry Pi</h2>
+<h4>Raspberry_temperature_log</h4>
+<p>Turn Raspberry Pi into temperature and humidity logging station with DHT11 sensor</p>
+<p><a href="https://github.com/DzikuVx/raspberry_temperature_log">https://github.com/DzikuVx/raspberry_temperature_log</a></p>
+</section>
+
+
+<section id="python">
+<h2 class="headline first-child text-color">Python</h2>
+
+<h4>PyOWM</h4>
+<p>PyOWM is a client Python wrapper library for the OpenWeatherMap. It allows quick and easy consumption of OWM weather data (either observations and forecast) from Python applications via a simple object model. No additional libraries are requested: only the Python 2.6/2.7 standard library modules. PyOWM currently supports version 2.5 of the OWM API.</p>
+<p><a href="https://github.com/csparpa/pyowm">https://github.com/csparpa/pyowm</a></p>
+
+<h4>pywws</h4>
+<p>This guide gives brief instructions on how to use pywws with some other weather services and software. </p>
+<p><a href="http://pywws.readthedocs.org/en/latest/guides/integration.html#open-weather-map">http://pywws.readthedocs.org/en/latest/guides/integration.html#open-weather-map</a></p>
+</section>
+
+
+
+
+<section id="php">
+<h2 class="headline first-child text-color">PHP</h2>
+
+<h4>OpenWeatherMap-PHP-Api</h4>
+<p>Php api to parse weather data from OpenWeatherMap.org </p>
+<p><a href="https://github.com/cmfcmf/OpenWeatherMap-PHP-Api">https://github.com/cmfcmf/OpenWeatherMap-PHP-Api</a></p>
+
+</section>
+
+
+<section id="apache">
+<h2 class="headline first-child text-color">Apache Camel</h2>
+<h4>Weather Component</h4>
+<p>Component is used for polling weather information from Open Weather Map - a site that provides free global weather and forecast information. The information is returned as a json String object.</p>
+<p><a href="http://camel.apache.org/weather.html">http://camel.apache.org/weather.html</a></p>
+
+</section>
+
+
+<section id="desktop">
+<h2 class="headline first-child text-color">Desktop</h2>
+
+<h4>Weather-Map</h4>
+<p>Weather-Map is a desktop application that provides free weather data. Weather-Map wide range of weather data - map with current weather, quantity of precipitation, wind speed, clouds cover, sea Level Pressure contour maps, temperature, snow precipitation, data from weather stations, data from radars, data for cities. Weather data is received from OpenWeatherMap api.</p>
+<a href="https://github.com/rafaelkyrdan/Weather-Map">https://github.com/rafaelkyrdan/Weather-Map</a>
+    
+</section>
+
+
+<section id="mobile">
+
+<h2 class="headline first-child text-color">Mobile applications</h2>
+
+<h4>The Open Weather Map app with Glob3 Mobile</h4>
+<p>The power of Open Data + Glob3 Mobile.</p>
+<p><a href="http://owmgapp.glob3mobile.com">http://owmgapp.glob3mobile.com</a></p>
+</section>
+
+
+<section id="github">
+
+<h2 class="headline first-child text-color">Big library on GitHub</h2>
+
+<h4>GitHub library of codes and scripts operating with OpenWeatherMap API </h4>
+<p><a href="https://github.com/search?q=openweathermap&ref=cmdform">https://github.com/search?q=openweathermap&ref=cmdform</a></p>
+</section>
+
+
+
+
+</div>
+
+<div class="col-sm-4">
+
+
+<ul>
+<li><a href="#google1">Google Weather-Based Campaign Management with OpenWeatherMap API</a></li>
+<li><a href="#google2">Google Maps JavaScript API based on OpenWeatherMap API</a></li>
+<li><a href="#ubuntu">Ubuntu</a></li>
+<li><a href="#android">Android</a></li>
+<li><a href="#leaflet">Leaflet</a></li>
+<li><a href="#java">Java</a></li>
+<li><a href="#go">Go (golang)</a></li>
+<li><a href="#javascript">JavaScript</a></li>
+<li><a href="#cms">CMS</a></li>
+<li><a href="#raspberry">Raspberry Pi</a></li>
+<li><a href="#python">Python</a></li>
+<li><a href="#php">PHP</a></li>
+<li><a href="#apache">Apache Camel</a></li>
+<li><a href="#desktop">Desktop</a></li>
+<li><a href="#mobile">Mobile applications</a></li>
+<li><a href="#github">Big library on GitHub</a></li>
+
+
+
+
+</ul>
+
+<br>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Skyscraper -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:120px;height:600px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="6999090776"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+
+</div>
+
+
+</div>
+</div>
+</div>            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

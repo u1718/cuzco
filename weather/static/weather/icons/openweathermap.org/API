@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="Simple and fast and free weather API from OpenWeatherMap you have access to current weather data, 5- and 16-day forecasts, UV Index, air pollution
+ and historical data" >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Weather API" />                   
+        <title>Weather API- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                        
+            <div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <p class=lead>Our weather API is simple, clear and free. We also offer higher levels of support, please see our <a href="/price">paid plan options.</a>
+                To access the API you need to sign up for an
+                <a href="http://openweathermap.org/appid"> API key</a> if you are on a free or paid plan.
+        </div>
+    </div> <!-- / .row -->
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Current weather data</h3>
+            <a type="button" class="btn btn-default btn-xs" href="/current">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>Access current weather data for any location including over 200,000 cities </li>
+                    <li>Current weather is frequently updated based on global models and data from more than 40,000 weather stations</li>
+                    <li>Data is available in JSON, XML, or HTML format</li>
+                    <li>Available for Free and all other paid accounts</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>5 day / 3 hour forecast</h3>
+            <a type="button" class="btn btn-default btn-xs" href="/forecast5">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul><li>5 day forecast is available at any location or city</li>
+                    <li>5 day forecast includes weather data every 3 hours</li>
+                    <li>Forecast is available in JSON and XML</li>
+                    <li>Available for Free and all other paid accounts</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>16 day / daily forecast</h3>
+            <a type ="button" class="btn btn-default btn-xs" href="/forecast16">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul><li>16 day forecast is available at any location or city</li>
+                    <li>16 day forecast includes daily weather</li>
+                    <li>Forecast is available in JSON and XML</li>
+                    <li>Available for Developer, Professional and Enterprise accounts </li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Historical data</h3>
+            <a type="button" class="btn btn-default btn-xs" href="/history">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>Through our API we provide city historical weather data for 20,000+ cities</li>
+                    <li>Historical data is available for 1 month previous in Starter account,
+                        for 1 year previous in Medium accounts, and is 5 and more year previous in Advanced accounts</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>UV Index <sup style="color:#d26c22;"> BETA</sup></h3>
+            <a type="button" class="btn btn-default btn-xs" href="/api/uvi">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>Current UV index (Clear Sky) and historical data are available for any geo location (lat/lon)</li>
+                    <li>Interpreting of the UV Index and recommended protection are provided</li>
+                    <li>Data is available in JSON</li>
+                    <li>Available for Professional and Enterprise accounts </li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>Weather map layers</h3>
+            <a type="button" class="btn btn-default btn-xs" href="../docs/hugemaps">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>Weather maps include precipitation, clouds, pressure, temperature, wind, and more</li>
+                    <li>Connect our weather maps to your mobile applications and websites</li>
+                    <li>Use as layers in Direct Tiles, OpenLayers, Leaflet, and Google Maps</li>
+                    <li>Available for Free and all other paid accounts</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Weather stations <sup style="color:#d26c22;"> NEW!</sup></h3>
+            <a type="button" class="btn btn-default btn-xs" href="/stations">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>API for managing your personal weather stations </li>
+                    <li>Creation of the station and measurements transfer</li>
+                    <li>Receiving the aggregated measurements from the station</li>
+                    <li>Available for Free and all other paid accounts</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>Bulk downloading</h3>
+            <a type="button" class="btn btn-default btn-xs" href="/bulk">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>We provide number of bulk files with current weather and forecasts</li>
+                    <li>Current weather bulk is available for 20,000 cities</li>
+                    <li>Variety of hourly and daily forecast bulks depends on frequency of data updating</li>
+                    <li>Available for Professional and Enterprise accounts</li>
+                </ul>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <h3>Air pollution <sup style="color:#d26c22;"> BETA</sup></h3>
+            <a type="button" class="btn btn-default btn-xs" href="/api/pollution/co">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>We provide current and historical (since November 2015) data on air pollution with main indexes of <a href="/api/pollution/co">CO</a>, <a href="/api/pollution/o3">O3</a>, <a href="/api/pollution/no2">NO2</a> and <a href="/api/pollution/so2">SO2</a>.
+                    <li><a href="/news/post/air-pollution-ways-forecast-and-calculate-it">Air pollution: ways to forecast and calculate it</a></li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Weather alerts<sup style="color:#d26c22;"> NEW!</sup></h3>
+            <a type="button" class="btn btn-default btn-xs" href="/triggers">API doc</a>
+            <a type="button" class="btn btn-orange btn-xs" href="/price">Subscribe</a>
+            <p>
+                <ul>
+                    <li>Simple syntax to create triggers which will be working upon the occurrence of specified weather conditions (temperature, humidity, pressure, etc.) in a certain period of time.</li>
+                    <li>The alerts will be generated in our service after performing conditions of the trigger.</li>
+                </ul>
+            </p>
+        </div>
+    </div>    
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="headline first-child text-color">
+                API documentation
+            </h2>
+        </div>
+    </div> <!-- / .row -->
+    <div class="row">
+        <div class="col-sm-4">
+            <h3><a href="/appid">How to start</a></h3>
+            <ul>
+                <li><a href="/appid#get">How to get API key</a></li>
+                <li><a href="/appid#use">How to use API key</a></li>
+                <li><a href="/appid#work">How to get accurate API respond</a></li>
+            </ul>
+            <h3><a href="/current">Current weather data</a></h3>
+            <ul>
+                <li><a href="/current#one">Call current weather data for one location</a>
+                    <ul>
+                        <li><a href="/current#name">By city name</a></li>
+                        <li><a href="/current#cityid">By city ID</a></li>
+                        <li><a href="/current#geo">By geographic coordinates</a></li>
+                        <li><a href="/current#zip">By ZIP code</a></li>
+                    </ul>
+                </li>
+                <li><a href="/current#cities">Call current weather data for several cities</a>
+                    <ul>
+                        <li><a href="/current#rectangle">Cities within a rectangle zone</a></li>
+                        <li><a href="/current#cycle">Cities in cycle</a></li>
+                        <li><a href="/current#severalid">Call for several city IDs</a></li>
+                    </ul>
+                </li>
+                <li><a href="/current#bulk">Bulk downloading</a></li>
+                <li><a href="/current#parameter">Parameters of API respond</a>
+                    <ul>
+                        <li><a href="/current#current_JSON">JSON</a></li>
+                        <li><a href="/current#current_XML">XML</a></li>
+                        <li><a href="/current#list">List of condition codes</a></li>
+                        <li><a href="/current#min">Min/max temperature in current weather API and forecast API</a></li>
+                    </ul>
+                </li>
+                <li><a href="/current#other">Other features</a>
+                    <ul>
+                        <li><a href="/current#format">Format</a></li>
+                        <li><a href="/current#accuracy">Search accuracy</a></li>
+                        <li><a href="/current#data">Units format</a></li>
+                        <li><a href="/current#multi">Multilingual support</a></li>
+                        <li><a href="/current#call">Call back function for JavaScript code</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <h3><a href="/forecast5">5 day / 3 hour weather forecast</a></h3>
+            <ul>
+                <li><a href="/forecast5#5days">Call 5 day / 3 hour forecast data</a>
+                    <ul>
+                        <li><a href="/forecast5#name5">By city name</a></li>
+                        <li><a href="/forecast5#cityid5">By city ID</a></li>
+                        <li><a href="/forecast5#geo5">By geographic coordinates</a></li>
+                    </ul>
+                </li>
+                <li><a href="/forecast5#bulk">Bulk downloading</a></li>
+                <li><a href="/forecast5#parameter">Parameters of API respond</a>
+                    <ul>
+                        <li><a href="/forecast5#JSON">JSON</a></li>
+                        <li><a href="/forecast5#XML">XML</a></li>
+                        <li><a href="/forecast5#list">List of condition codes</a></li>
+                        <li><a href="/forecast5#min">Min/max temperature in current weather API and forecast API</a></li>
+                    </ul>
+                </li>
+                <li><a href="/forecast5#other">Other features</a>
+                    <ul>
+                        <li><a href="/forecast5#format">Format</a></li>
+                        <li><a href="/forecast5#accuracy">Search accuracy</a></li>
+                        <li><a href="/forecast5#limit">Limitation of result</a></li>
+                        <li><a href="/forecast5#data">Units format</a></li>
+                        <li><a href="/forecast5#multi">Multilingual support</a></li>
+                        <li><a href="/forecast5#call">Call back function for JavaScript code</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            <h3><a href="/forecast16">16 day / daily weather forecast</a></h3>
+            <ul>
+                <li><a href="/forecast16#16days">Call 16 day / daily forecast data</a>
+                    <ul>
+                        <li><a href="/forecast16#name16">By city name</a></li>
+                        <li><a href="/forecast16#cityid16">By city ID</a></li>
+                        <li><a href="/forecast16#geo16">By geographic coordinates</a></li>
+                    </ul>
+                </li>
+                <li><a href="/forecast16#bulk">Bulk downloading</a></li>
+                <li><a href="/forecast16#parameter">Parameters of API respond</a>
+                    <ul>
+                        <li><a href="/forecast16#JSON">JSON</a></li>
+                        <li><a href="/forecast16#XML">XML</a></li>
+                        <li><a href="/forecast16#list">List of condition codes</a></li>
+                        <li><a href="/forecast16#min">Min/max temperature in current weather API and forecast API</a></li>
+                    </ul>
+                </li>
+                <li><a href="/forecast16#other">Other features</a>
+                    <ul>
+                        <li><a href="/forecast16#format">Format</a></li>
+                        <li><a href="/forecast16#accuracy">Search accuracy</a></li>
+                        <li><a href="/forecast16#limit">Limitation of result</a></li>
+                        <li><a href="/forecast16#data">Units format</a></li>
+                        <li><a href="/forecast16#multi">Multilingual support</a></li>
+                        <li><a href="/forecast16#call">Call back function for JavaScript code</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <h3><a href="/history">Historical data for cities</a></h3>
+            <ul>
+                <li><a href="/history#city">Call historical data for cities</a>
+                    <ul>
+                        <li><a href="/history#cityid">By city ID</a></li>
+                        <li><a href="/history#name">By city name</a></li>
+                        <li><a href="/history#geo">By geographic coordinates</a></li>
+                    </ul>
+                </li>
+                <li><a href="/history#parameter">Parameters of API respond</a>
+                    <ul>
+                        <li><a href="/history#JSON">JSON</a></li>
+                        <li><a href="/history#list">List of condition codes</a></li>
+                        <li><a href="/history#min">Min/max temperature in historical weather API and forecast API</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div id="airpolution"> </div>
+            <h3><a href="/api_uv">UV index</a> </h3>
+            <ul>
+                <li><a href="/api_uv#uv_current">Current UV Index for one location</a>
+                </li>
+                <li><a href="/api_uv#uv_history">Historical UV Index for one location</a>
+                </li>
+                <li><a href="/api_uv#uv_how">How to use the UV index</a>
+                </li>
+            </ul>
+            <h3><a href="#airpolution">Air pollution (beta)</a></h3>
+            <ul>
+                <li><a href="/api/pollution/co">Carbon Monoxide Data (CO)</a></li>
+                <li><a href="/api/pollution/o3">Ozone Data (O3)</a></li>
+            </ul>
+            <h3><a href="/bulk">Bulk downloading</a></h3>
+            <ul>
+                <li><a href="/bulk#bulk_forecast">Forecast bulks</a></li>
+                <li><a href="/bulk#bulk_current">Current weather bulks</a></li>
+            </ul>
+            <h3><a href="/stations">Weather stations</a> </h3>
+            <ul>
+                <li><a href="/stations#steps">Three simple steps</a></li>
+                <li><a href="/stations#main">Weather Stations API 3.0 basic methods</a></li>
+                <li><a href="/stations#additional">Additional features</a></li>    
+            </ul>
+        </div>
+        <div class="col-sm-4">
+            <h3><a href="../docs/hugemaps">Map layers</a></h3>
+            <ul><li><a href="../docs/hugemaps#how">How to connect map layers</a></li>
+                <li><a href="/map_array">Embed weather layer with array of weather data</a></li>
+                <li><a href="/tile_map">Embed weather layer with tile server</a></li>
+                <li><a href="../docs/hugemaps#libraries">Libraries to connect weather layers</a></li>
+                <li><a href=/map_legend>XML legend</a></li>
+                <li><a href="../docs/hugemaps#examples">Examples of map layers</a></li>
+                <ul><li><a href="../docs/hugemaps#clouds">Clouds</a></li>
+                    <li><a href="../docs/hugemaps#precip">Precipitations</a></li>
+                    <li><a href="../docs/hugemaps#pres">Sea level pressure</a></li>
+                    <li><a href="../docs/hugemaps#wind">Wind speed</a></li>
+                    <li><a href="../docs/hugemaps#temp">Temperature</a></li>
+                    <li><a href="../docs/hugemaps#snow">Snow</a></li>
+                    <li><a href="../docs/hugemaps#current">Current weather</a></li></ul>
+                <li><a href="../docs/hugemaps#full">Full list of weather map layers</a></li>
+            </ul>
+            <h3><a href="/triggers">Weather alerts</a> </h3>
+            <ul>
+                <li><a href="/triggers#steps">Three simple steps</a></li>
+                <li><a href="/triggers#main">Weather Triggers API basic methods</a></li>
+                <li><a href="/triggers#additional">Additional features</a></li>    
+                <li><a href="/triggers-struct">Weather Triggers Struct</a></li>
+            </ul>          
+            <h3><a href="/examples">Partners and solutions of API use</a></h3>
+            <ul><li><a href="/examples">Google solutions, Ubuntu mobile, Android, Java, PHP, big library on GitHub and others</a></li></ul>
+            <h3><a href="https://openweathermap.desk.com">Support Center</a></h3>
+            <ul><li><a href="https://openweathermap.desk.com/customer/portal/topics/806183-faq/articles">FAQ</a></li>
+                <li><a href="https://openweathermap.desk.com/customer/portal/emails/new">Ask Support Center</a></li>
+            </ul>
+        </div>
+    </div>
+</div> <!-- / .container -->            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

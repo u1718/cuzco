@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="Access Ozone index for any location on Earth. Data is available in JSON." >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Ozone Data" />                   
+        <title>Ozone Data- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                            <div class="topic">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="primary-font">Ozone Data</h3>
+                        </div>
+                        <div class="col-sm-8">
+                            <ol class="breadcrumb pull-right hidden-xs">
+                                                                                                            <li><a href="/">Home</a></li>
+                                                                                                                                                <li><a href="/api">API</a></li>
+                                                                                                                                                <li class="active">Ozone</li>
+                                                                                  
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                        
+            <style>
+
+    dl {
+        list-style-type: disc;
+        margin-left: 2em;
+    }
+    :not(dd) > dl {
+        margin-top: 1em;
+        margin-bottom: 2em;
+    }
+    dt {
+        display: inline;
+    }
+    dt:not(:first-of-type)::before {
+        content: '\A';
+        white-space: pre;
+    }
+    dd {
+        display: inline;
+    }
+    dd::before {
+        content: '⇒ ';
+        white-space: pre;
+    }
+    code{
+        white-space: inherit !important;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <article class="page">
+                <section id="lead">
+                    <p class="lead">Access Ozone data for any location on Earth! Data is available in JSON.</p>
+
+                    <p>NOTE: This service is only available to subscribers. API key usage is mandatory. Please register <a target="_blank" href="https://home.openweathermap.org">here</a> in order to receive an API key.</p>
+                </section>
+
+                <section id="urlformat">
+                    <header>
+                        <h2 class="text-color">URL format</h2>
+                    </header>
+                    <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-12-31T12:55:55Z.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                        <code>http://api.openweathermap.org/pollution/v1/o3/{location}/{datetime}.json?appid={api_key}</code>
+                    </a>
+                    <dl>
+                        <dt><code>location</code></dt>
+                        <dd>Location coordinates</dd>
+                        <dt><code>datetime</code></dt>
+                        <dd>ISO 8601 date or alias</dd>
+                        <dt><code>api_key</code></dt>
+                        <dd>Your API key</dd>
+                    </dl>
+                </section>
+
+                <section id="locformat">
+                    <header>
+                        <h2 class="text-color">Location format</h2>
+                    </header>
+
+                    <ul>
+                        <li>Location format is
+                            <code>{lat},{lon}</code>.</li>
+                        <li>Accuracy of coordinates affects maximum distance for search among available data entries around specified location. More digits beyond decimal point means shorter search distance.</li>
+                    </ul>
+                    <section>
+                        <header>
+                            <h3>Digits beyond decimal point to search radius</h3>
+                        </header>
+                        <dl>
+                            <dt>No decimal part</dt>
+                            <dd>~78km</dd>
+                            <dt>1 digit</dt>
+                            <dd>7862 m</dd>
+                            <dt>2 digits</dt>
+                            <dd>786 m</dd>
+                            <dt>3 digits</dt>
+                            <dd>78 m</dd>
+                            <dt>4 digits</dt>
+                            <dd>8 m</dd>
+                            <dt>5 digits</dt>
+                            <dd>1 m</dd>
+                        </dl>
+                        <h4>Examples:</h4>
+                        <dl>
+                            <dt>
+                                <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-12-31T12:55:55Z.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                                    <code>http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-03-01Z.json?appid={your-api-key}</code>
+                                </a>
+                            </dt>
+                            <dd>1 digit (~78km)</dd>
+                            <dt>
+                                <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-12-31T12:55:55Z.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                                    <code>http://api.openweathermap.org/pollution/v1/o3/0.000,10.000/2016-03-01Z.json?appid={your-api-key}</code>
+                                </a>
+                            </dt>
+                            <dd>3 digits (78m)</dd>
+                        </dl>
+                    </section>
+                </section>
+
+                <section id="dateformat">
+                    <header>
+                        <h2 class="text-color">Date format</h2>
+                    </header>
+
+                    <p>Date can be specified using either of two specifications.</p>
+
+                    <section>
+                        <header>
+                            <h3>ISO 8601</h2>
+                        </header>
+
+                        <ul>
+                            <li>Searches for the latest available point within specified date (see examples below).</li>
+                            <li>All dates are UTC-only. Using local time zones is not supported at the moment.</li>
+                        </ul>
+
+                        <section>
+                            <header>
+                                <h4>Date values</h4>
+                            </header>
+                            <dl>
+                                <dt>
+                                    <code>2016-01-02T15:04:05Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-02T15:04:05Z</code>
+                                    and
+                                    <code>2016-01-02T15:04:05.9999Z</code>
+                                </dd>
+                                <dt>
+                                    <code>2016-01-02T15:04Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-02T15:04:00Z</code>
+                                    and
+                                    <code>2016-01-02T15:04:59.9999Z</code>
+                                </dd>
+                                <dt>
+                                    <code>2016-01-02T15Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-02T15:00:00Z</code>
+                                    and
+                                    <code>2016-01-02T15:59:59.9999Z</code>
+                                </dd>
+                                <dt>
+                                    <code>2016-01-02Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-02T00:00:00Z</code>
+                                    and
+                                    <code>2016-01-02T23:59:59.9999Z</code>
+                                </dd>
+                                <dt>
+                                    <code>2016-01Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-01T00:00:00Z</code>
+                                    and
+                                    <code>2016-12-31T23:59:59.9999Z</code>
+                                </dd>
+                                <dt>
+                                    <code>2016Z</code>
+                                </dt>
+                                <dd>searches between
+                                    <code>2016-01-01T00:00:00Z</code>
+                                    and
+                                    <code>2016-12-31T23:59:99.9999Z</code>
+                                </dd>
+                            </dl>
+
+                            <h4>Examples</h4>
+                            <ul>
+                                <li>
+                                    <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-12-31T12:55:55Z.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                                        <code>http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/2016-01-02T15:04:05Z.json?appid={your-api-key}</code>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/2016Z.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                                        <code>http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/2016Z.json?appid={your-api-key}</code>
+                                    </a>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <p>
+                            <strong>NOTE:</strong>
+                            data is not cut off at the current date and time. If search request falls into the future, furthermost forecast data available will be displayed.</p>
+                    </section>
+
+                    <section>
+                        <header>
+                            <h3>Alias</h3>
+                        </header>
+
+                        <ul>
+                            <li>A keyword bound to a certain date.</li>
+                        </ul>
+
+                        <section>
+                            <header>
+                                <h4>Available aliases</h4>
+                            </header>
+                            <dl>
+                                <dt>
+                                    <code>current</code>
+                                </dt>
+                                <dd>
+                                    Searches for the latest available data point up until now
+                                </dd>
+                            </dl>
+                            <h5>Example</h5>
+                            <p>
+                                <a target="_blank" href="http://samples.openweathermap.org/pollution/v1/o3/0.0,10.0/current.json?appid=b1b15e88fa797225412429c1c50c122a1">
+                                    <code>http://api.openweathermap.org/pollution/v1/o3/0.0,10.0/current.json?appid={your-api-key}</code>
+                                </a>
+                            </p>
+                        </section>
+                    </section>
+                </section>
+
+                <section id="responseformat">
+                    <header>
+                        <h2 class="text-color">Server response format</h2>
+                    </header>
+
+                    <dl>
+                        <dt>
+                            <code>time</code>
+                        </dt>
+                        <dd>
+                            <strong>ISO 8601 timestamp</strong>
+                            - date and time corresponding to returned data</dd>
+                        <dt>
+                            <code>location</code>
+                        </dt>
+                        <dd>
+                            <strong>object</strong>
+                            - location for which data is provided
+                            <dl>
+                                <dt>
+                                    <code>latitude</code>
+                                </dt>
+                                <dd>
+                                    <strong>float</strong>
+                                    - latitude for returned data</dd>
+                                <dt>
+                                    <code>longitude</code>
+                                </dt>
+                                <dd>
+                                    <strong>float</strong>
+                                    - longitude for returned data</dd>
+                            </dl>
+                        </dd>
+                        <dt>
+                            <code>data</code>
+                        </dt>
+                        <dd>
+                            <strong>float</strong>
+                            - Ozone layer thickness, <noindex><a target="_blank" href="http://www.theozonehole.com/dobsonunit.htm" rel="nofollow">DU</a></noindex>.
+                        </dd>
+                    </dl>
+
+                    <section>
+                        <header>
+                            <h3>Example</h3>
+                        </header>
+                        <p>
+                        <pre>{
+    "time": "2016-03-03T12:00:00Z",
+    "location": {
+                    "latitude": 0.0,
+                    "longitude": 10.0
+                },
+    "data": 259.3334655761719
+}</pre>
+                        </p>
+                    </section>
+                </section>
+            </article>
+        </div>
+        <div class="col-sm-4">
+            <header>
+                <h2>Table of Contents</h2>
+            </header>
+            <ul>
+                <li><a href="#urlformat">URL format</a></li>
+                <li><a href="#locformat">Location format</a></li>
+                <li><a href="#dateformat">Date format</a></li>
+                <li><a href="#responseformat">Server Response format</a></li>
+            </ul>
+            <header>
+                <h2>Air pollution (beta)</h2>
+            </header>
+            <ul>
+                <li><a target="_blank" href="/api/pollution/co">Carbon Monoxide Data (CO)</a></li>
+                <li><a target="_blank" href="/api/pollution/o3">Ozone Data (O3)</a></li>
+                <li><a target="_blank" href="/api/pollution/so2">Sulfur Dioxide Data (SO2)</a></li>
+                <li><a target="_blank" href="/api/pollution/no2">Nitrogen Dioxide Data (NO2)</a></li>
+            </ul>
+        </div>
+    </div>
+</div>            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

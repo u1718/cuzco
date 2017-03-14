@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="New API 3.0 for Weather Stations. OpenWeatherMap is glad to invite you to join our network of private weather stations! Today we have more than 40,000 weather stations around the world" >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Weather Stations 3.0" />                   
+        <title>Weather Stations 3.0- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                            <div class="topic">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="primary-font">Weather stations</h3>
+                        </div>
+                        <div class="col-sm-8">
+                            <ol class="breadcrumb pull-right hidden-xs">
+                                                                                                            <li><a href="/">Home</a></li>
+                                                                                                                                                <li><a href="/api">API</a></li>
+                                                                                                                                                <li class="active">Stations</li>
+                                                                                  
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                        
+            <div class="container">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h2 class="headline first-child text-color">
+                <section id="how">How to connect your weather station to OpenWeatherMap</section>
+            </h2>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8">
+
+            <p>We are glad to announce our new API version for managing your personal weather stations - Weather Stations API 3.0 (beta). It went through some essential changes in comparison with the <a target="_blank" href="/stations-old">previous version</a>.</p>
+
+            <p>The main improvement is that users now have more flexible control of their stations and allowed to share and transfer data related to them. New API in RESTful style makes this process easy and convenient. In the previous version user's account was limited to single station, but with our new version users are allowed to add as many stations as they need.</p>
+
+            <p>The second innovation is an extended set of parameters which you can pass in the measurements. The data transfer protocol based on METAR and CWOP networks. You could learn more about it <a href="#measurement">here</a>.</p>
+
+            <p>We are launching the new API version in two stages. As for now you have the possibility to add and set up your meteorological stations using Weather Stations API 3.0 methods for stations management and measurements transmissions. In the nearest future we are planning to provide additional methods which will allow you to collect data from your stations for any period of time. Also we will add support for obtaining the aggregated information with various intervals (minute/hour/day). It'll be possible to receive aggregated history of measurements from your meteorological station for several years by a single query.</p>
+
+            <h3 id="steps">Three simple steps to connect your station<br />to Weather Station API 3.0:</h3>
+
+            <p><span class="badge badge-important">1</span>
+                Create an account in <a target="_blank" href="/register">members area</a> and <a target="_blank" href="/appid">receive a key to access API methods</a>
+            </p>
+            <p><span class="badge badge-important">2</span>
+                Register your station in our system using the new API version and get a unique identifier for the station.
+            </p>
+            <p><span class="badge badge-important">3</span>
+                Transfer weather data using special API method. Note that now you may have several stations attached to your account, so it's important to pass the unique station identifier in every query.
+            </p>
+
+            <br />
+
+            <h3 id="main">Weather Stations API 3.0 basic methods to retrieve data from station:</h3>
+            <p>These are two methods necessary to start working with OpenWeatherMap service: creation of the station and measurements transfer. Access to full list of API methods <a target="_blank" href="/appid">requires you to pass your personal key in the query</a>.<p>
+
+            <p>When calling methods PUT and POST it's necessary to specify the header <code>Content-Type: application/json</code></p>
+
+            <br />
+
+            <h4 id="create_station"><strong>[POST] /stations</strong></h4>
+            <p>This method is used to register a station in the OpenWeatherMap service. You need to pass a set of parameters: external identifier, station name and its geographical arrangement. In case of successful creation method returns an HTTP code <code>201</code>.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/stations?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/stations</a></p>
+
+            <h5>API Request</h5>
+            <pre><code>{
+    "external_id": "SF_TEST001",
+    "name": "San Francisco Test Station",
+    "latitude": 37.76,
+    "longitude": -122.43,
+    "altitude": 150
+}
+</code></pre>
+            <p>Headers: <code>Content-Type: application/json</code></p>
+
+            <h5>API Response</h5>
+            <pre><code>{
+    "ID": "583436dd9643a9000196b8d6",
+    "updated_at": "2016-11-22T12:15:25.96727176Z",
+    "created_at": "2016-11-22T12:15:25.967271732Z",
+    "user_id": "557066d0ff7a7e3897531d94",
+    "external_id": "SF_TEST001",
+    "name": "San Francisco Test Station",
+    "latitude": 37.76,
+    "longitude": -122.43,
+    "altitude": 150,
+    "source_type": 5
+}
+</code></pre>
+            <br />
+
+            <h4 id="measurement"><strong>[POST] /measurements</strong></h4>
+            <p>This method is used to transfer measurements collected from your station. Full description of possible data structures is provided below. Measurements are transferred in an array which allows to specify several data sets at once and to perform a postponed sending. In case of successful measurements dispatch method returns an HTTP code <code>204</code>.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/measurements?station_id=816a&type=h&limit=100&appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/measurements</a></p>
+
+            <h5>API Request</h5>
+            <pre><code>[
+  {
+    "station_id": "583436dd9643a9000196b8d6",
+    "dt": 1479817340,
+    "temperature": 18.7,
+    "wind_speed": 1.2,
+    "wind_gust": 3.4,
+    "pressure": 1021,
+    "humidity": 87,
+    "rain_1h": 2,
+    "clouds": [
+        {
+            "condition": "NSC"
+        }
+    ]
+  }
+]
+</code></pre>
+            <p>Headers: <code>Content-Type: application/json</code></p>
+
+            <h5>All parameters</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th width="20%">Parameter</th>
+                    <th width="30%">Type & Units</th>
+                    <th width="50%">Description</th>
+                </tr>
+                <tr>
+                    <td>station_id</td>
+                    <td></td>
+                    <td>The internal ID of the station which is generated during creation</td>
+                </tr>
+                <tr>
+                    <td>dt</td>
+                    <td>Unix Timestamp</td>
+                    <td>Time of measurement</td>
+                </tr>
+                <tr>
+                    <td>temperature</td>
+                    <td>Celsius</td>
+                    <td>The air temperature</td>
+                </tr>
+                <tr>
+                    <td>wind_speed</td>
+                    <td>m/s</td>
+                    <td>Wind speed</td>
+                </tr>
+                <tr>
+                    <td>wind_gust</td>
+                    <td>m/s</td>
+                    <td>Maximum speed of wind gusts</td>
+                </tr>
+                <tr>
+                    <td>wind_deg</td>
+                    <td>Degrees from 0 to 360</td>
+                    <td>Wind direction</td>
+                </tr>
+                <tr>
+                    <td>pressure</td>
+                    <td>Hectopascal</td>
+                    <td>Atmospheric pressure</td>
+                </tr>
+                <tr>
+                    <td>humidity</td>
+                    <td>%</td>
+                    <td>Relative air humidity</td>
+                </tr>
+                <tr>
+                    <td>rain_1h</td>
+                    <td>mm</td>
+                    <td>Rainfall in the last hour</td>
+                </tr>
+                <tr>
+                    <td>rain_6h</td>
+                    <td>mm</td>
+                    <td>Rainfall in the last 6 hours</td>
+                </tr>
+                <tr>
+                    <td>rain_24h</td>
+                    <td>mm</td>
+                    <td>Rainfall for the last days</td>
+                </tr>
+                <tr>
+                    <td>snow_1h</td>
+                    <td>mm</td>
+                    <td>Snow in the last hour</td>
+                </tr>
+                <tr>
+                    <td>snow_6h</td>
+                    <td>mm</td>
+                    <td>Snow in the last 6 hours</td>
+                </tr>
+                <tr>
+                    <td>snow_24h</td>
+                    <td>mm</td>
+                    <td>Snow for the last days</td>
+                </tr>
+                <tr>
+                    <td>dew_point</td>
+                    <td>Celsius</td>
+                    <td>Dew point</td>
+                </tr>
+                <tr>
+                    <td>humidex</td>
+                    <td>Celsius</td>
+                    <td>Index of temperature and humidity</td>
+                </tr>
+                <tr>
+                    <td>heat_index</td>
+                    <td>Celsius</td>
+                    <td>Heat index</td>
+                </tr>
+                <tr>
+                    <td>visibility_distance</td>
+                    <td>km</td>
+                    <td>Distance of direct visibility, METAR</td>
+                </tr>
+                <tr>
+                    <td>visibility_prefix</td>
+                    <td>N, E, S, W</td>
+                    <td>Prefix at distinctions of visibility in the directions, METAR</td>
+                </tr>
+                <tr>
+                    <td>clouds[]:distance</td>
+                    <td>m</td>
+                    <td>Height of the lower bound of overcast, METAR</td>
+                </tr>
+                <tr>
+                    <td>clouds[]:condition</td>
+                    <td>SKC, NSC, FEW, SCT, BKN, OVC</td>
+                    <td>Cloud amount, METAR</td>
+                </tr>
+                <tr>
+                    <td>clouds[]:cumulus</td>
+                    <td>CB, TCU</td>
+                    <td>Convective overcast, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:precipitation</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:descriptor</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:intensity</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:proximity</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:obsruration</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+                <tr>
+                    <td>weather[]:other</td>
+                    <td></td>
+                    <td>Additional description, METAR</td>
+                </tr>
+            </table>
+
+            <br />
+
+            <h4 id="get_measurements"><strong>[GET] /measurements</strong></h4>
+            <p>This method is used for receiving the aggregated measurements from the station. In total are supported 3 types of units - minute, hour and day. Thus, there is possible to query history of measurements from the station for any interval of time with the necessary specification.</p>
+            <p>At the moment the aggregation uses the fixed list of parameters from the collection of measurements - temperature, humidity, pressure, speed and wind direction, precipitation. In the future this list will extend.</p>
+
+            <p>The following parameters are mandatory in the request - an interval of measurements, the internal identifier of the station, type of the unit and the maximum number of records which can be returned. They are transferred in a line of GET-request as parameters.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/measurements?station_id=816a&type=h&limit=100&appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/measurements?station_id=...&type=...&limit=...</a></p>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th width="20%">Parameter</th>
+                    <th width="45%">Description</th>
+                    <th width="35%">Example</th>
+                </tr>
+                <tr>
+                    <td>station_id</td>
+                    <td>The internal ID of the station which you got during her creation</td>
+                    <td>583d7bbbebb3ff000123f1ce</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>Type of the aggregated data - minute, hour or day. Specifies the letters <code>m</code>, <code>h</code> or <code>d</code> respectively</td>
+                    <td>m</td>
+                </tr>
+                <tr>
+                    <td>limit</td>
+                    <td>The maximum number of records with the aggregated measurements which can return in the answer</td>
+                    <td>100</td>
+                </tr>
+                <tr>
+                    <td>from</td>
+                    <td>The beginning of an interval on which data are requested. Is specified in Unix Timestamp format</td>
+                    <td>1480300000</td>
+                </tr>
+                <tr>
+                    <td>to</td>
+                    <td>The end of an interval on which data are requested. Is specified in Unix Timestamp format</td>
+                    <td>1480700000</td>
+                </tr>
+            </table>
+
+            <h5>API Response</h5>
+            <pre><code>[
+    {
+        "type": "m",
+        "date": 1480508280,
+        "station_id": "583d7bbbebb3ff000123f1ce",
+        "temp": {
+            "max": 22.7,
+            "min": 21.7,
+            "average": 22.03,
+            "weight": 3
+        },
+        "humidity": {
+            "average": 76.33,
+            "weight": 3
+        },
+        "wind": {
+            "deg": 160,
+            "speed": 3.3
+        },
+        "pressure": {
+            "min": 1031,
+            "max": 1033,
+            "average": 1031.67,
+            "weight": 3
+        },
+        "precipitation": {}
+    },
+    {
+        "type": "m",
+        "date": 1480599660,
+        "station_id": "583d7bbbebb3ff000123f1ce",
+        "temp": {
+            "max": 21.7,
+            "min": 21.7,
+            "average": 21.7,
+            "weight": 1
+        },
+        "humidity": {
+            "average": 77,
+            "weight": 1
+        },
+        "wind": {},
+        "pressure": {
+            "min": 1031,
+            "max": 1031,
+            "average": 1031,
+            "weight": 1
+        },
+        "precipitation": {}
+    }
+]
+</code></pre>
+
+            <br />
+
+            <h3 id="additional">Additional features of Weather Stations API 3.0:</h3>
+            <p>List all stations, show information about one station, change and remove stations attached to your account.<p>
+
+            <br />
+
+            <h4 id="get_stations"><strong>[GET] /stations</strong></h4>
+            <p>This method is used to obtain the list of all stations added to your account with a standard set of attributes: external and internal identifiers, creation and update timestamps, name, geographical arrangement, height above sea level and station rank.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/stations?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/stations</a></p>
+
+            <h5>API Response</h5>
+            <pre><code>[
+    {
+        "id": "583436dd9643a9000196b8d6",
+        "created_at": "2016-11-22T12:15:25.967Z",
+        "updated_at": "2016-11-22T12:15:25.967Z",
+        "external_id": "SF_TEST001",
+        "name": "San Francisco Test Station",
+        "longitude": -122.43,
+        "latitude": 37.76,
+        "altitude": 150,
+        "rank": 0
+    },
+    {
+        "id": "5834367b9643a9000196b8d5",
+        "created_at": "2016-11-22T12:13:47.135Z",
+        "updated_at": "2016-11-22T12:13:47.135Z",
+        "external_id": "NY_TEST001",
+        "name": "New York Test Station",
+        "longitude":-73.99,
+        "latitude": 40.72,
+        "altitude": 30,
+        "rank": 0
+    }
+]
+</code></pre>
+
+            <br />
+
+            <h4 id="get_station"><strong>[GET] /stations/{:id}</strong></h4>
+            <p>This method is used to get information about one station with a standard set of attributes: external and internal identifiers, creation and update timestamps, name, geographical arrangement, height above sea level and station rank.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/stations/816a?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/stations/583436dd9643a9000196b8d6</a></p>
+
+            <h5>API Response</h5>
+            <pre><code>{
+    "id": "583436dd9643a9000196b8d6",
+    "created_at": "2016-11-22T12:15:25.967Z",
+    "updated_at": "2016-11-22T12:15:25.967Z",
+    "external_id": "SF_TEST001",
+    "name": "San Francisco Test Station",
+    "longitude": -122.43,
+    "latitude": 37.76,
+    "altitude": 150,
+    "rank": 0
+}
+</code></pre>
+
+            <br />
+
+            <h4 id="update_station"><strong>[PUT] /stations/{:id}</strong></h4>
+            <p>This method is used to change information about the station. Parameters available for modification: external identifier, name, geographical arrangement, height above sea level. In case of successful change method returns an HTTP code <code>200</code>.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/stations?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/stations/583436dd9643a9000196b8d6</a></p>
+
+            <h5>API Request</h5>
+            <pre><code>{
+     "external_id": "SF_UPD001",
+     "name": "San Francisco Updated Station",
+     "latitude": 37.80,
+     "longitude": -122.47,
+     "altitude": 143
+}
+</code></pre>
+            <p>Headers: <code>Content-Type: application/json</code></p>
+
+            <h5>API Response</h5>
+            <pre><code>{
+    "id": "583436dd9643a9000196b8d6",
+    "created_at": "2016-11-22T12:15:25.967Z",
+    "updated_at": "2016-11-22T12:44:20.170544353Z",
+    "external_id": "SF_UPD001",
+    "name": "San Francisco Updated Station",
+    "longitude": -122.47,
+    "latitude": 37.8,
+    "altitude": 143,
+    "rank": 0
+}
+</code></pre>
+
+            <br />
+
+            <h4 id="delete_station"><strong>[DELETE] /stations/{:id}</strong></h4>
+            <p>This method is used to remove a station from your account. In case of successful removal method returns an HTTP code <code>204</code> (Successful answer). Be careful: after this operation all measurements received from the removed station are deleted permanently, so they couldn't be restored.</p>
+
+            <h5>URL Example</h5>
+            <p><a target="_blank" href="http://samples.openweathermap.org/data/3.0/stations?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/stations/583436dd9643a9000196b8d6</a></p>
+
+            <br />
+
+            <h3>Possible errors:</h3>
+            <p>In case of an error we receive six-digit HTTP codes:</p>
+            <ul>
+                <li><code>400</code> <code>000</code> (Error in input data).</li>
+                <li><code>500</code> <code>000</code> (Internal error).</li>
+                <li><code>404</code> <code>000</code> (Object not found).</li>
+            </ul>
+            <p>With the following structure:</p>
+            <pre><code>{
+  "code": 000000,
+  "message": "string"
+} </code></pre>
+            <ul>
+                <li>“code” - Six-digit error code. First three digits stands for an HTTP code, second - for a special error code.</li>
+                <li>“message” - Error description.</li>
+            </ul>
+
+        </div> <!-- col -->
+
+        <div class="col-sm-4">
+            <ul>
+                <li><a href="/stations#steps">Three simple steps</a></li>
+                <li><a href="/stations#main">Weather Stations API 3.0 basic methods</a>
+                    <ul>
+                        <li><a href="/stations#create_station">Register station</a></li>
+                        <li><a href="/stations#measurement">Send measurements for station</a></li>
+                        <li><a href="/stations#get_measurements">Get measurements for station</a></li>
+                    </ul>
+                </li>
+                <li><a href="/stations#additional">Additional features</a>
+                    <ul>
+                        <li><a href="/stations#get_stations">Get all stations</a></li>
+                        <li><a href="/stations#get_station">Get station info</a></li>
+                        <li><a href="/stations#update_station">Update station info</a></li>
+                        <li><a href="/stations#delete_station">Delete station</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div> <!-- row -->
+</div> <!-- container -->            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="" >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Weather Triggers" />                   
+        <title>Weather Triggers- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                        
+            <div class="container">
+
+<div class="row">
+<div class="col-sm-12">
+
+<h2 class="headline first-child text-color">
+    <section id="how">Weather alerts from OpenWeatherMap</section>
+</h2>
+
+</div>
+</div>
+
+<div class="row">
+<div class="col-sm-8">
+
+<p>We invite you to try our new product - the weather alerts which are based on our meteorological data.</p> 
+
+<p>Now you can use simple syntax and a few API methods to create triggers which will fire on an occurrence of the selected weather conditions (temperature, humidity, pressure, etc.) in a specified period of time. For example, if you are interested in the forthcoming frosts or the probability of a wind speed increase in a certain place, you can obtain this information with the help of our new tool. More detailed description about working with the service is given below.</p>
+
+<p>If the trigger's conditions are met, our service will generate an alert. In order to receive this alert you need to poll the service with the specified time interval. We plan to add push notifications and new data sources to this product's functionality in the nearest future.</p>
+
+<h3 id="steps">Three simple steps for working with Weather Triggers API:</h3>
+
+<p><span class="badge badge-important">1</span>
+  Create an account in <a href="/register">members area</a> and <a href="/appid">receive a key to access API</a>.
+</p>
+<p><span class="badge badge-important">2</span>
+   Create the trigger with the necessary <a href="/triggers-struct#conditions">conditions</a> for temperature, pressure, humidity, wind speed, wind direction and clouds.
+</p>
+<p><span class="badge badge-important">3</span>
+   Poll our service and receive information about an occurrence or a forecast of the upcoming events in which you are interested.
+</p>
+
+<br />
+
+<h3 id="main">Weather Triggers API basic methods to retrieve alerts from the service:</h3>
+<p>Minimal prerequisites to start working with our service: create a trigger and receive a list of the current alerts. For the access to all API methods <a href="/appid">it is necessary to specify your personal key</a>.<p>
+<br />
+
+<h4 id="create_trigger"><strong>[POST] /triggers</strong></h4>
+<p>This method is used to create a trigger with the necessary conditions and the indication of an interval for observations.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers?appid=b1b15e88fa797225412429c1c50c122a1">http://api.openweathermap.org/data/3.0/triggers</a>
+</p>
+
+<h5>API Request</h5>
+<pre><code>{
+   "time_period":{
+      "start":{
+         "expression":"after",
+         "amount":132000000
+      },
+      "end":{
+         "expression":"after",
+         "amount":432000000
+      }
+   },
+   "conditions":[
+      {
+         "name":"temp",
+         "expression":"$gt",
+         "amount":299
+      }
+   ],
+   "area":[
+      {
+         "type":"Point",
+         "coordinates":[
+            53,
+            37
+         ]
+      }
+   ]
+}
+</code></pre>
+
+<h5>API Response</h5>
+<pre><code>{
+   "__v":0,
+   "_id":"585268b72516b90010058184",
+   "alerts":{
+
+   },
+   "area":[
+      {
+         "type":"Point",
+         "_id":"585268b72516b90010058185",
+         "coordinates":[
+            53,
+            37
+         ]
+      }
+   ],
+   "conditions":[
+      {
+         "name":"temp",
+         "expression":"$gt",
+         "amount":299,
+         "_id":"585268b72516b90010058186"
+      }
+   ],
+   "time_period":{
+      "end":{
+         "expression":"after",
+         "amount":432000000
+      },
+      "start":{
+         "expression":"after",
+         "amount":132000000
+      }
+   }
+}
+</code></pre>
+<p>A full description of the returned data structure and the list of parameters can be found <a  href="/triggers-struct" target="_blank">here</a>.</p>
+<p>Headers: <code>Content-Type: application/json</code></p>
+
+<br />
+
+<h4 id="get_trigger"><strong>[GET] /triggers/{:id}</strong></h4>
+<p>This method is used to get all information about a trigger, including the current alerts. Information about an occurence of the expected events is in an <code>alert's</code> nested structure. The trigger calls a separate method for receiving history notifications.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers/816a?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/5852816a9aaacb00153134a3
+    </a>
+</p>
+
+<h5>API Response</h5>
+<pre><code>
+{
+   "_id":"5852816a9aaacb00153134a3",
+   "__v":0,
+   "alerts":{
+      "8b48b2cd21c23d2894466caccba1ed1f":{
+         "conditions":[
+            {
+               "current_value":{
+                  "min":263.576,
+                  "max":263.576
+               },
+               "condition":{
+                  "name":"temp",
+                  "expression":"$lt",
+                  "amount":273,
+                  "_id":"5852816a9aaacb00153134a5"
+               }
+            }
+         ],
+         "last_update":1481802090232,
+         "date":1482181200000,
+         "coordinates":{
+            "lon":37,
+            "lat":53
+         }
+      }
+   },
+   "area":[
+      {
+         "type":"Point",
+         "_id":"5852816a9aaacb00153134a4",
+         "coordinates":[
+            37,
+            53
+         ]
+      }
+   ],
+   "conditions":[
+      {
+         "name":"temp",
+         "expression":"$lt",
+         "amount":273,
+         "_id":"5852816a9aaacb00153134a5"
+      }
+   ],
+   "time_period":{
+      "end":{
+         "amount":432000000,
+         "expression":"after"
+      },
+      "start":{
+         "amount":132000000,
+         "expression":"after"
+      }
+   }
+}
+</code></pre>
+<p>A full description of the returned data structure and the list of parameters can be found  <a  href="/triggers-struct" target="_blank">here</a>.</p>
+
+<br />
+
+<h3 id="additional">Additional features of Weather Triggers API:</h3>
+<p>Allows you to get a list of all triggers, change and remove them, receive and manage alerts history.<p>
+
+<br />
+
+<h4 id="get_triggers"><strong>[GET] /triggers</strong></h4>
+<p>The method is used to get a list of all triggers (with the current alerts) which are connected to your account.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers
+    </a>
+</p>
+
+<h5>API Response</h5>
+<pre><code>
+[
+   {
+      "_id":"585268b72516b90010058184",
+      "__v":0,
+      "alerts":{
+
+      },
+      "area":[
+         {
+            "type":"Point",
+            "_id":"585268b72516b90010058185",
+            "coordinates":[
+               53,
+               37
+            ]
+         }
+      ],
+      "conditions":[
+         {
+            "name":"temp",
+            "expression":"$gt",
+            "amount":299,
+            "_id":"585268b72516b90010058186"
+         }
+      ],
+      "time_period":{
+         "end":{
+            "expression":"after",
+            "amount":432000000
+         },
+         "start":{
+            "expression":"after",
+            "amount":132000000
+         }
+      }
+   },
+   {
+      "_id":"585280edbe54110025ea52bb",
+      "__v":0,
+      "alerts":{
+
+      },
+      "area":[
+         {
+            "type":"Point",
+            "_id":"585280edbe54110025ea52bc",
+            "coordinates":[
+               53,
+               37
+            ]
+         }
+      ],
+      "conditions":[
+         {
+            "name":"temp",
+            "expression":"$lt",
+            "amount":273,
+            "_id":"585280edbe54110025ea52bd"
+         }
+      ],
+      "time_period":{
+         "end":{
+            "amount":432000000,
+            "expression":"after"
+         },
+         "start":{
+            "amount":132000000,
+            "expression":"after"
+         }
+      }
+   },
+   {
+      "_id":"5852816a9aaacb00153134a3",
+      "__v":0,
+      "alerts":{
+         "8b48b2cd21c23d2894466caccba1ed1f":{
+            "conditions":[
+               {
+                  "current_value":{
+                     "min":263.576,
+                     "max":263.576
+                  },
+                  "condition":{
+                     "name":"temp",
+                     "expression":"$lt",
+                     "amount":273,
+                     "_id":"5852816a9aaacb00153134a5"
+                  }
+               }
+            ],
+            "last_update":1481802090232,
+            "date":1482181200000,
+            "coordinates":{
+               "lon":37,
+               "lat":53
+            }
+         }
+      },
+      "area":[
+         {
+            "type":"Point",
+            "_id":"5852816a9aaacb00153134a4",
+            "coordinates":[
+               37,
+               53
+            ]
+         }
+      ],
+      "conditions":[
+         {
+            "name":"temp",
+            "expression":"$lt",
+            "amount":273,
+            "_id":"5852816a9aaacb00153134a5"
+         }
+      ],
+      "time_period":{
+         "end":{
+            "amount":432000000,
+            "expression":"after"
+         },
+         "start":{
+            "amount":132000000,
+            "expression":"after"
+         }
+      }
+   }
+]
+</code></pre>
+<p>A full description of the returned data structure and the list of parameters can be found <a  href="/triggers-struct" target="_blank">here</a>.</p>
+
+<br />
+
+<h4 id="update_trigger"><strong>[PUT] /triggers/{:id}</strong></h4>
+<p>This method is used to change a trigger's parameters.</p>
+<p>IMPORTANT! If the trigger is changed, all related current alerts will be removed.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/585280edbe54110025ea52bb
+    </a>
+</p>
+
+<h5>API Request</h5>
+<pre><code>{
+   "time_period":{
+      "start":{
+         "expression":"after",
+         "amount":132000000
+      },
+      "end":{
+         "expression":"after",
+         "amount":132000000
+      }
+   },
+   "conditions":[
+      {
+         "name":"temp",
+         "expression":"$lt",
+         "amount":270
+      }
+   ],
+   "area":[
+      {
+         "type":"Point",
+         "coordinates":[
+            53,
+            37
+         ]
+      }
+   ]
+}
+</code></pre>
+
+<h5>API Response</h5>
+<pre><code>{
+   "_id":"585268b72516b90010058184",
+   "__v":1,
+   "alerts":{
+
+   },
+   "area":[
+      {
+         "type":"Point",
+         "_id":"58528903d083a2001b7cb428",
+         "coordinates":[
+            53,
+            37
+         ]
+      }
+   ],
+   "conditions":[
+      {
+         "name":"temp",
+         "expression":"$lt",
+         "amount":270,
+         "_id":"58528903d083a2001b7cb427"
+      }
+   ],
+   "time_period":{
+      "start":{
+         "expression":"after",
+         "amount":132000000
+      },
+      "end":{
+         "expression":"after",
+         "amount":132000000
+      }
+   }
+}relax
+</code></pre>
+<p>A full description of the returned data structure and the list of parameters can be found <a  href="/triggers-struct" target="_blank">here</a>.</p>
+<p>Headers: <code>Content-Type: application/json</code></p>
+
+<br />
+
+<h4 id="delete_trigger"><strong>[DELETE] /triggers/{:id}</strong></h4>
+<p>This method is used to remove a trigger from your account. In case of successful removal the service will return an HTTP-code <code>204</code> (Successful answer).</p>
+<p>IMPORTANT! Along with the trigger all of its alerts (current and past) will also be removed and they couldn't be restored.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/585268b72516b90010058184
+    </a>
+</p>
+
+<br />
+
+<h4 id="history_alerts"><strong>[GET] /triggers/{:id}/history</strong></h4>
+<p>This method is used to get a list of historical alerts which were generated by the specified trigger, but now become irrelevant.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/5852816a9aaacb00153134a3/history
+    </a>
+</p>
+
+<br />
+
+<h4 id="history_alert"><strong>[GET] /triggers/{:trigger_id}/history/{:alert_id}</strong></h4>
+<p>This method is used to get information about the specific alert in the trigger's history. You need to pass the trigger's and the alert's ids to the query.</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers/816a/history/71e2?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/58528.../history/671e2...
+    </a>
+</p>
+
+<br />
+
+<h4 id="delete_alert"><strong>[DELETE] /triggers/{:trigger_id}/history/{:alert_id}</strong></h4>
+<p>This method is used to remove a specific alert from a trigger's history. In case of successful removal service will return an HTTP-code <code>204</code> (Successful answer).</p>
+
+<h5>URL Example</h5>
+<p>
+     <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers/816a/history/71e2?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/58528.../history/671e2...
+    </a>
+</p>
+
+<br />
+
+<h4 id="delete_alerts"><strong>[DELETE] /triggers/{:id}/history</strong></h4>
+<p>This method is used to remove all history of alerts from a trigger. In case of successful removal service will return an HTTP-code <code>204</code> (Successful answer).</p>
+
+<h5>URL Example</h5>
+<p>
+    <a target="_blank" href="http://samples.openweathermap.org/data/3.0/triggers/816a/history?appid=b1b15e88fa797225412429c1c50c122a1">
+        http://api.openweathermap.org/data/3.0/triggers/5852816a9aaacb00153134a3/history
+    </a>
+</p>
+
+<br />
+
+</div> <!-- col -->
+
+<div class="col-sm-4">
+<ul>
+    <li><a href="/triggers#steps">Three simple steps</a></li>
+    <li><a href="/triggers#main">Weather Triggers API basic methods</a>
+        <ul>
+            <li><a href="/triggers#create_trigger">Create trigger</a></li>
+            <li><a href="/triggers#get_trigger">Get alerts by trigger</a></li>
+        </ul>
+    </li>
+    <li><a href="/triggers#additional">Additional features</a>
+        <ul>
+            <li><a href="/triggers#get_triggers">Get all triggers</a></li>
+            <li><a href="/triggers#update_trigger">Update trigger</a></li>
+            <li><a href="/triggers#delete_trigger">Delete trigger</a></li>
+            <li><a href="/triggers#history_alerts">Get all history alerts</a></li>
+            <li><a href="/triggers#history_alert">Get history alert</a></li>
+            <li><a href="/triggers#delete_alert">Delete history alert</a></li>
+            <li><a href="/triggers#delete_alerts">Delete all history alerts</a></li>
+        </ul>
+    </li>    
+    <li><a href="/triggers-struct">Weather Triggers Struct</a>
+        <ul>
+            <li><a href="/triggers-struct#triggers">Triggers</a></li>
+            <li><a href="/triggers-struct#time_period">Time period</a></li>
+            <li><a href="/triggers-struct#conditions">Conditions</a></li>
+            <li><a href="/triggers-struct#area">Area</a></li>
+            <li><a href="/triggers-struct#alerts">Alerts</a></li>
+            <li><a href="/triggers-struct#history_alerts">History alerts</a></li>
+        </ul>
+    </li>
+</ul>
+</div>
+
+</div> <!-- row -->
+</div> <!-- container -->            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

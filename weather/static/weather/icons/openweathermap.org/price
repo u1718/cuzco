@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head >        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="All data provided by OpenWeatherMap can be freely used through API with non-commercial or commercial purposes. Subscribe to current weather, forecasts, and historical data collections and enjoy our fast simple API." >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="Weather API Price-list" />                   
+        <title>Weather API Price-list- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        
+        <link href='/themes/openweathermap/assets/css/style.min.css' rel="stylesheet">        
+
+<!-- Resources -->
+<link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+
+<!--{ partial "scripts_js" }-->
+<script src='/themes/openweathermap/assets/js/bundle.js'></script>                
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                            <div class="topic">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="primary-font">Price</h3>
+                        </div>
+                        <div class="col-sm-8">
+                            <ol class="breadcrumb pull-right hidden-xs">
+                                                                                                            <li><a href="/">Home</a></li>
+                                                                                                                                                <li class="active">Price</li>
+                                                                                  
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                        
+            <div class="container">
+
+<div class="row">
+<div class="col-sm-12">
+
+<p class="lead">Subscribe to current weather, forecasts, and historical data collections and enjoy our fast simple API! </p>
+
+<!--<p class="lead">OpenWeatherMap provides free current and forecast weather data. 
+However, if you need our specialists to be more involved in your business we're ready to support! 
+For higher level of availability and support see the Developer and Professional support plans. 
+For guaranteed high level of availability and API customization please consider an Enterprise account.</p> -->
+
+
+</div> <!-- / .row -->
+
+
+<h2 class="headline first-child text-color">Current weather and forecasts collection</h2>
+
+ 
+
+<table class="table table-bordered">
+<thead> 
+<tr>  
+  <th class="active"></th>
+  <th class="active"><h4 align="center">Free</h4></th>
+    <th class="active"><h4 align="center">Startup</h4></th>
+  <th class="active"><h4 align="center">Developer</h4></th>
+  <th class="active"><h4 align="center">Professional</h4></th>  
+  <th class="active"><h4 align="center">Enterprise</h4></th>
+</tr>
+
+ <tr class="active">
+  <td><b>Price</b><br><small>Price is fixed, no other hidden costs.<small></td>
+  <td align="center"><b>Free</b> </td>
+    <td align="center"><b>40 USD <small>/ month</small></b></td>
+  <td align="center"><b>180 USD <small>/ month</small></b></td>
+  <td align="center"><b>470 USD <small>/ month</small></b></td>
+  <td align="center"><b>2,000 USD <small>/ month</small></b></td>
+ </tr>
+ 
+  <tr class="active">
+  <td> <b>Subscribe</b>
+  
+  </td>
+  <td><a class="btn btn-default btn-block" href="/appid"> Get API key and Start</a></td>
+    <td align="center">
+<a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+  </td>
+  <td align="center">
+<a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+  </td>
+  
+   <td align="center">
+   <a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+   </td>
+   
+   
+<td align="center">
+ <a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+  </td>
+  
+ </tr>
+ 
+ <tr>
+  <td>Calls per minute (no more than)</td>
+  <td>60</td>
+  <td>600</td>
+  <td>3,000</td>
+  <td>30,000</td>
+  <td>200,000</td>
+ </tr>
+
+
+
+ <tr>
+  <td>Current weather API</td>
+  <td>✔</td>
+    <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+ </tr>
+ <tr>
+  <td>5 days/3 hour forecast API</td>
+    <td>✔</td>
+      <td>✔</td>
+    <td>✔</td>
+    <td>✔</td>
+    <td>✔</td>
+ </tr>
+  <tr>
+  <td>16 days/daily forecast API</td>
+     <td>-</td>
+      <td>-</td>
+    <td>✔</td>
+    <td>✔</td>
+    <td>✔</td>
+ </tr>
+ 
+
+ <tr>
+  <td>Weather maps API</td>
+  <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+ </tr>
+
+ <tr>
+  <td>UV index API</td>
+  <td>-</td>
+    <td>-</td>
+      <td>-</td>
+    <td>✔</td>
+    <td>✔</td>
+ </tr>
+
+
+ <tr>
+  <td>Bulk download</td>
+  <td>-</td>
+  <td>-</td>
+    <td>-</td>
+  <td>✔ </td>
+  <td>✔ </td>
+ </tr>
+  
+ <tr>
+   <td>Weather alerts (beta)</td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+ </tr>
+
+ <tr>
+  <td>Air pollution (beta)</td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+  <td>✔ </td>
+ </tr>
+
+ 
+
+
+ <td colspan=6 align="center">Service</td>
+
+<tbody>
+
+
+ <tr>
+  <td>Availability</td>
+  <td>95.0%</td>
+  <td>95.0%</td>
+  <td>99.5%</td>
+  <td>99.5%</td>
+  <td>99.9%</td>
+ </tr>
+
+ <tr>
+  <td>SLA</td>
+  <td>-</td>
+   <td>-</td>
+  <td>-</td>
+   <td>-</td>
+  <td>✔</td>
+ </tr>
+
+
+ <tr>
+  <td>Weather API data update</td>
+  <td>< 2 hours</td>
+    <td>< 2 hours</td>
+  <td>< 1 hour</td>
+  <td>< 10 min</td>
+  <td><  10 min</td>
+ </tr>
+
+
+ <tr>
+  <td>Weather maps data update</td>
+  <td>< 3 hours</td>
+    <td>< 3 hours</td>
+  <td>< 3 hours</td>
+  <td>< 3 hours</td>
+  <td><  3 hours</td>
+ </tr>
+
+
+ <tr>
+  <td>API lifetime support</td>
+  <td>Current version</td>
+    <td>Current version</td>
+  <td>Current version</td>
+  <td><b>All versions</b></td>
+  <td><b>All versions</b></td>
+ </tr>
+
+ <tr>
+  <td>SSL</td>
+    <td>-</td>
+   <td>-</td>
+   <td>✔</td>
+  <td>✔</td>
+  <td>✔</td>
+ </tr>
+
+ 
+
+
+ <tr>
+  <td>License for maps, APIs, and other products</td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a> <br>or custom</td>
+ </tr>
+ 
+  <tr>
+  <td>License for data and database</td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a> <br>or custom</td>
+ </tr>
+
+ <tr>
+  <td>Tech support</td>
+  <td>Helpdesk</td>
+  <td>Helpdesk</td>
+  <td>Helpdesk</td>
+  <td>Direct</td>
+  <td>Direct 24x7</td>
+ </tr>
+
+
+
+</tbody>
+</table>
+
+
+<br>
+<br>
+
+<h2 class="headline first-child text-color">Historical weather collection</h2>
+
+<table class="table table-bordered">
+<thead> 
+<tr>  
+  <th class="active"></th>
+  <th class="active"><h4 align="center">Starter</h4></th>
+  <th class="active"><h4 align="center">Medium</h4></th> 
+  <th class="active"><h4 align="center">History Bulk</h4>
+  <!--<th class="active"><h4 align="center">Advanced</h4></th>-->
+</tr>
+
+<tr class="active">
+  <td> <b>Price </b><br><small>Price is fixed, no other hidden costs.<small></td>
+  <td align="center"><b>150 USD <small>/ month</small></b></td>
+  <td align="center"><b>950 USD <small>/ month</small></b></td>
+  <td align="center"><b>10 USD <small>/ city</small></b>
+ <!--<td align="center"><b>3,000 USD <small>/ month</small></b></td>-->
+ </tr>
+  
+ </tr>
+ 
+ <tr class="active">
+  <td> <b>Subscribe</b>
+
+  </td>
+ 
+  <td align="center">
+<a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+  </td>
+  
+   <td align="center">
+   <a class="btn btn-default btn-block" href="/price_subscribe">Subscribe</a>
+   </td>
+   
+   
+<td align="center">
+<a class="btn btn-default btn-block" href="https://home.openweathermap.org/history_bulks/new">Get</a>
+  </td>
+  </tr>
+
+</thead>
+
+<tbody>
+
+ 
+ <tr>
+  <td>Historical weather</td>
+  <td>1 month back</td>
+  <td>1 year back</td>
+  <td>5 years back</td>
+ </tr>
+ 
+ 
+ <tr>
+  <td>Calls per day (no more than)</td>
+  <td>5,000</td>
+  <td>50,000</td>
+  <td>-</td>
+ </tr>
+ 
+  <tr>
+  <td>Bulk download</td>
+  <td>-</td>
+  <td>-</td>
+  <td>✔</td>
+ </tr>
+ 
+  <td colspan=4 align="center">Service</td>
+ 
+ <tr>
+  <td>License for maps, APIs, and other products</td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  <td><a href="http://creativecommons.org/licenses/by-sa/4.0/" target=_blank>CC BY-SA 4.0</a></td>
+  
+ </tr>
+ 
+  <tr>
+  <td>License for data and database</td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  <td><a href="http://opendatacommons.org/licenses/odbl/" target=_blank>ODbL</a></td>
+  
+ </tr>
+
+
+ <tr>
+  <td>Tech support</td>
+  <td>Helpdesk</td>
+  <td>Helpdesk</td>
+  <td>Helpdesk</td>
+ </tr>
+ 
+  
+ 
+</tbody>
+</table>
+
+
+
+<br>
+  
+ <h2>Common questions
+
+</h2>
+ <br>
+  
+  
+ <h4>What about licensing?</h4>
+
+<p>All products and services like maps, tiles, APIs and others provided by OpenWeatherMap are distributed under terms of the <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International license (CC BY-SA 4.0).</a></p>
+<p>Data and database are open and licened by <a href="http://opendatacommons.org/licenses/odbl/">Open Data Commons Open Database License (ODbL).</a></p>
+
+<p>You can freely use our products and data with non-commercial or commercial
+purposes. However, the OpenWeatherMap should be credited as a weather data source in a visible part of your application. </p>
+
+<p>For Enterprise account other licenses are possible. Please, <a href="https://openweathermap.desk.com/customer/portal/emails/new?t=535697">contact us</a> for more details.</p>
+
+<br>
+  
+ <h4>How to get technical support?</h4>
+
+<p>In our Support Center <a href="https://openweathermap.desk.com">openweathermap.desk.com</a> you can search the knowledge base, send us your request or leave a public question to society. On our website <a href="http://openweathermap.org/api">openweathermap.org/api </a>you can find detailed API documentation with examples of API calls and responses.</p>
+ <br>
+  
+
+
+<h4>What if I need in customisation of APIs or new features? </h4>
+<p>If you need in customization of API, expanded features, bulk downloading of historical data, more than 5 years archive of historical weather, or more flexibility, please, 
+<a href="mailto:info@openweathermap.org?subject=Customisation">contact us.</a></p>
+
+<br>
+  
+<h4>How to work with hourly historical weather API?</h4>
+<p>Historical data has an hour interval, data is available for 20,000+ cities and for majority of weather stations. Due to considerable volume of data the historical API has limitation of downloading by one API call. Depend on how long period of data you need please divide 
+your request into several time intervals and download data by several API calls accordingly. </p>
+
+
+ <br>
+ 
+ <h4>Can I work with your API without API key?</h4>
+  
+<p>To get access to weather API you need to use your API key whatever account you chose from Free to Enterprise.
+
+We keep right to not to process API requests without API key. <a href="http://openweathermap.org/appid#get">How to get API key</a></p>
+<br>
+
+
+<h4>Why Free and Startup accounts has no SSL feature?</h4>
+
+<p>There is a simple reason behind limitation of SSL feature by several paid accounts and not to including it into free and Startup accounts at the moments. OpenWeatherMap service is really high loading ones processes dozen of thousands requests per second. Providing SSL for each request will increase loading to the servers significantly and as a result we will not be able to process so many requests in a neat way that we are currently doing. </p>
+
+
+
+
+</div>
+</div> <!-- / .container -->            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>     
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>              
+    </body>
+    </html>

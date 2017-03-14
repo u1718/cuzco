@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
+{% static 'weather/icons/w' as icons %}
 {% if city_list %}
 <ul>
   {% for c in city_list %}
@@ -21,7 +24,9 @@
 	      {{ c.owm.owm.name }}, {{ c.owm.owm.country }}</strong>
 	      <br>
 	    </h4>
-	    <h3><strong>
+	    <h3>
+	    <img src="{{ icons }}/{{ c.owm.forecasts.0.weather.0.icon }}.png">
+	    <strong>
 	      {{ c.owm.forecasts.0.main.temp }} °C</strong>
 	    </h3>
 	    <h4>
@@ -123,7 +128,9 @@
 	      Weather in
 	      {{ c.yahoo.yahoo.name }}, {{ c.yahoo.yahoo.country }}</strong>
 	    </h4>
-	    <h3><strong>
+	    <h3>
+	      <img src="http://l.yimg.com/a/i/us/we/52/{{ c.yahoo.yah.code }}.gif">
+	      <strong>
 	      {{ c.yahoo.yah.temp }} °C</strong>
 	    </h3>
 	    <h4>

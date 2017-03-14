@@ -236,6 +236,7 @@ def get_yah(c):
     oo['temp'] = "{0:.1f}".format((oo['temp'] - 32) * 5 / 9)
     oo['text'] = yql['query']['results']['channel']['item']['condition']['text']
     oo['date'] = yql['query']['results']['channel']['item']['condition']['date']
+    oo['code'] = yql['query']['results']['channel']['item']['condition']['code']
     oo['winddir'] = yql['query']['results']['channel']['wind']['direction']
     oo['windspeed'] = float(yql['query']['results']['channel']['wind']['speed'])
     oo['windspeed'] = "{0:.2f}".format(oo['windspeed'] * 0.44704)

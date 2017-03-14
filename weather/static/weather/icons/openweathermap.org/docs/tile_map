@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+    <meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT">
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+    <meta name="description" content="" >
+    <meta name="author" content="OpenWeatherMap.org">
+    <meta name="domain" content="OpenWeatherMap.org" >        
+    <meta name="p:domain_verify" content="34fe229eab8562dca90f4a5962ff80a9"/>
+    <meta property="title" content="tile_map" />           
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--meta  http-equiv=Expires content="Tue, Sep 20 2017 15:27:22 GMT">
+<meta http-equiv="Last-Modified" content="Tue, Sep 20 2017 15:27:22 GMT"-->
+<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="weather, world, Openstreetmap, forecast, Openweather, current" >
+<meta name="description" content="" >
+<meta name="author" content="OpenWeatherMap.org">
+<meta name="domain" content="OpenWeatherMap.org" >
+
+
+<!--  Facebook -->
+<meta property="og:type" content='website' />
+<meta property="og:title" content='tile_map' />
+<meta property="og:description" content='' />
+<meta property="og:url" content='/news/post/' />
+<meta property='og:image' content='/storage/app/media' />
+
+
+<!-- Google plus -->
+<meta itemprop="name" content="tile_map" />
+<meta itemprop="description" content="" />
+<meta itemprop="image" id="goo_img"/>
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary"/>  <!-- Тип окна --> 
+<meta name="twitter:site" content="OpenWeatherMap"/>
+<meta name="twitter:title" content="tile_map">
+<meta name="twitter:description" content="" />
+<meta name="twitter:creator" content="OpenWeatherMap"/>
+<meta name="twitter:image:src"  content="/storage/app/media"/>
+<meta name="twitter:domain" content="http://openweathermap.org" /> 
+        <title>tile_map- OpenWeatherMap</title>
+        <link rel="shortcut icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/favicon.ico" />
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/themes/openweathermap/assets/vendor/owm/img/icons/logo_60x60.png" sizes="60x60" type="image/png">        <!-- Custom styles for this template -->
+
+    <!-- TODO: Currently Combinier worked not correct with https -->
+    <!-- <link href="http://openweathermap.org/combine/9257d57d9af609890dc9d995db89a099-1486398749" rel="stylesheet"> -->
+    
+    <link href='/themes/openweathermap/assets/vendor/mosaic/css/bootstrap.min.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/mosaic/css/color-styles.min.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/mosaic/css/ui-elements.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/mosaic/css/custom.min.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/mosaic/css/animate.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/mosaic/fonts/font-awesome/css/font-awesome.min.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/owm/css/main.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/owm/css/toggle-switch.css' rel="stylesheet">
+    <link href='/themes/openweathermap/assets/vendor/owm/css/style.min.css' rel="stylesheet">
+    
+    
+    
+
+    <!-- Resources -->
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
+    
+    <!--link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"-->   
+        <!-- TODO: Currently Combinier worked not correct with https -->
+<!-- <script src="http://openweathermap.org/combine/75d32b393ea1459b37a667b35c9b8861-1486398749"></script> -->  
+    
+    <script src="/themes/openweathermap/assets/vendor/mosaic/js/jquery.min.js"></script>
+    <script src="/themes/openweathermap/assets/vendor/mosaic/js/scrolltopcontrol.min.js"></script>
+    <script src="/themes/openweathermap/assets/vendor/mosaic/js/custom.js"></script>
+    <script src="/themes/openweathermap/assets/vendor/mosaic/js/jquery.sticky.js"></script>
+    <script src="/themes/openweathermap/assets/vendor/owm/js/script.js"></script>
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+    <script src="/themes/openweathermap/assets/vendor/mosaic/js/bootstrap.min.js"></script>  
+        <script src="https://cdn.ravenjs.com/3.6.1/raven.min.js"></script>
+<script>Raven.config('http://66df88eb63e94f27964b84031e49b358@sentry.owm.io/16').install()</script>  
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31601618-1']);
+  _gaq.push(['_setDomainName', 'openweathermap.org']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>    
+    </head>
+    
+    <body class="body-orange">
+    
+        <!-- Extra Bar -->
+    <div class="mini-navbar mini-navbar-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-9 col-sm-9  hidden-xs">
+                    <a href="https://openweathermap.desk.com/" class="first-child" target="_blank">
+                    <i class="fa fa-envelope">  </i>  <span class="hidden-xs">Support Center</span></a>
+                    
+                                        
+                    <a href="https://home.openweathermap.org/users/sign_up" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'register']);"><i class="fa fa-arrow-circle-down"></i> Sign Up</a>
+                    <a href="https://home.openweathermap.org/users/sign_in" class="pull-right" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'signin']);"><i class="fa fa-sign-in"></i> Sign In</a>
+                    
+                                        
+                    <a href="#" class="pull-right" id="nav-search"><i class="fa fa-search" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'search']);"></i> Weather in your city</a>
+                    <a href="#" class="pull-right hidden" id="nav-search-close"><i class="fa fa-times"></i></a>
+                    <!-- Search Form -->
+                    <form class="pull-right hidden" role="search" id="nav-search-form" action="/find" method="get">
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" id="q" name="q" >
+                        <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 units-selector">
+                    <label class="toggle candy blue units-toggle">
+                    <input id="units_check" type="checkbox" checked="checked" />
+                    <p>
+                    <span>  °C  </span>
+                    <span>  °F  </span>
+                    </p>  
+                    <a class="slide-button" ></a>
+                    </label>  
+                </div>
+            </div>        
+        </div>
+    </div>    
+        <div class="navbar navbar-dark navbar-static-top" role="navigation">
+      <div class="container">   
+          <div class="row">
+            <!-- Navbar Header -->
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-8 navbar-header">
+                <a class="navbar-brand" href="/">          
+                    <img src="/themes/openweathermap/assets/vendor/owm/img/logo_OpenWeatherMap_orange.svg" width="240" height="30" alt="openweathermap">                
+                </a>             
+            </div><!-- / Navbar Header --> 
+            <!-- Navbar toggle -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>                  
+            <!-- Navbar Links -->
+            <div class="col-lg-9 col-md-9 col-sm-9 col-sm-9 col-xs-8  navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+               <!-- <li><a href="/" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'home']);">Home</a></li> -->
+                <li><a href="/city" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'weather']);">Weather</a></li>
+                <!--<li><a href="/maps" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'maps']);">Maps</a></li>-->
+    
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">Maps <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/weathermap" class="bg-hover-color">Weather maps</a></li>
+                    <li><a href="http://openweathermap.org/weathermap?basemap=satellite&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3" class="bg-hover-color"  target="_blank">Current satellite maps</a></li>
+                    <!--<li><a href="/help/sat.html" class="bg-hover-color">Current satellite maps</a></li>
+                    <li><a href="/beautifulmaps" class="bg-hover-color">Beautiful maps</a></li>-->
+                    <li><a href="http://owm.io/beautiful_maps" target="_blank" class="bg-hover-color">Beautiful places</a></li>
+                    <!--<li><a href="/map_editor_2" class="bg-hover-color">Map Editor 2.0</a></li>-->
+                  </ul>
+                </li>
+                
+                <li><a href="/api" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'api']);">API</a></li>
+                <li><a href="/price" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'price']);">Price</a></li>
+                <li><a href="/examples" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'examples']);">Partners</a></li>
+            
+                <li><a href="/stations" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'station']);">Stations</a></li>
+                <li><a href="/widgets-constructor" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'widgets']);">Widgets</a></li> 
+                <li><a href="/news" class="bg-hover-color" onclick="_gaq.push(['_trackEvent', 'Navbar', 'Main', 'news']);">News</a></li>
+                             
+               <li class="dropdown">
+                  <a href="#" class="dropdown-toggle bg-hover-color" data-toggle="dropdown">About <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="http://owm.io/about" class="bg-hover-color">About company</a></li>
+                    <li><a href="http://owm.io" class="bg-hover-color"  target="_blank">VANE Data Science Platform</a></li>
+                  <li><a href="/technology" class="bg-hover-color">Technology</a></li>              
+                  </ul>
+                </li>
+              </ul>
+    
+              <!-- Search Form (xs) -->
+              <form class="navbar-form navbar-left visible-xs" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go!</button>
+              </form> <!-- / Search Form (xs) -->
+    
+            </div> <!-- / Navbar Links -->
+        </div>
+      </div> <!-- / container -->
+    </div> <!-- / navbar --> 
+        
+        <div id="notes_block"></div>
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Topic Header -->        
+                            <div class="topic">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-sm-4">
+                            <h3 class="primary-font">Embed maps with tile servers</h3>
+                        </div>
+                        <div class="col-sm-8">
+                            <ol class="breadcrumb pull-right hidden-xs">
+                                                                                                            <li><a href="/">Home</a></li>
+                                                                                                                                                <li><a href="/api">API</a></li>
+                                                                                                                                                <li><a href="/hugemaps">Map layers</a></li>
+                                                                                                                                                <li class="active">Embed maps with tile server</li>
+                                                                                  
+                            </ol>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                        
+            <div class="container">
+<div class="row">
+<div class="col-sm-12">
+
+<p class=lead>With VANE tile API you can embed a lot of weather layers into your application. </p>
+To get weather maps tiles or to apply your owm styles to predefined layers - launch the VANE <a href="http://home.owm.io/map_editor">Map Editor</a> tool under your OWM account.</br>
+Please see a <a href="http://owm.io/docs/map_editor_2">detailed description</a> on how to use.<br/>
+
+<div class="col-sm-8">
+
+
+<section id="list">
+<h2 class="headline first-child text-color">Weather layers description</h2></section>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Data set</th>
+      <th>Layers name</th>
+      <th>Area</th>
+
+    </tr>
+  </thead>
+
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=precipitation&lat=30&lon=-20&zoom=3">Precipitation</a></td>
+    <td>rain, snow</td>
+    <td>worldwide</td>
+
+  </tr>
+
+ 
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=rain&lat=30&lon=-20&zoom=3">Rain</a></td>
+    <td>rain</td>
+    <td>worldwide</td>
+
+  </tr>
+
+
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=snow&lat=30&lon=-20&zoom=3">Snow</a></td>
+    <td>snow</td>
+    <td>worldwide</td>
+
+  </tr>
+
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=clouds&lat=30&lon=-20&zoom=3">Clouds</a></td>
+    <td>clouds</td>
+    <td>worldwide</td>
+
+  </tr>
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=pressure&lat=30&lon=-20&zoom=3">Sea Level Pressure</a></td>
+    <td>pressure</td>
+    <td>worldwide</td>
+
+  </tr>
+
+
+
+  <tr>
+    <td><a href="../weathermap?basemap=map&cities=false&layer=temperature&lat=30&lon=-20&zoom=3">Temperature</a></td>
+    <td>temperature</td>
+    <td>worldwide</td>
+
+  </tr>
+
+  <tr>
+    <td><a href="/help/tiles.html?opacity=0.6&l=wind">Wind Speed</a></td>
+    <td>wind</td>
+    <td>worldwide</td>
+ 
+  </tr>
+  
+ 
+</table>
+
+
+
+<section id="open">
+<h2 class="headline first-child text-color">OpenLayers library</h2></section>
+
+<h3>Library connection</h3>
+<p>
+To work with maps you need to connect a library:
+
+<ul>
+<li>OpenLayers.js - free library for dealing with different cartographic services like Google Maps, OpenStreetMaps etc. 
+More detailed information about library on OpenLayers web-site<a href="http://openlayers.org"> http://openlayers.org</a></li>
+</ul>
+
+<pre class="prettyprint linenums">
+&lt;script src="http://openlayers.org/api/OpenLayers.js"&gt;&lt;/script&gt;
+</pre>
+
+</p>
+
+<h3>Ser base map layer</h3>
+<p>
+<pre class="prettyprint linenums">
+    //Center of map
+    var lonlat = new OpenLayers.LonLat(0, 0);
+
+    var map = new OpenLayers.Map("basicMap");
+    // Create OSM overlays
+    var mapnik = new OpenLayers.Layer.OSM();
+
+</pre>
+</p>
+
+
+<h3>Add layers</h3>
+<p>
+    Connected whith 2 weather layers - Clouds and Precepitation
+<pre class="prettyprint linenums">
+ 
+    var layer_cloud = new OpenLayers.Layer.XYZ(
+        "clouds",
+        "http://${s}.tile.openweathermap.org/map/clouds/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.7,
+            sphericalMercator: true
+        }
+    );
+
+    var layer_precipitation = new OpenLayers.Layer.XYZ(
+        "precipitation",
+        "http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+        {
+            isBaseLayer: false,
+            opacity: 0.7,
+            sphericalMercator: true
+        }
+    );
+
+
+    map.addLayers([mapnik, layer_precipitation, layer_cloud]);
+</pre>
+</p>
+
+
+<a type="button" class="btn btn-orange" href="/help/openlayer_tile.html">Example of how OpenLayer works</a>
+
+<br>
+<br>
+
+<section id="leaflet">
+<h2 class="headline first-child text-color">Leaflet library</h2> </section>
+
+<h3>Library connection</h3>
+<p>
+<pre>
+&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"&gt; 
+&lt;script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"&gt;&lt;/script&gt;
+</pre>
+
+</p>
+
+<h3>Set base map layer</h3>
+<p>
+<pre class="prettyprint linenums">
+      var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          osmAttribution = '© <a href="//openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+          osmLayer = new L.TileLayer(osmUrl, {maxZoom: 18, attribution: osmAttribution});
+
+
+      var map = new L.Map('map');
+      map.setView(new L.LatLng(0, 0), 4)
+      map.addLayer(osmLayer);
+</pre>
+</p>
+
+
+<h3>Embed layers</h3>
+<p>
+    Connect tile weather layer
+<pre class="prettyprint linenums">
+ 
+L.tileLayer('http://{s}.maps.owm.io:8099/.../{z}/{x}/{y}?hash=...', {
+    attribution: '© <a href="//owm.io">OpenWeatherMap VANE</a>',
+    maxZoom: 18
+}).addTo(map);
+
+</pre>
+</p>
+
+
+<a type="button" class="btn btn-orange" href="../weathermap">Example of how Leaflet works</a>
+
+<br>
+<br>
+<br>
+
+</div>
+
+<div class="col-sm-4">
+<ul>
+<li><a href="#list"> Weather layers embedded via tile server</a></li>
+<li><a href="#open"> OpenLayers library</a></li>
+<li><a href="#leaflet"> Leaflet library</a></li>
+
+<br>
+
+See also:
+<li><a href="../docs/map_array">Embed weather map layers with array of weather data</a></li>
+
+
+</ul>
+
+</div>
+
+
+
+</div>
+</div>
+
+
+</div>            
+            <br>
+            <br>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- OWM long bottom -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-9649553505534207"
+     data-ad-slot="1070308379"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>                    </div>
+                </div>
+            </div>        
+        </div> <!-- / .wrapper -->        
+        <!-- Footer -->
+    <footer class="footer-dark">
+        <div class="container">
+        <div class="row">
+        <!-- API -->
+        <div class="col-sm-4">
+        
+        <h3 class="text-color">Weather in your city</h3>
+        <ul>
+        <li><a href="../find?q=">Find your city</a></li>
+        <li><a href="../weathermap">Weather maps</a></li>   
+        </ul>
+        
+        <h3 class="text-color">Weather APIs</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../appid">How to start</a></li>
+        <li><a href="../API">Weather APIs for developers</a></li>
+        <li><a href="../current">Current weather</a></li>  
+        <li><a href="../forecast5">5 day / 3 hour weather forecast</a></li>   
+        <li><a href="../forecast16">16 day / daily weather forecast</a></li>
+        <li><a href="../history">Hourly historical data</a></li>
+        <li><a href="../api_station">Data from weather stations</a></li>
+        <li><a href="../examples">Examples of API use</a></li>
+        
+        </ul>
+        
+        
+        
+        </div>
+        </div>
+        <!-- Map layers -->
+        <div class="col-sm-4">
+        <h3 class="text-color">Map layers</h3>
+        <div class="content">
+        <ul>
+        <li><a href="../docs/hugemaps">Examples of weather map layers</a>
+        <li><a href="../docs/map_array"> Embed weather maps with array of data</a></li>
+        <li><a href="../docs/tile_map"> Embed weather maps with tile server</a></li>
+        </ul>
+        
+        <h3 class="text-color">How to subscribe</h3>
+        <ul>
+        <li><a href="../price">Price-list</a></li>
+        <li><a href="../price_subscribe">Subscribe to APIs</a></li>
+        
+        </ul>
+        
+        <div class="alert alert-info">
+        Found a bug? Have a question or idea? Welcome to
+        <a href="https://openweathermap.desk.com/customer/portal/emails/new" class="alert-link" target="_blank">Support center
+        </a>
+        </div>
+        <div class="clearfix">
+        </div>
+        </div>
+        </div>
+        <!-- Column 3 -->
+        <div class="col-sm-4">        
+            <h3 class="text-color">Weather station network</h3>
+            <ul>
+                <li><a href="../stations">How to connect your weather station?</a></li>
+                <!-- <li><a href="/stations#DIY">DIY weather station projects</a></li> -->
+            </ul>
+            
+            <h3 class="text-color">About</h3>
+            <ul>
+                <li><a href="../technology">OpenWeatherMap technology</a></li>
+                <li><a href="http://owm.io">VANE Spacial Data Science Platform</a></li>            
+            </ul>
+            
+            
+            <h3 class="text-color">Go Social</h3>
+            <div class="content social">
+                <p>Follow OpenWeatherMap on <a href="https://twitter.com/OpenWeatherMap" target=_blank>Twitter</a>, <a href="https://www.facebook.com/groups/270748973021342" target=_blank>Facebook</a>, <a href="https://plus.google.com/u/0/communities/101265402580965077532" target=_blank>Google+</a> and <a href="https://github.com/search?q=openweathermap&ref=cmdform" target=_blank>GitHub.</a></p>            
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+            <hr>
+            </div>
+        </div>
+        <!-- Copyrights -->
+            <div class="row">
+                <div class="col-sm-12">
+                <p>© 2012-2016 OpenWeatherMap, Inc.  <a href="http://owm.io/about">About company</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>          
+    </body>
+    </html>
