@@ -110,10 +110,10 @@
 		{% for f in c.owm.forecasts %}
 		<td>
 		  {{ f.dt|time:"H:i" }}<br>
+		  <img src="{{ icons }}/{{ f.weather.0.icon }}.png"><br>
 		  {{ f.main.temp }} °C<br>
 		  {{ f.wind.speed }} m/s<br>
-		  {{ f.main.pressure }}<br>
-		  <img src="{{ icons }}/{{ f.weather.0.icon }}.png">
+		  {{ f.main.pressure }}
 		</td>
 		{% endfor %}
 	      </tr>
@@ -188,9 +188,9 @@
 		<td>
 		  {{ f.date|date:"m/d" }}<br>
 		  {{ f.day }}<br>
+		  <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif"><br>
 		  {{ f.max }} °C<br>
-		  {{ f.min }} °C<br>
-		  <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif">
+		  {{ f.min }} °C
 		</td>
 		{% endfor %}
 	      </tr>

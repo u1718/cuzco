@@ -1,25 +1,16 @@
-{% load static %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'weather/style.css' %}" />
-
-  <h1>{{ c.name }}</h1>
-  <h3>{{ c.ds_owm }}</h3>
-  <h3>{{ c.ds_yahoo }}</h3>
-
-  {% if owm.ok == '' %}
-  <p>{{ owm.root }}</p>
-  <p>{{ owm.city }}</p>
-  <table>
-    {% for l in owm.list %}
-    <tr>
-      <td>{{ l.dt_txt }}</td>
-      <td>{{ l.main.temp }}</td>
-      <td>{{ l.main.pressure }}</td>
-      <td>{{ l.main.humidity }}</td>
-      <td>{{ l.wind.speed }}</td>
-      <td>{{ l.wind.deg }}</td></tr>
-    {% endfor %}
-  </table>
-  {% elif fail == '' %}
-  {{ error }}
-  {% endif %}
+{% if fail == '' %}
+<h3>{{ error }}</h3>
+{% elif owm.fail == '' %}
+<h3>{{ owm.error }}</h3>
+<h3>{{ city.name }}</h3>
+<h5>{{ city.ds_owm }}</h5>
+{% elif yahoo.fail == '' %}
+<h3>{{ yahoo.error}}</h3>
+<h3>{{ city.name }}</h3>
+<h5>{{ city.ds_yahoo }}</h5>
+{% else %}
+<h3>ok</h3>
+<h3>{{ city.name }}</h3>
+<h5>{{ city.ds_owm }}</h5>
+<h5>{{ city.ds_yahoo }}</h5>
+{% endif %}

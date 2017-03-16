@@ -14,6 +14,7 @@ from dateutil import parser
 from itertools import chain
 import requests
 import json
+import time
 
 from .models import City, OWM, OWMForecast, Yahoo, YahooForecast, RequestArchive
 from .sbcalendar import SideBarCalendar
@@ -148,7 +149,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
             i = 0
             #import pdb; pdb.set_trace()
-            for color in us + ['#ffffff'] + ls:
+            for color in []:#us + ['#ffffff'] + ls:
                 p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
                 i += 1
             p.line(timed, humid, legend="Humidity, %", line_width=3)
@@ -195,7 +196,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                 [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
             i = 0
             #import pdb; pdb.set_trace()
-            for color in us + ['#ffffff'] + ls:
+            for color in []:#us + ['#ffffff'] + ls:
                 p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
                 i += 1
                 
@@ -429,72 +430,6 @@ class YahooView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
         context['yahoo'] = self.yahoo
         return context
         
-def get_yahoo(request, context, c):
-    if not False:
-        resp = requests.get(c.ds_yahoo)
-
-    else:
-        with open('./owm.data.{}'.format(c.name)) as f:
-            r = f.read()
-
-        class Resp:
-            def __init__(self, t):
-                self.text = t
-
-        resp = Resp(r)
-
-    if resp is not None:
-
-        pj = json.loads(resp.text)
-
-        context.update(
-            {'yahoo': {
-                'ok': '',
-                'root': pj.keys(),
-                'city': pj['query']['results']['channel'],
-                'list': pj['query']['results']['channel']['item']['forecast'],
-            }})
-
-        yah = Yahoo()
-
-        yah.name = pj['query']['results']['channel']['location']['city']
-        yah.coord_lat = pj['query']['results']['channel']['item']['lat']
-        yah.coord_lon = pj['query']['results']['channel']['item']['long']
-        yah.country = pj['query']['results']['channel']['location']['country']
-        yah.region = pj['query']['results']['channel']['location']['region']
-
-        yah.yql_resp_text = resp.text
-
-        yah.city = c
-        yah.req_date = timezone.now()
-
-        yah.save()
-
-        for fcs in pj['query']['results']['channel']['item']['forecast']:
-            yah_forecast = YahooForecast()
-
-            yah_forecast.yahoo = yah
-            yah_forecast.forecast_text = fcs
-            yah_forecast.save()
-
-    else:
-        context.update(
-            {'yahoo': {
-                'fail': '',
-                'error': c.name + ' req fail'
-                }})
-
-        yah = Yahoo()
-
-        yah.yql_resp_text = c.ds_yahoo + ': no response'
-
-        yah.city = c
-        yah.req_date = timezone.now()
-
-        yah.save()
-
-    return
-    
 def cron(request):
     username = request.GET['username']
     password = request.GET['password']
@@ -502,125 +437,141 @@ def cron(request):
 
     context = dict()
     
-    if user is not None:
-        login(request, user)
-        
-        c = City.objects.filter(turn=True).first()
-        if c is None:
-            City.objects.all().update(turn=True)
-            c = City.objects.first()
-
-        c.turn = False
-        c.save()
-            
-        context.update({'c': {'name': c.name, 'ds_yahoo': c.ds_yahoo, 'ds_owm': c.ds_owm}})
-
-        #ex: owm:
-        #ex: url_= 'http://api.openweathermap.org/data/2.5/forecast/city?id=498698&APPID=775670b8133c08911511535c6b1dfbdf'
-        #ex: url = 'http://api.openweathermap.org/data/2.5/forecast/city'
-        #ex: params = {
-        #ex:     'id':r'498698',
-        #ex:     'appid':r'775670b8133c08911511535c6b1dfbdf'
-        #ex: }
-        #ex: resp = requests.get(url_)
-        #ex: resp = requests.get(url, params = params)
-        #em: yahoo:
-        #ex: url = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22saransk%2Cru%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys'
-        
-        if not False:
-            resp = requests.get(c.ds_owm)
-
-        else:
-            with open('./owm.data.{}'.format(c.name)) as f:
-                r = f.read()
-
-            class Resp:
-                def __init__(self, t):
-                    self.text = t
-
-            resp = Resp(r)
-
-        if resp is not None:
-
-            pj = json.loads(resp.text)
-
-            if pj['cod'] == '0':
-                context.update(
-                    {'owm': {
-                        'fail': '',
-                        'error': pj['message']
-                    }})
-                owm = OWM()
-
-                owm.message = pj['message']
-
-                owm.city = c
-                owm.req_date = timezone.now()
-
-                owm.save()
-
-            else:
-                context.update(
-                    {'owm': {
-                        'ok': '',
-                        'root': pj.keys(),
-                        'city': pj['city'],
-                        'list': pj['list'],
-                    }})
-
-                owm = OWM()
-
-                owm.iden = pj['city']['id']
-                owm.name = pj['city']['name']
-                owm.coord_lon = pj['city']['coord']['lon']
-                owm.coord_lat = pj['city']['coord']['lat']
-                owm.country = pj['city']['country']
-                owm.population = pj['city']['population']
-                owm.sys_population = pj['city']['sys']['population']
-
-                owm.cod = pj['cod']
-                owm.message = pj['message']
-                owm.cnt = pj['cnt']
-
-                owm.city = c
-                owm.req_date = timezone.now()
-
-                owm.save()
-
-                for fcs in pj['list']:
-                    owm_forecast = OWMForecast()
-
-                    owm_forecast.owm = owm
-                    owm_forecast.forecast_text = fcs
-                    owm_forecast.save()
-
-        else:
-            context.update(
-                {'owm': {
-                    'fail': '',
-                    'error': c.name + ' req fail'
-                }})
-
-            owm = OWM()
-
-            owm.message = c.ds_owm + ': no response'
-
-            owm.city = c
-            owm.req_date = timezone.now()
-
-            owm.save()
-
-        get_yahoo(request, context, c)
-        logout(request)
-        
-    else:
+    if user is None:
         context.update({
             'fail': '',
             'error': 'auth fail'
         })
         
+        return render(request, 'weather/cron.html', context)
+
+    login(request, user)
+
+    c = City.objects.filter(turn=True).first()
+    if c is None:
+        City.objects.all().update(turn=True)
+        c = City.objects.first()
+
+    c.turn = False
+    c.save()
+
+    context.update({'city': {'name': c.name, 'ds_owm': c.ds_owm, 'ds_yahoo': c.ds_yahoo}})
+
+    resp = requests.get(c.ds_owm)
+    for i in [1,2,3]:
+        if resp is None:
+            time.sleep(7)
+            context.update(
+                {'owm': {
+                    'fail': '',
+                    'error': c.ds_owm + ': no response'
+            }})
+            continue
+
+        pj = json.loads(resp.text)
+        resp.close()
+        
+        if pj['cod'] == '0':
+            time.sleep(7)
+            context.update(
+                {'owm': {
+                    'fail': '',
+                    'error': pj['message'] + ', 0'
+                }})
+            continue
+
+        break
+        
+    else:
+        owm = OWM()
+        owm.message = context['owm']['error']
+        owm.city = c
+        owm.req_date = timezone.now()
+        owm.save()
+        logout(request)
+        return render(request, 'weather/cron.html', context)
+        
+    context.update(
+        {'owm': {
+            'ok': '',
+        }})
+
+    owm = OWM()
+
+    owm.iden = pj['city']['id']
+    owm.name = pj['city']['name']
+    owm.coord_lon = pj['city']['coord']['lon']
+    owm.coord_lat = pj['city']['coord']['lat']
+    owm.country = pj['city']['country']
+    owm.population = pj['city']['population']
+    owm.sys_population = pj['city']['sys']['population']
+
+    owm.cod = pj['cod']
+    owm.message = pj['message']
+    owm.cnt = pj['cnt']
+
+    owm.city = c
+    owm.req_date = timezone.now()
+
+    owm.save()
+
+    for fcs in pj['list']:
+        owm_forecast = OWMForecast()
+
+        owm_forecast.owm = owm
+        owm_forecast.forecast_text = fcs
+        owm_forecast.save()
+
+    get_yahoo(request, context, c)
+    
+    logout(request)
+        
     return render(request, 'weather/cron.html', context)
 
+def get_yahoo(request, context, c):
+    resp = requests.get(c.ds_yahoo)
+
+    if resp is None:
+        context.update(
+            {'yahoo': {
+                'fail': '',
+                'error': c.name + ' req fail'
+                }})
+        yah = Yahoo()
+        yah.yql_resp_text = c.ds_yahoo + ': no response'
+        yah.city = c
+        yah.req_date = timezone.now()
+        yah.save()
+        
+        return
+
+    pj = json.loads(resp.text)
+
+    context.update(
+        {'yahoo': {
+            'ok': '',
+        }})
+    yah = Yahoo()
+    yah.name = pj['query']['results']['channel']['location']['city']
+    yah.coord_lat = pj['query']['results']['channel']['item']['lat']
+    yah.coord_lon = pj['query']['results']['channel']['item']['long']
+    yah.country = pj['query']['results']['channel']['location']['country']
+    yah.region = pj['query']['results']['channel']['location']['region']
+    yah.yql_resp_text = resp.text
+    resp.close()
+    yah.city = c
+    yah.req_date = timezone.now()
+    yah.save()
+
+    for fcs in pj['query']['results']['channel']['item']['forecast']:
+        yah_forecast = YahooForecast()
+
+        yah_forecast.yahoo = yah
+        yah_forecast.forecast_text = fcs
+        yah_forecast.save()
+
+    return
+    
 class RequestTodayArchiveView(TodayArchiveView): #(LoginRequiredMixin, TodayArchiveView):
     #queryset = RequestArchive.objects.all()
     #date_field = "req_date"
@@ -753,7 +704,7 @@ def get_cdc(rdav, req_date):
         y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
             [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
         i = 0
-        for color in us + ['#ffffff'] + ls:
+        for color in []:#us + ['#ffffff'] + ls:
             p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
             i += 1
                 
@@ -800,7 +751,7 @@ def get_cdc(rdav, req_date):
         y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
             [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
         i = 0
-        for color in us + ['#ffffff'] + ls:
+        for color in []:#us + ['#ffffff'] + ls:
             p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
             i += 1
 
@@ -899,7 +850,7 @@ def get_yah_d(rdav, req_date, c):
     y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
         [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
     i = 0
-    for color in us + ['#ffffff'] + ls:
+    for color in []:#us + ['#ffffff'] + ls:
         p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
         i += 1
 
@@ -946,7 +897,7 @@ def get_yah_d(rdav, req_date, c):
     y = [lp + i * (lnp - lp) / len(ls) for i in range(0, len(ls) + 1)] +\
         [unp + i * (up - unp) / len(us) for i in range(0, len(us) + 1)]
     i = 0
-    for color in us + ['#ffffff'] + ls:
+    for color in []:#us + ['#ffffff'] + ls:
         p.patch(x, [y[i]]*len(timed) + [y[i+1]]*len(timed) , color=color)#, fill_alpha=0.2)
         i += 1
 
