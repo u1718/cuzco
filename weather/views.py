@@ -457,6 +457,14 @@ def cron(request):
 
     context.update({'city': {'name': c.name, 'ds_owm': c.ds_owm, 'ds_yahoo': c.ds_yahoo}})
 
+    get_owm(request, context, c)
+    get_yahoo(request, context, c)
+    
+    logout(request)
+        
+    return render(request, 'weather/cron.html', context)
+
+def get_owm(request, context, c):
     resp = requests.get(c.ds_owm)
     for i in [1,2,3]:
         if resp is None:
@@ -489,7 +497,7 @@ def cron(request):
         owm.req_date = timezone.now()
         owm.save()
         logout(request)
-        return render(request, 'weather/cron.html', context)
+        return
         
     context.update(
         {'owm': {
@@ -522,11 +530,7 @@ def cron(request):
         owm_forecast.forecast_text = fcs
         owm_forecast.save()
 
-    get_yahoo(request, context, c)
-    
-    logout(request)
-        
-    return render(request, 'weather/cron.html', context)
+    return
 
 def get_yahoo(request, context, c):
     resp = requests.get(c.ds_yahoo)
