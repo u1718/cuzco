@@ -486,7 +486,7 @@ def get_owm(request, context, c):
             context.update(
                 {'owm': {
                     'fail': '',
-                    'error': pj['message'] + ', 0'
+                    'error': pj['cod'] + ', ' + pj['message']
                 }})
             continue
 
