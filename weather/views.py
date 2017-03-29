@@ -513,8 +513,8 @@ def get_owm(request, context, c):
     owm.coord_lon = pj['city']['coord']['lon']
     owm.coord_lat = pj['city']['coord']['lat']
     owm.country = pj['city']['country']
-    owm.population = pj['city']['population']
-    owm.sys_population = pj['city']['sys']['population']
+    #owm.population = pj['city']['population']
+    #owm.sys_population = pj['city']['sys']['population']
 
     owm.cod = pj['cod']
     owm.message = pj['message']
