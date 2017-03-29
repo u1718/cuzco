@@ -468,7 +468,7 @@ def cron(request):
 
 def get_owm(request, context, c):
     resp = requests.get(c.ds_owm)
-    for i in [1,2,3,5]:
+    for i in [1]:#,2,3,5]:
         if resp is None:
             time.sleep(1)
             context.update(
@@ -481,7 +481,7 @@ def get_owm(request, context, c):
         pj = json.loads(resp.text)
         resp.close()
         
-        if pj['cod'] == '0':
+        if pj['cod'] != '200':
             time.sleep(1)
             context.update(
                 {'owm': {
