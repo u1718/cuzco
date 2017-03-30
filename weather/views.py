@@ -15,6 +15,7 @@ from itertools import chain
 import requests
 import json
 import time
+import pytz
 
 from .models import City, OWM, OWMForecast, Yahoo, YahooForecast, RequestArchive
 from .sbcalendar import SideBarCalendar
@@ -65,6 +66,7 @@ class CitiesView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
                                         'forecasts': yahd['fcs'][:9],
                                         'script': yahd['script'], 'div': yahd['div']}})
 
+        #import pdb; pdb.set_trace()
         return city_list
     
 def draw_owm(c):
@@ -73,6 +75,9 @@ def draw_owm(c):
     sr, st = calc_ss(
         d=o.req_date.day, m=o.req_date.month, y=o.req_date.year, h=o.req_date.hour,
         lat=o.coord_lat, lon=o.coord_lon)
+
+    sr = timezone.localtime(timezone.make_aware(sr.datetime()), timezone=pytz.timezone('Europe/Moscow'))
+    st = timezone.localtime(timezone.make_aware(st.datetime()), timezone=pytz.timezone('Europe/Moscow'))
 
     fcs = []
     tempd = []
@@ -108,7 +113,10 @@ def draw_owm(c):
         else:
             precd.append(0)
 
-        fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']))
+        fd['dt'] = datetime.datetime.fromtimestamp(int(fd['dt']), pytz.timezone('UTC'))
+        #import pdb; pdb.set_trace()
+        fd['dt'] = fd['dt'].astimezone(pytz.timezone('Europe/Moscow'))
+        #import pdb; pdb.set_trace()
         timed.append(fd['dt'])
 
         fcs.append(fd)
@@ -399,7 +407,8 @@ class OWMView(generic.ListView): #(LoginRequiredMixin, generic.ListView):
 
             fcs[-1]['prec'] = tprc
 
-            fcs[-1]['date'] = datetime.datetime.fromtimestamp(int(fcs[-1]['dt']))
+            fcs[-1]['date'] = datetime.datetime.fromtimestamp(int(fcs[-1]['dt']), pytz.timezone('UTC'))
+            fcs[-1]['date'] = fcs[-1]['date'].astimezone(pytz.timezone('Europe/Moscow'))
 
         return sorted(fcs, key=lambda x: x['date'])
 
@@ -661,7 +670,7 @@ def draw_cdc(rdav, req_date):
 
                 precd.append(tprc)
 
-                timed.append(datetime.datetime.fromtimestamp(int(fd['dt'])))
+                timed.append(datetime.datetime.fromtimestamp(int(fd['dt']), timezone.utc))
 
         script, div = {}, {}
         
