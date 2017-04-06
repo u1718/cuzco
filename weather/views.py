@@ -294,7 +294,7 @@ def draw_yah(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    #p.sizing_mode = 'scale_width'
     p.y_range = Range1d(start = min(tempnd) - 10, end = max(tempxd) + 10)
     x=np.append(timed, timed[::-1])
     y=np.append(tempnd, tempxd[::-1])

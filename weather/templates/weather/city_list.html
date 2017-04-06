@@ -74,13 +74,15 @@
 	      <li><a data-toggle="tab" href="#owmprec{{ c.city.id }}">Precipitation</a></li>
 	    </ul>
 	    <div class="tab-content">
-	      <div id="owmtemp{{ c.city.id }}" class="tab-pane fade in active">
+
+	      <div id="owmtemp{{ c.city.id }}" class="tab-pane fade active in">
 		<div class="bok">
 		  {{ c.owm.script.temp|safe }}
 		  {{ c.owm.div.temp|safe }}
 		</div>
 		{# <img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%"> #}
 	      </div>
+
 	      <div id="owmwind{{ c.city.id }}" class="tab-pane fade">
 		<div class="bok">
 		  {{ c.owm.script.wind|safe }}
@@ -179,7 +181,7 @@
 	      </ul>
 
 	      <div class="tab-content">
-		<div id="yahtemp{{ c.city.id }}" class="tab-pane fade in active">
+		<div id="yahtemp{{ c.city.id }}" class="tab-pane fade active in">
 		  <div class="bok">
 		    {{ c.yahoo.script.temp|safe }}
 		    {{ c.yahoo.div.temp|safe }}
