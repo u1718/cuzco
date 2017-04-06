@@ -65,6 +65,7 @@
 	    </table>
 	  </div>
 	  <div class="col-md-8">
+	    <div class="row">
 	    <ul class="nav nav-tabs">
 	      <li class="active"><a data-toggle="tab" href="#owmtemp{{ c.city.id }}">Temperature</a></li>
 	      <li><a data-toggle="tab" href="#owmwind{{ c.city.id }}">Wind</a></li>
@@ -105,20 +106,23 @@
 		</div>
 	      </div>
 	    </div>
+	    </div>
+	    <div class="row">
+	      <table class="table table-striped table-bordered small">
+		<tr>
+		  {% for f in c.owm.forecasts %}
+		  <td>
+		    {{ f.dt|time:"H:i" }}<br>
+		    <img src="{{ icons }}/{{ f.weather.0.icon }}.png"><br>
+		    {{ f.main.temp }} °C<br>
+		    {{ f.wind.speed }} m/s<br>
+		    {{ f.main.pressure }}
+		  </td>
+		  {% endfor %}
+		</tr>
+	      </table>
+	    </div>
 
-	    <table class="table table-striped table-bordered small">
-	      <tr>
-		{% for f in c.owm.forecasts %}
-		<td>
-		  {{ f.dt|time:"H:i" }}<br>
-		  <img src="{{ icons }}/{{ f.weather.0.icon }}.png"><br>
-		  {{ f.main.temp }} °C<br>
-		  {{ f.wind.speed }} m/s<br>
-		  {{ f.main.pressure }}
-		</td>
-		{% endfor %}
-	      </tr>
-	    </table>
 	  </div>
 	</div>
       </div>
@@ -169,33 +173,35 @@
 	    </table>
 	  </div>
 	  <div class="col-md-8">
-	    <ul class="nav nav-tabs">
-	      <li class="active"><a data-toggle="tab" href="#yahtemp{{ c.city.id }}">Temperature</a></li>
-	    </ul>
+	    <div class="row">
+	      <ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#yahtemp{{ c.city.id }}">Temperature</a></li>
+	      </ul>
 
-	    <div class="tab-content">
-	      <div id="yahtemp{{ c.city.id }}" class="tab-pane fade in active">
-		<div class="bok">
-		  {{ c.yahoo.script.temp|safe }}
-		  {{ c.yahoo.div.temp|safe }}
+	      <div class="tab-content">
+		<div id="yahtemp{{ c.city.id }}" class="tab-pane fade in active">
+		  <div class="bok">
+		    {{ c.yahoo.script.temp|safe }}
+		    {{ c.yahoo.div.temp|safe }}
+		  </div>
 		</div>
-		{# <img src="{% url 'weather:gr' c.owm.id %}" alt="obed" style="width:100%"> #}
 	      </div>
 	    </div>
-
-	    <table class="table table-striped table-bordered small">
-	      <tr>
-		{% for f in c.yahoo.forecasts %}
-		<td>
-		  {{ f.date|date:"m/d" }}<br>
-		  {{ f.day }}<br>
-		  <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif"><br>
-		  {{ f.max }} °C<br>
-		  {{ f.min }} °C
-		</td>
-		{% endfor %}
-	      </tr>
-	    </table>
+	    <div class="row">
+	      <table class="table table-striped table-bordered small">
+		<tr>
+		  {% for f in c.yahoo.forecasts %}
+		  <td>
+		    {{ f.date|date:"m/d" }}<br>
+		    {{ f.day }}<br>
+		    <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif"><br>
+		    {{ f.max }} °C<br>
+		    {{ f.min }} °C
+		  </td>
+		  {% endfor %}
+		</tr>
+	      </table>
+	    </div>
 	  </div>
 	</div>
       </div>
