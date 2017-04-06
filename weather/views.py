@@ -131,6 +131,7 @@ def draw_owm(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
     p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
     p.add_layout(LinearAxis(y_range_name="prec"), 'right')
     x=np.append(timed, timed[::-1])
@@ -149,6 +150,7 @@ def draw_owm(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
     us='#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
        '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
        '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
@@ -187,6 +189,7 @@ def draw_owm(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
     p.line(timed, windd, legend="Wind, m/s", line_width=3)
     script['wind'], div['wind'] = components(p)
 
@@ -198,6 +201,7 @@ def draw_owm(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
 
     us='#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
        '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
@@ -241,6 +245,7 @@ def draw_owm(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
     p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
     script['prec'], div['prec'] = components(p)
 
@@ -289,6 +294,7 @@ def draw_yah(c):
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
+    p.sizing_mode = 'scale_width'
     p.y_range = Range1d(start = min(tempnd) - 10, end = max(tempxd) + 10)
     x=np.append(timed, timed[::-1])
     y=np.append(tempnd, tempxd[::-1])
