@@ -36,7 +36,7 @@
 	    </h4>
 	    <p>
 	      get at {{ c.owm.owm.req_date|date:'r' }}<br>
-	      (Forecast for {{ c.owm.forecasts.0.dt|date:'r' }})
+	      (Forecast for {{ c.owm.forecasts.0.dt|date:'D, d M Y h:i A T' }})
 	    </p>
 
 	    <table class="table table-striped table-bordered">
@@ -137,7 +137,7 @@
 	      {{ c.yahoo.yahoo.name }}, {{ c.yahoo.yahoo.country }}</strong>
 	    </h4>
 	    <h3>
-	      <img src="http://l.yimg.com/a/i/us/we/52/{{ c.yahoo.yah.code }}.gif">
+	      <img src="http://l.yimg.com/a/i/us/we/52/{{ c.yahoo.yah.code }}.gif" height="50" width="50">
 	      <strong>
 	      {{ c.yahoo.yah.temp }} °C</strong>
 	    </h3>
@@ -145,8 +145,8 @@
 	      {{ c.yahoo.yah.text }}
 	    </h4>
 	    <p>
-	      get at {{ c.yahoo.yahoo.req_date }}<br>
-	      ({{ c.yahoo.yah.date }})
+	      get at {{ c.yahoo.yahoo.req_date|date:'r' }}<br>
+	      (Weather on {{ c.yahoo.yah.date }})
 	    </p>
 
 	    <table class="table table-striped table-bordered">
@@ -196,7 +196,7 @@
 		  <td>
 		    {{ f.date|date:"m/d" }}<br>
 		    {{ f.day }}<br>
-		    <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif"><br>
+		    <img src="http://l.yimg.com/a/i/us/we/52/{{ f.code }}.gif" height="50" width="50"><br>
 		    {{ f.max }} °C<br>
 		    {{ f.min }} °C
 		  </td>
