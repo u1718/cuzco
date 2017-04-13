@@ -124,14 +124,14 @@ def draw_owm(c):
     script, div = {}, {}
 
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(o.name, o.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
     p.extra_y_ranges = {"prec": Range1d(start=0, end=max([0]+precd))}
     p.add_layout(LinearAxis(y_range_name="prec"), 'right')
     x=np.append(timed, timed[::-1])
@@ -143,14 +143,14 @@ def draw_owm(c):
     script['temp'], div['temp'] = components(p)
 
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(o.name, o.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
     us='#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
        '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
        '#804d00 #663d00 #4d2e00 #331f00 #1a0f00'
@@ -182,26 +182,26 @@ def draw_owm(c):
     script['humi'], div['humi'] = components(p)
 
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(o.name, o.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
     p.line(timed, windd, legend="Wind, m/s", line_width=3)
     script['wind'], div['wind'] = components(p)
 
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(o.name, o.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
 
     us='#fff5e6 #ffebcc #ffe0b3 #ffd699 #ffcc80 #ffc266 #ffb84d ' +\
        '#ffad33 #ffa31a #ff9900 #e68a00 #cc7a00 #b36b00 #995c00 ' +\
@@ -238,14 +238,14 @@ def draw_owm(c):
     script['pres'], div['pres'] = components(p)
 
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(o.name, o.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
     p.vbar(x=timed, width=5000000, top=precd, legend="Precipitation, mm")
     script['prec'], div['prec'] = components(p)
 
@@ -287,14 +287,14 @@ def draw_yah(c):
 
     script, div = {}, {}
     p = figure(
-        width=600, height=350, 
+        width=600, height=200, 
         tools="",
         toolbar_location=None,
         title='Weather and forecasts in {}, {}'.format(ya.name, ya.country),
         x_axis_type="datetime",
         x_axis_label='', y_axis_label=''
         )
-    #p.sizing_mode = 'scale_width'
+    p.sizing_mode = 'scale_both'
     p.y_range = Range1d(start = min(tempnd) - 10, end = max(tempxd) + 10)
     x=np.append(timed, timed[::-1])
     y=np.append(tempnd, tempxd[::-1])

@@ -1,3 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
+  <div class="row equal">
+    <div class="col-sm-4" style="background-color: red">
+    </div>
+    <div class="col-sm-8" style="background-color: blue">
+      <img src="//placehold.it/200x150" class="img-responsive">
+    </div>
+    {% comment %}
+    <div class="col-xs-12 col-sm-4" style="background-color: red">
+      some content is here
+    </div>
+    <div class="col-xs-6 col-sm-4" style="background-color: yellow">
+      <img src="//placehold.it/200x150" class="img-responsive">
+    </div>
+    <div class="col-xs-6 col-sm-4" style="background-color: blue">
+      some more content
+    </div>	
+    {% endcomment %}
+  </div>
 {% endblock %}
