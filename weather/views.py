@@ -253,7 +253,11 @@ def draw_owm(c):
     
 def draw_yah(c):
     ya = c.yahoo_set.latest('req_date')
-    yql = json.loads(ya.yql_resp_text.replace("'",'"'))
+    try:
+        yql = json.loads(ya.yql_resp_text.replace("'",'"'))
+    except json.JSONDecodeError:
+        return {'y':None, 'yy':None, 'fcs':[0]*9, 'script':None, 'div':None}
+        
     yy = {}
     yy['temp'] = float(yql['query']['results']['channel']['item']['condition']['temp'])
     yy['temp'] = "{0:.1f}".format((yy['temp'] - 32) * 5 / 9)
@@ -568,6 +572,20 @@ def get_yahoo(request, context, c):
 
     pj = json.loads(resp.text)
 
+    if pj['query']['count'] == 0:
+        context.update(
+            {'yahoo': {
+                'fail': '',
+                'error': c.name + ': results are None'
+                }})
+        yah = Yahoo()
+        yah.yql_resp_text = c.ds_yahoo + ': no results'
+        yah.city = c
+        yah.req_date = timezone.now()
+        yah.save()
+        
+        return
+
     context.update(
         {'yahoo': {
             'ok': '',
@@ -816,7 +834,10 @@ def get_yah_d(rdav, req_date, c):
             req_date__month=req_date.month, \
             req_date__day=req_date.day).order_by('req_date'):
 
-        yql = json.loads(o.yql_resp_text.replace("'",'"'))
+        try:
+            yql = json.loads(o.yql_resp_text.replace("'",'"'))
+        except json.JSONDecodeError:
+            continue
 
         conds = parse_yql(yql)
         

@@ -87,7 +87,7 @@ DATABASES = {
             'NAME': 'mytestdatabase',
         },
     },
-    # 'pa': {
+    # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'OPTIONS': {
     #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
