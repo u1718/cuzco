@@ -49,7 +49,7 @@ class Yahoo(models.Model):
     coord_lat = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     region = models.CharField(max_length=100)
-    yql_resp_text = models.CharField(max_length=3000)
+    yql_resp_text = models.CharField(max_length=3500)
 
     def __str__(self):
         return '{}{:_>10}'.format(str(self.req_date), self.name)
