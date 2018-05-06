@@ -28,7 +28,7 @@ SECRET_KEY = '^=7^v!e4ruim!d-yfjvz4xnmnuax=ca4djppl0klyxbkg720nd'
 #pa
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [cuzco.pythonanywhere.com]
 
 
 # Application definition
