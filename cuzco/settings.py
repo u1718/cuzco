@@ -24,9 +24,9 @@ SECRET_KEY = '^=7^v!e4ruim!d-yfjvz4xnmnuax=ca4djppl0klyxbkg720nd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #d
-DEBUG = True
+#DEBUG = True
 #pa
-#DEBUG = False
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -80,28 +80,28 @@ WSGI_APPLICATION = 'cuzco.wsgi.application'
 
 DATABASES = {
     #d
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cuzco2',
-        'USER': 'cuzco',
-        'PASSWORD': 'cuzCuz',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'TEST': {
-            'NAME': 'mytestdatabase',
-            },
-    },
-    #pa
     # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'OPTIONS': {
-    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-    #     },
-    #     'NAME': 'cuzco$CUZCO',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'cuzco2',
     #     'USER': 'cuzco',
-    #     'PASSWORD': 'fdsazxcv',
-    #     'HOST': 'cuzco.mysql.pythonanywhere-services.com'
+    #     'PASSWORD': 'cuzCuz',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '5432',
+    #     'TEST': {
+    #         'NAME': 'mytestdatabase',
+    #         },
     # },
+    #pa
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
+        'NAME': 'cuzco$CUZCO',
+        'USER': 'cuzco',
+        'PASSWORD': 'fdsazxcv',
+        'HOST': 'cuzco.mysql.pythonanywhere-services.com'
+    },
     'sqlite3': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
