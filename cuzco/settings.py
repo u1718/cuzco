@@ -23,7 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^=7^v!e4ruim!d-yfjvz4xnmnuax=ca4djppl0klyxbkg720nd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+#d
 DEBUG = True
+#pa
+#DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -76,7 +79,8 @@ WSGI_APPLICATION = 'cuzco.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-        'default': {
+    #d
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cuzco2',
         'USER': 'cuzco',
@@ -85,8 +89,9 @@ DATABASES = {
         'PORT': '5432',
         'TEST': {
             'NAME': 'mytestdatabase',
-        },
+            },
     },
+    #pa
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'OPTIONS': {
