@@ -1,6 +1,6 @@
 from calendar import HTMLCalendar, monthrange
 from datetime import timedelta
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 class SideBarCalendar(HTMLCalendar):
     def __init__(self, viewname, selecteday):
