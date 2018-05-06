@@ -14,6 +14,7 @@ from bokeh.embed import components
 from django.contrib.auth.decorators import login_required
 from django.views.generic.dates import TodayArchiveView, DayArchiveView
 from dateutil import parser
+import time
 
 
 from .models import City, OWM, OWMForecast, Yahoo, YahooForecast, RequestArchive
