@@ -91,7 +91,7 @@ def get_owm(request, context, c):
         
     context.update(
         {'owm': {
-            'ok': resp.text #TODO:pretty print json.dumps(pj, sort_keys=True, indent=4),
+            'ok': '' #cron-job.org: Response data too big#resp.text #TODO:pretty print json.dumps(pj, sort_keys=True, indent=4),
         }})
 
     owm = OWM()
@@ -157,7 +157,7 @@ def get_yahoo(request, context, c):
 
     context.update(
         {'yahoo': {
-            'ok': resp.text #TODO:pretty print json.dumps(pj, sort_keys=True, indent=4),
+            'ok': '' #cron-job.org: Response data too big#resp.text #TODO:pretty print json.dumps(pj, sort_keys=True, indent=4),
         }})
     yah = Yahoo()
     yah.name = pj['query']['results']['channel']['location']['city']
