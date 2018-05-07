@@ -23,13 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '^=7^v!e4ruim!d-yfjvz4xnmnuax=ca4djppl0klyxbkg720nd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#d
-#DEBUG = True
-#pa
 DEBUG = False
 
-ALLOWED_HOSTS = ['cuzco.pythonanywhere.com']
-
+ALLOWED_HOSTS = ['127.0.0.1','cuzco.pythonanywhere.com']
 
 # Application definition
 
@@ -79,19 +75,17 @@ WSGI_APPLICATION = 'cuzco.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    #d
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'cuzco2',
-    #     'USER': 'cuzco',
-    #     'PASSWORD': 'cuzCuz',
-    #     'HOST': '127.0.0.1',
-    #     'PORT': '5432',
-    #     'TEST': {
-    #         'NAME': 'mytestdatabase',
-    #         },
-    # },
-    #pa
+    'pg': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cuzco2',
+        'USER': 'cuzco',
+        'PASSWORD': 'cuzCuz',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'mytestdatabase',
+            },
+    },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
@@ -149,3 +143,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_URL = '/static/'
+
+#http://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
+from socket import gethostname
+settings = 'settings_%s.py' % gethostname()
+try:
+    exec(open(os.path.join(os.path.dirname(__file__), settings)).read(), globals(), locals())
+except IOError:
+    pass
